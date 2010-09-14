@@ -1,0 +1,23 @@
+<language-addon>
+	<!-- write your add-on name here , can write any what you want -->
+	<addon-name>swifttab</addon-name>
+	<!-- the defalt value (need not to change this if you dont know what this is ) -->
+	<language-name>xul/html</language-name>
+	<component>
+		<!-- write your component name here , can write any what you want -->
+		<component-name>swifttab</component-name>
+		<!-- the widget class with package name **IN JAVA** -->
+		<component-class>org.zkoss.swifttab.SwiftTab</component-class>
+
+		<!-- the widget class with package name **IN JAVASCRIPT** -->
+		<widget-class>swifttab.SwiftTab</widget-class>
+		<mold>
+			<!-- the defalt mold (need not to change this if you dont know what this is ) -->
+			<mold-name>default</mold-name>
+			<!-- the widget html render javascript file , -->
+			<mold-uri>mold/swifttab.js</mold-uri>
+			<!-- the widget style render css dsp file , -->
+			<css-uri>css/swifttab.css.dsp</css-uri>
+		</mold>
+	</component>
+</language-addon>
