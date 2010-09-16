@@ -1,7 +1,7 @@
 <%@ taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" %>
 
 .z-swifttab .z-swifttab-link,.z-swifttab .z-swifttab-text {
-		background: url(${c:encodeURL('~./img/swifttab/tab.png')}) no-repeat scroll 0 0 transparent;
+	background: url(${c:encodeURL('~./img/swifttab/swifttab-bg.png')}) no-repeat scroll 0px 0px transparent;
 	display: block;
 	padding: 0 10px;
 }
@@ -13,13 +13,17 @@ li.z-swifttab {
 	font-weight:bold;
 	line-height:1.2;
 	margin:1px 0 0;
+	background-position:100% -129px;
 	outline:0 none;
 	text-align:center;
 	text-decoration:none;
 	white-space:nowrap;
-	background-position:100% -100px;
 	display:block;
 	padding:0 10px 0 0;
+}
+.z-swifttab .z-swifttab-text{
+	color:#416AA3;
+	background-position:0 -322px;
 }
 .z-swifttab-seld a.z-swifttab-link:link,
 .z-swifttab-seld a.z-swifttab-link:visited,
@@ -27,17 +31,24 @@ li.z-swifttab {
 	cursor:text;
 }
 
-.z-swifttab-seld .z-swifttab-text,.z-swifttab a.z-swifttab-link:hover .z-swifttab-text{
-	background-position:0 -50px;
+.z-swifttab-seld .z-swifttab-text{
+	background-position:0 -193px;
+	color:#0F3B82;
 }
-.z-swifttab-seld .z-swifttab-link , .z-swifttab a.z-swifttab-link:hover
-{
-	background-position:100% -150px;
+.z-swifttab a.z-swifttab-link:hover .z-swifttab-text{
+	background-position:0 -258px;
+}
+
+.z-swifttab-seld .z-swifttab-link{
+	background-position:100% 0px;
 	color:#000000;
 	margin-top:0;
 	position:relative;
 	top:1px;
 	z-index:2;
+}
+.z-swifttab a.z-swifttab-link:hover{
+	background-position:100% -65px;
 }
 .z-swifttab .z-swifttab-text{
 	height:auto;

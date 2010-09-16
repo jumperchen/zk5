@@ -7,10 +7,10 @@
 		<!-- write your component name here , can write any what you want -->
 		<component-name>swifttab</component-name>
 		<!-- the widget class with package name **IN JAVA** -->
-		<component-class>org.zkoss.swifttab.SwiftTab</component-class>
+		<component-class>org.zkoss.swifttab.Swifttab</component-class>
 
 		<!-- the widget class with package name **IN JAVASCRIPT** -->
-		<widget-class>swifttab.SwiftTab</widget-class>
+		<widget-class>swifttab.Swifttab</widget-class>
 		<mold>
 			<!-- the defalt mold (need not to change this if you dont know what this is ) -->
 			<mold-name>default</mold-name>
