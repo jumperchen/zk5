@@ -1,0 +1,58 @@
+<?page title="ZK5 Addon Explorer"?>
+<zk>
+<zscript><![CDATA[
+import java.io.*;
+request = Executions.getCurrent().getNativeRequest();
+final String curPath = request.getRealPath(request.getServletPath());
+File root = new File(curPath);
+if (root.isFile()) {
+	root = root.getParentFile();
+}
+File[] fs = root.listFiles(new FileFilter(){
+	public boolean accept(File f) {
+		return f.isDirectory() && !f.getName().startsWith("WEB-INF");
+	}
+});
+java.util.Arrays.sort(fs, new java.util.Comparator() {
+	public int compare(Object a, Object b) {
+		File fa = (File) a;
+		File fb = (File) b;
+		return fa.getName().compareTo(fb.getName());
+	}
+});
+ListModel listmodel = new ListModelList(fs);
+ListitemRenderer render = new ListitemRenderer() { 
+	public void render(Listitem item, Object data) {
+		new Listcell(((File)data).getName()).setParent(item);
+		item.addEventListener("onClick", new org.zkoss.zk.ui.event.EventListener() {
+			public void onEvent(Event event) throws Exception {
+				xcontents.setSrc("/" + ((File)data).getName() + "/index.zul");
+			}
+		});
+	}
+};
+]]></zscript>
+<style>
+div.demo-items {
+	border: 0; background: white;
+}
+.demo-items .z-listbox-body {
+	overflow-x: hidden;
+}
+.demo-items .z-listcell-cnt {
+	font-size: 12px;
+	padding-left: 5px;
+}
+</style>
+	<borderlayout>
+		<west title="ZK5 Addon Explorer" size="250px"
+			flex="true" splittable="true" minsize="210" maxsize="500"
+			collapsible="true">
+			<listbox id="listdemo" model="${listmodel}" sclass="demo-items" oddRowSclass="non-odd"
+				itemRenderer="${render}" style="border: 0;"/>
+		</west>
+		<center autoscroll="true" flex="true">
+			<include style="padding:3px;" src="/welcome.zul" id="xcontents" />
+		</center>
+	</borderlayout>
+</zk>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page title="Session Timeout" automaticTimeout="false" ?>
+<window width="80%" title="Session Timeout" border="normal">
+You didn't access the demo for a long time. Would you like to
+continue cruising <a href="index.zul" label="ZK Addon Explorer"/>
+or to visit <a href="http://www.zkoss.org" label="ZK Home"/>?
+</window>
