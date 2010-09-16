@@ -16,11 +16,13 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 */
 package org.zkoss.hatab;
 
+import org.zkoss.zul.impl.XulElement;
+
 /**
  * 
  * @author simon
  */
-public class Hatab {
+public class Hatab extends XulElement{
 	
 	
 	
