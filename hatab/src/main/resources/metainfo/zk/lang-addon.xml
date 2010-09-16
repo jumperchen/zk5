@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language-addon>
+	<addon-name>hatab</addon-name>
+	<language-name>xul/html</language-name>
+	<depends>zul</depends>
+	
+	<version>
+		<version-class>org.zkoss.hatab.Version</version-class>
+		<version-uid>0.8.0</version-uid>
+		<zk-version>5.0.4</zk-version><!-- or later -->
+	</version>
+	
+	<component>
+		<component-name>hatab</component-name>
+		<component-class>org.zkoss.hatab.Hatab</component-class>
+		<widget-class>hatab.Hatab</widget-class>
+		<mold>
+			<mold-name>default</mold-name>
+			<mold-uri>mold/hatab.js</mold-uri>
+			<css-uri>css/hatab.css.dsp</css-uri>
+		</mold>
+	</component>
+	
+</language-addon>
