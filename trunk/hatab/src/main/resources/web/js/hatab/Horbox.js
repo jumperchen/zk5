@@ -137,9 +137,7 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 	},
 	onChildAdded_: function (child) {
 		this.$supers('onChildAdded_', arguments);
-		if (child.$instanceof(zul.wgt.Toolbar))
-			this.toolbar = child;
-		else if (child.$instanceof(zul.tab.Tabs))
+		if (child.$instanceof(zul.tab.Tabs))
 			this.tabs = child;
 		else if (child.$instanceof(zul.tab.Tabpanels)) {
 			this.tabpanels = child;

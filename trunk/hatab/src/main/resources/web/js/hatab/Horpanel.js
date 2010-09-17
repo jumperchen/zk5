@@ -61,12 +61,11 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		}
 	},
 	_sel: function (toSel, animation) { //don't rename (zkmax counts on it)!!
-		var accd = this.getHorbox().inAccordionMold();
-		if (accd && animation) {
+		if (animation) {
 			var p = this.$n("real"); //accordion uses 'real'
 			zk(p)[toSel ? "slideDown" : "slideUp"](this);
 		} else {
-			var $pl = jq(accd ? this.$n("real") : this.$n()),
+			var $pl = jq(this.$n("real")),
 				vis = $pl.zk.isVisible();
 			if (toSel) {
 				if (!vis) {
@@ -84,66 +83,49 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		var tbx = horbox.$n(),
 		hgh = tbx.style.height;
 		if (hgh && hgh != "auto") {
-    		if (!horbox.inAccordionMold()) {
-        		var n = this.$n();
-        		hgh = zk(n.parentNode).vflexHeight();
-    			if (zk.ie8)
-    				hgh -= 1; // show the bottom border
-        		zk(n).setOffsetHeight(hgh);
-        		if (zk.ie6_) {
-        			var s = this.$n('cave').style,
-        			z = s.zoom;
-        			s.zoom = 1;
-        			s.zoom = z;
-        		}
-    		} else {
-    			var n = this.$n(),
-    				hgh = zk(tbx).revisedHeight(tbx.offsetHeight);
-    			hgh = zk(n.parentNode).revisedHeight(hgh);
-    			for (var e = n.parentNode.firstChild; e; e = e.nextSibling)
-    				if (e != n) hgh -= e.offsetHeight;
-    			hgh -= n.firstChild.offsetHeight;
-    			hgh = zk(n.lastChild).revisedHeight(hgh);
-    			if (zk.ie8)
-    				hgh -= 1; // show the bottom border
-    			var cave = this.getCaveNode();
-    			cave.style.height = jq.px0(hgh);
-        		if (zk.ie && !zk.ie8) {
-        			var s = cave.style,
-        			z = s.zoom;
-        			s.zoom = 1;
-        			s.zoom = z;
-        			s.overflow = 'hidden';
-        		}
-    		}
+   			var n = this.$n(),
+   				hgh = zk(tbx).revisedHeight(tbx.offsetHeight);
+   			hgh = zk(n.parentNode).revisedHeight(hgh);
+   			for (var e = n.parentNode.firstChild; e; e = e.nextSibling)
+   				if (e != n) hgh -= e.offsetHeight;
+   			hgh -= n.firstChild.offsetHeight;
+   			hgh = zk(n.lastChild).revisedHeight(hgh);
+   			if (zk.ie8)
+   				hgh -= 1; // show the bottom border
+   			var cave = this.getCaveNode();
+   			cave.style.height = jq.px0(hgh);
+       		if (zk.ie && !zk.ie8) {
+       			var s = cave.style,
+       			z = s.zoom;
+       			s.zoom = 1;
+       			s.zoom = z;
+       			s.overflow = 'hidden';
+       		}
 		}
 	},
 	domClass_: function () {
-		var cls = this.$supers('domClass_', arguments);
-		if (this.getHorbox().inAccordionMold())
-			cls += ' ' + this.getZclass() + '-cnt';
-		return cls;
+		return this.$supers('domClass_', arguments) + ' ' + this.getZclass() + '-cnt';
 	},
 	onSize: _zkf = function() {
 		var horbox = this.getHorbox();
-		if (horbox.inAccordionMold() && !zk(this.$n("real")).isVisible())
+		if (!zk(this.$n("real")).isVisible())
 			return;
-		this._fixPanelHgh();		//Bug 2104974
+		this._fixPanelHgh(); //Bug 2104974
 		if (zk.ie && !zk.ie8) zk(horbox.$n()).redoCSS(); //Bug 2526699 - (add zk.ie7)
 	},
 	onShow: _zkf,
 	//bug #3014664
-	setVflex: function (v) { //vflex ignored for Tabpanel
+	setVflex: function (v) { //vflex ignored for Horpanel
 		if (v != 'min') v = false;
-		this.$super(zul.tab.Tabpanel, 'setVflex', v);
+		this.$super(zul.tab.Horpanel, 'setVflex', v);
 	},
 	//bug #3014664
-	setHflex: function (v) { //hflex ignored for Tabpanel
+	setHflex: function (v) { //hflex ignored for Horpanel
 		if (v != 'min') v = false;
-		this.$super(zul.tab.Tabpanel, 'setHflex', v);
+		this.$super(zul.tab.Horpanel, 'setHflex', v);
 	},
 	bind_: function() {
-		this.$supers(zul.tab.Tabpanel, 'bind_', arguments);
+		this.$supers(zul.tab.Horpanel, 'bind_', arguments);
 		if (this.getHorbox().isHorizontal()) {
 			this._zwatched = true;
 			zWatch.listen({onSize: this, onShow: this});
