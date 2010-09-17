@@ -95,6 +95,13 @@
 			<version>${bsh.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- components -->
+		<dependency>
+			<groupId>org.zkoss.swifttab</groupId>
+			<artifactId>swifttab</artifactId>
+			<version>1.0</version>
+		</dependency>
 		<!-- Test scope -->
 		<dependency>
 			<groupId>junit</groupId>
