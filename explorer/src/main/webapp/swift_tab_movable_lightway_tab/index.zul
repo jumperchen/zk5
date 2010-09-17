@@ -1,0 +1,42 @@
+<?page title="Test RowRender Example" ?>
+<zk>
+	<window id="win">
+
+		<label value="light tab box " />
+		<tabbox>
+			<tabs>
+				<swifttab label="tab1"  />
+				<swifttab label="tab2 for test" closable="true"  />
+				<swifttab label="tab3 a long tab"  />
+				<swifttab label="tab4 a really really really long tab" closable="true" />
+				<swifttab label="tab5 jsut a tab"  />
+			</tabs>
+			<tabpanels>
+				<tabpanel>tab 1</tabpanel>
+				<tabpanel>tab 2</tabpanel>
+				<tabpanel>tab 3</tabpanel>
+				<tabpanel>tab 4</tabpanel>
+				<tabpanel>tab 5</tabpanel>
+			</tabpanels>
+		</tabbox>
+
+		<label value="movable light tab box " />
+		<tabbox>
+			<mtabs>
+				<swifttab label="tab1"  />
+				<swifttab label="tab2 for test" />
+				<swifttab label="tab3 a long tab" closable="true"  />
+				<swifttab label="tab4 a really really really long tab" closable="true" />
+				<swifttab label="tab5 jsut a tab"  />
+			</mtabs>
+			<tabpanels>
+				<tabpanel>tab panel 1</tabpanel>
+				<tabpanel>tab panel 2</tabpanel>
+				<tabpanel>tab panel 3</tabpanel>
+				<tabpanel>tab panel 4</tabpanel>
+				<tabpanel>tab panel 5</tabpanel>
+			</tabpanels>
+		</tabbox>
+
+	</window>
+</zk>
