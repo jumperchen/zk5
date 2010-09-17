@@ -10,8 +10,9 @@ if (root.isFile()) {
 }
 File[] fs = root.listFiles(new FileFilter(){
 	public boolean accept(File f) {
-		return f.isDirectory() && !f.getName().startsWith("WEB-INF")
-			&& !f.getName().startsWith("META-INF") && !f.getName().startsWith(".");
+		String name = f.getName();
+		return f.isDirectory() && !name.startsWith("WEB-INF")
+			&& !name.startsWith("META-INF") && !name.startsWith(".");
 	}
 });
 java.util.Arrays.sort(fs, new java.util.Comparator() {
