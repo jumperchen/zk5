@@ -1,4 +1,4 @@
-/* Hatab.java
+/* Hatabpanel.java
 
 {{IS_NOTE
 	Purpose:
@@ -6,7 +6,7 @@
 	Description:
 		
 	History:
-		Sep 16, 2010 12:08:04 PM , Created by simon
+		Sep 17, 2010 11:44:33 AM , Created by simon
 }}IS_NOTE
 
 Copyright (C) 2010 Potix Corporation. All Rights Reserved.
@@ -19,10 +19,20 @@ package org.zkoss.hatab;
 import org.zkoss.zul.impl.XulElement;
 
 /**
- * 
  * @author simon
+ *
  */
-public class Hatab extends XulElement{
+public class Horpanel extends XulElement {
+	
+	
+	
+	public Horbox getHorbox() {
+		return null;
+	}
+
+	public int getIndex() {
+		return 0;
+	}
 	
 	
 	
