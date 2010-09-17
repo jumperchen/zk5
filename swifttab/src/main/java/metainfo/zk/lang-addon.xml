@@ -20,4 +20,13 @@
 			<css-uri>css/swifttab.css.dsp</css-uri>
 		</mold>
 	</component>
+	<component>
+		<component-name>mtabs</component-name>
+		<component-class>org.zkoss.swifttab.Mtabs</component-class>
+		<widget-class>swifttab.Mtabs</widget-class>
+		<mold>
+			<mold-name>default</mold-name>
+			<mold-uri>mold/mtabs.js</mold-uri>
+		</mold>
+	</component>
 </language-addon>
