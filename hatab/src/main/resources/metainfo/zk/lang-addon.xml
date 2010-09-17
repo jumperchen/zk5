@@ -11,12 +11,56 @@
 	</version>
 	
 	<component>
-		<component-name>hatab</component-name>
-		<component-class>org.zkoss.hatab.Hatab</component-class>
-		<widget-class>hatab.Hatab</widget-class>
+		<component-name>horbox</component-name>
+		<component-class>org.zkoss.hatab.Horbox</component-class>
+		<widget-class>hatab.Habox</widget-class>
 		<mold>
 			<mold-name>default</mold-name>
-			<mold-uri>mold/hatab.js</mold-uri>
+			<mold-uri>mold/horbox.js</mold-uri>
+			<css-uri>css/hatab.css.dsp</css-uri>
+		</mold>
+	</component>
+	
+	<component>
+		<component-name>hortabs</component-name>
+		<component-class>org.zkoss.hatab.Hortabs</component-class>
+		<widget-class>hatab.Hortabs</widget-class>
+		<mold>
+			<mold-name>default</mold-name>
+			<mold-uri>mold/hortabs.js</mold-uri>
+			<css-uri>css/hatab.css.dsp</css-uri>
+		</mold>
+	</component>
+	
+	<component>
+		<component-name>hortab</component-name>
+		<component-class>org.zkoss.hatab.Hortab</component-class>
+		<widget-class>hatab.Hortab</widget-class>
+		<mold>
+			<mold-name>default</mold-name>
+			<mold-uri>mold/hortab.js</mold-uri>
+			<css-uri>css/hatab.css.dsp</css-uri>
+		</mold>
+	</component>
+	
+	<component>
+		<component-name>horpanels</component-name>
+		<component-class>org.zkoss.hatab.Horpanels</component-class>
+		<widget-class>hatab.Horpanels</widget-class>
+		<mold>
+			<mold-name>default</mold-name>
+			<mold-uri>mold/horpanels.js</mold-uri>
+			<css-uri>css/hatab.css.dsp</css-uri>
+		</mold>
+	</component>
+	
+	<component>
+		<component-name>horpanel</component-name>
+		<component-class>org.zkoss.hatab.Horpanel</component-class>
+		<widget-class>hatab.Horpanel</widget-class>
+		<mold>
+			<mold-name>default</mold-name>
+			<mold-uri>mold/horpanel.js</mold-uri>
 			<css-uri>css/hatab.css.dsp</css-uri>
 		</mold>
 	</component>

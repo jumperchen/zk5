@@ -1,4 +1,4 @@
-/* Hatab.js
+/* horbox.js
 
 	Purpose:
 		Horizontal Accordion Tabbox
@@ -10,7 +10,9 @@
 
 Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 */
-
 function(out) {
-	
+	out.push('<div ', this.domAttrs_(), '>');
+	if (this.horpanels) 
+		this.horpanels.redraw(out);
+	out.push("</div>");
 }
