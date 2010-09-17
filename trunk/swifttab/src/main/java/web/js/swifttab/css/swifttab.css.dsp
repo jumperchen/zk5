@@ -4,6 +4,7 @@
 	background: url(${c:encodeURL('~./img/swifttab/swifttab-bg.png')}) no-repeat scroll 0px 0px transparent;
 	display: block;
 	padding: 0 10px;
+	position:relative;
 }
 li.z-swifttab {
 	cursor:pointer;
@@ -19,7 +20,7 @@ li.z-swifttab {
 	text-decoration:none;
 	white-space:nowrap;
 	display:block;
-	padding:0 10px 0 0;
+	padding:0 15px 0 0;
 }
 .z-swifttab .z-swifttab-text{
 	color:#416AA3;
@@ -57,6 +58,23 @@ li.z-swifttab {
 	text-align:center;
 	min-height:18px;
 	min-width:64px;
-	padding:6px 0 0 10px;
+	padding:6px 0px 0 10px;
 	display:block;
+}
+
+.z-swifttab-close, .z-swifttab-ver-close {
+	background-image:url("${c:encodeURL('~./zul/img/tab/tab-close.gif')}");
+	background-repeat:no-repeat;
+	cursor:pointer;
+	display:block;
+	height:12px;
+	opacity:0.8;
+	position:absolute;
+	right:3px;
+	top:3px;
+	width:11px;
+	z-index:15;
+}
+.z-swifttab-close:hover{
+	background-position:-11px 0;
 }
