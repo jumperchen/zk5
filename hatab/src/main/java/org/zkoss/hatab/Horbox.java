@@ -16,8 +16,11 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 */
 package org.zkoss.hatab;
 
+import java.io.IOException;
+
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.sys.ContentRenderer;
 //import org.zkoss.zul.Tabbox.Listener;
 import org.zkoss.zul.impl.XulElement;
 
@@ -73,6 +76,25 @@ public class Horbox extends XulElement{
 		if(_hatabpanels == null)
 			throw new IllegalStateException("No hatabpenals");
 		setSelectedPanel((Horpanel) _hatabpanels.getChildren().get(j));
+	}
+	
+	/**
+	 * 
+	 */
+	public String getZclass() {
+		return _zclass == null ? "z-horbox" : _zclass;
+	}
+	
+	
+	
+	
+	
+	protected void renderProperties(ContentRenderer renderer)
+			throws IOException {
+		super.renderProperties(renderer);
+		
+		// TODO
+		
 	}
 	
 }

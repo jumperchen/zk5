@@ -201,11 +201,9 @@ hatab.Hortabs = zk.$extends(zul.Widget, {
 		var p = this.parent;
 		if (p && child == p._selTab)
 			p._selTab = null;
-		this._scrollcheck("init");
 		this.$supers("onChildRemoved_", arguments);
 	},
 	onChildAdded_: function () {
-		this._scrollcheck("init");
 		this.$supers("onChildAdded_", arguments);
 	},
 	

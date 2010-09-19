@@ -27,13 +27,14 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 		 */
 		panelSpacing: _zkf = function () {
 			this.rerender();
-		};
+		}
 	},
 	/**
 	 * 
 	 */
 	getHortabs: function () {
 		return this.hortabs;
+	},
 	/**
 	 * 
 	 */
@@ -102,7 +103,7 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 	},
 	//TODO: check all below
 	bind_: function (desktop, skipper, after) {
-		this.$supers(zul.tab.Tabbox, 'bind_', arguments);
+		this.$supers(hatab.Horbox, 'bind_', arguments);
 		
 		// used in Tabs.js
 		this._scrolling = false;
@@ -116,7 +117,7 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 	},
 	unbind_: function () {
 		zWatch.unlisten({onResponse: this});
-		this.$supers(zul.tab.Tabbox, 'unbind_', arguments);
+		this.$supers(hatab.Horbox, 'unbind_', arguments);
 	},
 	onResponse: function () {
 		if (this._shallSize) {
@@ -132,14 +133,14 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 	//super//
 	removeChildHTML_: function (child) {
 		this.$supers('removeChildHTML_', arguments);
-		if (this.isVertical() && child.$instanceof(zul.tab.Tabs))
+		if (this.isVertical() && child.$instanceof(hatab.Hortabs))
 			jq(child.uuid + '-line', zk).remove();
 	},
 	onChildAdded_: function (child) {
 		this.$supers('onChildAdded_', arguments);
-		if (child.$instanceof(zul.tab.Tabs))
+		if (child.$instanceof(hatab.Hortabs))
 			this.tabs = child;
-		else if (child.$instanceof(zul.tab.Tabpanels)) {
+		else if (child.$instanceof(hatab.Horpanels)) {
 			this.tabpanels = child;
 		}
 		this.rerender();
