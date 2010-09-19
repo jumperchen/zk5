@@ -117,25 +117,29 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 	//bug #3014664
 	setVflex: function (v) { //vflex ignored for Horpanel
 		if (v != 'min') v = false;
-		this.$super(zul.tab.Horpanel, 'setVflex', v);
+		this.$super(hatab.Horpanel, 'setVflex', v);
 	},
 	//bug #3014664
 	setHflex: function (v) { //hflex ignored for Horpanel
 		if (v != 'min') v = false;
-		this.$super(zul.tab.Horpanel, 'setHflex', v);
+		this.$super(hatab.Horpanel, 'setHflex', v);
 	},
 	bind_: function() {
-		this.$supers(zul.tab.Horpanel, 'bind_', arguments);
+		this.$supers(hatab.Horpanel, 'bind_', arguments);
+		/*
 		if (this.getHorbox().isHorizontal()) {
 			this._zwatched = true;
 			zWatch.listen({onSize: this, onShow: this});
 		}
+		*/
 	},
 	unbind_: function () {
+		/*
 		if (this._zwatched) {
 			zWatch.unlisten({onSize: this, onShow: this});
 			this._zwatched = false;
 		}
-		this.$supers(zul.tab.Tabpanel, 'unbind_', arguments);
+		*/
+		this.$supers(hatab.Horpanel, 'unbind_', arguments);
 	}
 });

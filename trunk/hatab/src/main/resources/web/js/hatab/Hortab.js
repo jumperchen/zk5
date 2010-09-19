@@ -192,9 +192,10 @@ hatab.Hortab = zk.$extends(zul.LabelImageWidget, {
 		this.$super(zul.tab.Tab, 'setHflex', v);
 	},
 	bind_: function (desktop, skipper, after) {
-		this.$supers(zul.tab.Tab, 'bind_', arguments);
+		this.$supers(hatab.Hortab, 'bind_', arguments);
 		var closebtn = this.$n('close'),
 			tab = this;
+		/*
 		if (closebtn) {
 			this.domListen_(closebtn, "onClick", '_doCloseClick');
 			if (!closebtn.style.cursor)
@@ -203,8 +204,9 @@ hatab.Hortab = zk.$extends(zul.LabelImageWidget, {
 				this.domListen_(closebtn, "onMouseOver", '_toggleBtnOver')
 					.domListen_(closebtn, "onMouseOut", '_toggleBtnOver');
 		}
+		*/
 	
-		after.push(function () {tab.parent._fixHgh();});
+		//after.push(function () {tab.parent._fixHgh();});
 			//Bug 3022274: required so it is is called before, say, panel's slideDown
 			//_sel will invoke _fixWidth but it is too late since it uses afterMount
 		after.push(function () {
@@ -222,7 +224,7 @@ hatab.Hortab = zk.$extends(zul.LabelImageWidget, {
 				this.domUnlisten_(closebtn, "onMouseOver", '_toggleBtnOver')
 					.domUnlisten_(closebtn, "onMouseOut", '_toggleBtnOver');
 		}
-		this.$supers(zul.tab.Tab, 'unbind_', arguments);
+		this.$supers(hatab.Hortab, 'unbind_', arguments);
 	},
 	//event handler//
 	onClose: function () {
