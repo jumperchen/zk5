@@ -29,4 +29,13 @@
 			<mold-uri>mold/mtabs.js</mold-uri>
 		</mold>
 	</component>
+	<component>
+		<component-name>mtabpanels</component-name>
+		<component-class>org.zkoss.swifttab.Mtabpanels</component-class>
+		<widget-class>swifttab.Mtabpanels</widget-class>
+		<mold>
+			<mold-name>default</mold-name>
+			<mold-uri>mold/mtabpanels.js</mold-uri>
+		</mold>
+	</component>
 </language-addon>

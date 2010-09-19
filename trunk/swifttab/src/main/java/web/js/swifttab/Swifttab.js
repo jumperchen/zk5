@@ -20,8 +20,10 @@
         },
         _makeSortable: function(){
             var handle = this.$n("sort"), instance = jq(this.$n()),
-                zcls = this.getZclass(), items,startIndex = -1, sortIndex = -1,
-                bounds = [] ,widths = [], tabs = this.getTabs();
+            	currentTab = this, zcls = this.getZclass(),startIndex = -1,
+            	sortIndex = -1, bounds = [] ,widths = [],
+            	tabs = this.getTabs() , items ;
+
             if (handle && !this._drag) {
                 handle.style.cursor = "move";
                 this._drag = new zk.Draggable(this, null, {
@@ -35,17 +37,16 @@
                         return ghost[0];
                     },
                     starteffect: function(dg){
+                    	currentTab._sel();
                         // reload for closable tabs
                         items = instance.parent().children("." + zcls ).
                             not(instance);
                         bounds = [0];
                         widths = [0];
-                        var widthSummary = 0;
                         items.each(function(num){
                             var width = jq(this).width();
-                            bounds[bounds.length] = (widthSummary +
+                            bounds[bounds.length] = (widths[num] +
                                 parseInt(width / 2, 10));
-                            widthSummary += width;
                             widths[widths.length] = widths[num] + width;
                         });
                         //default behavior
@@ -55,7 +56,8 @@
                         instance[0].style.display = "none";
                     },
                     draw: function(dg, ofs, evt){
-                        var exchange = false, indicator = _getIndex(bounds,widths[sortIndex] + ofs[0] );
+                        var exchange = false,indicator = _getIndex(bounds,
+                        		widths[sortIndex] +	ofs[0] );
                         dg.node.style.left = ofs[0] + "px";
                         if (indicator != sortIndex) { // moved
                             //for last node
@@ -77,14 +79,25 @@
                     },
                     endghosting: function(dg, origin){
                         var el = dg.node; //ghost
-                        jq(el).after(instance);
                         jq(el).remove();
                     },
-                    endeffect: function(){
-                        items.eq(sortIndex).before(instance);
-                        instance[0].style.display = "block";
-                        tabs.fire("onUpdate", {before:startIndex,
-                            after:sortIndex});
+                    endeffect: function(dg){
+                    	//update widgets
+                		var panel = currentTab.getLinkedPanel() ,
+                			panels = panel.parent ,
+                			exchangedTab = zk.Widget.$(items.eq(sortIndex)) ;
+
+                    	if(sortIndex == tabs.nChildren - 1){
+                    		tabs.appendChild(currentTab,false);
+                    		panels.appendChild(panel,false);
+                    	}else{
+                    		panels.insertBefore(panel,
+                    				exchangedTab.getLinkedPanel(),false);
+                    		tabs.insertBefore(currentTab,exchangedTab,false);
+                    	}
+                		instance.show();
+                        currentTab.fire("onTabMove", {start:startIndex,
+                        	end:sortIndex});
                     },
                     zIndex: 99999
                 });
