@@ -11,6 +11,5 @@
 Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 */
 function(out) {
-	// TODO: remove this file
 	// will not be rendered in this kind of tabbox
 }

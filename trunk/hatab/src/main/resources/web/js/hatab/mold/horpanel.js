@@ -15,13 +15,13 @@ function(out) {
 		zcls = this.getZclass(),
 		tab = this.getLinkedTab();
 	
-	out.push('<div class="', zcls, '-outer" id="', uuid, '">');
+	out.push('<li class="', zcls, '-outer" id="', uuid, '">');
 	if (tab) tab.redraw(out);
 	out.push('<div id="', uuid, '-real"', this.domAttrs_({id:1}), '>',
-			'<div id="', uuid, '-cave">');
+			'<div id="', uuid, '-cave" class="', zcls, '-cnt">');
 	
 	for (var w = this.firstChild; w; w = w.nextSibling)
 		w.redraw(out);
 	
-	out.push('</div></div></div>');
+	out.push('</div></div></li>');
 }
