@@ -1,4 +1,4 @@
-swifttab.Mtabs = zk.$extends(zul.tab.Tabs, {
+swifttab.Mtabpanels = zk.$extends(zul.tab.Tabpanels, {
     $init: function () {
 		this.$supers('$init', arguments);
 	},

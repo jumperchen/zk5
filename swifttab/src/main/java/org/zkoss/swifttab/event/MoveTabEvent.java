@@ -1,0 +1,46 @@
+package org.zkoss.swifttab.event;
+
+import java.util.Map;
+
+import org.zkoss.zk.au.AuRequest;
+import org.zkoss.zk.au.AuRequests;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+
+public class MoveTabEvent extends Event {
+
+	public static String NAME = "onTabMove";
+
+	private int startIndex = -1;
+	private int endIndex = -1;
+
+	public int getStartIndex() {
+		return startIndex;
+	}
+
+	public int getEndIndex() {
+		return endIndex;
+	}
+
+	public MoveTabEvent(String command,Component target, int start, int end) {
+		super(command,target);
+
+		startIndex = start;
+		endIndex = end;
+	}
+
+	public static final MoveTabEvent getMoveTabEvent(AuRequest request) {
+		final Component tab = request.getComponent();
+
+		final Map data = request.getData();
+
+		int startIndex = AuRequests.getInt(data, "start", -1);
+		int endIndex = AuRequests.getInt(data, "end", -1);
+
+		if (startIndex == -1 || endIndex == -1) {
+			throw new IllegalArgumentException("startIndex/endIndex wrong.");
+		}
+
+		return new MoveTabEvent(request.getCommand(),tab.getParent(), startIndex, endIndex);
+	}
+}

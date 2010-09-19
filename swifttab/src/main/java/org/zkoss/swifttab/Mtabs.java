@@ -1,35 +1,88 @@
 package org.zkoss.swifttab;
 
-import java.io.IOException;
-
-import org.zkoss.zk.ui.event.Event;
+import org.zkoss.swifttab.event.MoveTabEvent;
+import org.zkoss.zk.au.AuRequest;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.sys.ContentRenderer;
+import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabs;
 
+public class Mtabs extends Tabs {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 5598881168273491786L;
 
-public class Mtabs extends Tabs{
 	static {
-		addClientEvent(Swifttab.class, Events.ON_CHANGE, CE_IMPORTANT | CE_NON_DEFERRABLE);
-	}
-	private boolean _movable = false;
-
-	public boolean isMovable() {
-		return _movable;
+		addClientEvent(Swifttab.class, MoveTabEvent.NAME, CE_IMPORTANT
+				| CE_NON_DEFERRABLE);
 	}
 
-	public void onChange(Event event){
-//		event.
-	}
-	public void setMovable(boolean movable) {
-		if (_movable != movable) {
-			this._movable = movable;
-			smartUpdate("movable", _movable);
+	private boolean _noSmartUpdate = false;
+
+	protected void addMoved(Component arg0, Page arg1, Page arg2) {
+		if (!_noSmartUpdate) {
+			super.addMoved(arg0, arg1, arg2);
 		}
 	}
-	protected void renderProperties(ContentRenderer renderer) throws IOException {
-		super.renderProperties(renderer);
 
-		render(renderer, "movable", _movable);
+	public boolean appendChild(Component component, boolean ignoreDom) {
+		if (ignoreDom) {
+			_noSmartUpdate = true;
+		}
+
+		boolean result = this.appendChild(component);
+
+		if (ignoreDom) {
+			_noSmartUpdate = false;
+		}
+		return result;
+
 	}
+
+	public boolean insertBefore(Component comp1, Component comp2,
+			boolean ignoreDom) {
+		if (ignoreDom) {
+			_noSmartUpdate = true;
+		}
+
+		boolean result = this.insertBefore(comp1, comp2);
+
+		if (ignoreDom) {
+			_noSmartUpdate = false;
+		}
+		return result;
+	}
+
+	public void onTabMove(MoveTabEvent event) {
+		int startIndex = event.getStartIndex();
+		int endIndex = event.getEndIndex();
+		/*
+		 * panels.appendChild(panel,false); }else{ panels.insertBefore(panel,
+		 * exchangedTab.getLinkedPanel(),false);
+		 */
+
+		if (!(getTabbox().getTabpanels() instanceof Mtabpanels)) {
+			throw new UnsupportedOperationException(
+					"mtabs should be with mpanels");
+		}
+
+		Mtabpanels panels = (Mtabpanels) getTabbox().getTabpanels();
+
+		Tab startTab = (Tab) getChildren().get(startIndex);
+		Tab exchangedTab = (Tab) getChildren().get(startIndex);
+
+		if (endIndex == getChildren().size() - 1) {
+			appendChild(startTab, true);
+			panels.appendChild(startTab.getLinkedPanel(), true);
+		} else {
+			panels.insertBefore(startTab.getLinkedPanel(), exchangedTab
+					.getLinkedPanel(), true);
+
+			insertBefore(startTab, exchangedTab, true);
+
+		}
+	}
+
 }

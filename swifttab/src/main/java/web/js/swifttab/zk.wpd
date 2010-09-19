@@ -1,4 +1,5 @@
 <package name="swifttab" language="xul/html" depends="zul.tab">
 	<widget name="Swifttab" />
 	<widget name="Mtabs" />
+	<widget name="Mtabpanels" />
 </package>
