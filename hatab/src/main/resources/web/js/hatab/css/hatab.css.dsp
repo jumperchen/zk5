@@ -4,11 +4,23 @@
 	
 }
 
+.z-hortab {
+	
+}
+
 .z-horpanels {
 	
 }
 
+.z-horpanel-outer {
+	position: relative;
+	float: left;
+}
+
 .z-horpanel {
-	position: absolute;
-	top: 0;
+	
+}
+
+.z-horpanel-cnt {
+	
 }

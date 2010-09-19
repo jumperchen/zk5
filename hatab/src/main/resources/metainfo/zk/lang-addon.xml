@@ -13,7 +13,7 @@
 	<component>
 		<component-name>horbox</component-name>
 		<component-class>org.zkoss.hatab.Horbox</component-class>
-		<widget-class>hatab.Habox</widget-class>
+		<widget-class>hatab.Horbox</widget-class>
 		<mold>
 			<mold-name>default</mold-name>
 			<mold-uri>mold/horbox.js</mold-uri>
