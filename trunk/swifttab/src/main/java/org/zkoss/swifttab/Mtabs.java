@@ -12,86 +12,99 @@
 package org.zkoss.swifttab;
 
 import org.zkoss.swifttab.event.MoveTabEvent;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Page;
+import org.zkoss.zk.au.AuRequest;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 
 public class Mtabs extends Tabs {
+
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 5598881168273491786L;
 
 	static {
-		addClientEvent(Swifttab.class, MoveTabEvent.NAME, CE_IMPORTANT
-				| CE_NON_DEFERRABLE);
+		addClientEvent(Mtabs.class, MoveTabEvent.NAME, CE_IMPORTANT | CE_NON_DEFERRABLE);
 	}
 
-	private boolean _noSmartUpdate = false;
+	private boolean _noResponse = false;
 
-	protected void addMoved(Component arg0, Page arg1, Page arg2) {
-		if (!_noSmartUpdate) {
-			super.addMoved(arg0, arg1, arg2);
-		}
+	private boolean _swiftable = true;
+
+	public Mtabs() {
+		addEventListener(MoveTabEvent.NAME, tabMoveEventListener);
 	}
 
-	public boolean appendChild(Component component, boolean ignoreDom) {
-		if (ignoreDom) {
-			_noSmartUpdate = true;
+	private final EventListener tabMoveEventListener = new EventListener() {
+
+		public void onEvent(Event evt) throws Exception {
+			MoveTabEvent event = (MoveTabEvent) evt;
+			int startIndex = event.getStartIndex();
+			int endIndex = event.getEndIndex();
+
+			if (startIndex == endIndex)
+				return;
+
+			int refer = endIndex > startIndex ? endIndex + 1 : endIndex;
+
+			Tabpanels panels = (Tabpanels) getTabbox().getTabpanels();
+
+			Tab startTab = (Tab) getChildren().get(startIndex);
+			try {
+				_noResponse = true;
+
+				if (refer == getChildren().size()) {
+					panels.appendChild(startTab.getLinkedPanel());
+					appendChild(startTab);
+				} else {
+					Tab referTab = (Tab) getChildren().get(refer);
+					panels.insertBefore(startTab.getLinkedPanel(), referTab.getLinkedPanel());
+
+					insertBefore(startTab, referTab);
+
+				}
+
+				getTabbox().setSelectedIndex(0);
+				getTabbox().setSelectedTab(startTab);
+
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			} finally {
+				_noResponse = false;
+			}
+
 		}
+	};
 
-		boolean result = this.appendChild(component);
-
-		if (ignoreDom) {
-			_noSmartUpdate = false;
-		}
-		return result;
-
+	protected boolean isNoResponse() {
+		return _noResponse;
 	}
 
-	public boolean insertBefore(Component comp1, Component comp2,
-			boolean ignoreDom) {
-		if (ignoreDom) {
-			_noSmartUpdate = true;
-		}
-
-		boolean result = this.insertBefore(comp1, comp2);
-
-		if (ignoreDom) {
-			_noSmartUpdate = false;
-		}
-		return result;
+	public boolean isSwiftable() {
+		return _swiftable;
 	}
 
-	public void onTabMove(MoveTabEvent event) {
-		int startIndex = event.getStartIndex();
-		int endIndex = event.getEndIndex();
-		/*
-		 * panels.appendChild(panel,false); }else{ panels.insertBefore(panel,
-		 * exchangedTab.getLinkedPanel(),false);
-		 */
-
-		if (!(getTabbox().getTabpanels() instanceof Mtabpanels)) {
-			throw new UnsupportedOperationException(
-					"mtabs should be with mpanels");
-		}
-
-		Mtabpanels panels = (Mtabpanels) getTabbox().getTabpanels();
-
-		Tab startTab = (Tab) getChildren().get(startIndex);
-		Tab exchangedTab = (Tab) getChildren().get(startIndex);
-
-		if (endIndex == getChildren().size() - 1) {
-			appendChild(startTab, true);
-			panels.appendChild(startTab.getLinkedPanel(), true);
+	public void setSwiftable(boolean swiftable) {
+		this._swiftable = swiftable;
+		if (swiftable) {
+			this.addEventListener(MoveTabEvent.NAME, tabMoveEventListener);
 		} else {
-			panels.insertBefore(startTab.getLinkedPanel(), exchangedTab
-					.getLinkedPanel(), true);
-
-			insertBefore(startTab, exchangedTab, true);
-
+			this.removeEventListener(MoveTabEvent.NAME, tabMoveEventListener);
 		}
+	}
+
+	public void service(AuRequest request, boolean everError) {
+		final String cmd = request.getCommand();
+
+		if (cmd.equals(MoveTabEvent.NAME)) {
+			MoveTabEvent evt = MoveTabEvent.getMoveTabEvent(request);
+			Events.postEvent(evt);
+		} else
+			super.service(request, everError);
 	}
 
 }

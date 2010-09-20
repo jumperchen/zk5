@@ -41,7 +41,7 @@ public class MoveTabEvent extends Event {
 	}
 
 	public static final MoveTabEvent getMoveTabEvent(AuRequest request) {
-		final Component tab = request.getComponent();
+		final Component tabs = request.getComponent();
 
 		final Map data = request.getData();
 
@@ -52,6 +52,6 @@ public class MoveTabEvent extends Event {
 			throw new IllegalArgumentException("startIndex/endIndex wrong.");
 		}
 
-		return new MoveTabEvent(request.getCommand(),tab.getParent(), startIndex, endIndex);
+		return new MoveTabEvent(request.getCommand(),tabs, startIndex, endIndex);
 	}
 }
