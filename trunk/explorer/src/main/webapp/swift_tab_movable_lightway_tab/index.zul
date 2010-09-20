@@ -1,15 +1,15 @@
-<?page title="Test RowRender Example" ?>
+<?page title="Test swift tab Example" ?>
 <zk>
 	<window id="win">
 
-		<label value="light tab box " />
-		<tabbox>
+		<label value="light tab box" /><button label="invilidate" onClick="tab1.invalidate();" />
+		<tabbox id="tab1">
 			<tabs>
-				<swifttab label="tab1"  />
-				<swifttab label="tab2 for test" closable="true"  />
-				<swifttab label="tab3 a long tab"  />
+				<swifttab label="tab1" />
+				<swifttab label="tab2 for test" closable="true" />
+				<swifttab label="tab3 a long tab" />
 				<swifttab label="tab4 a really really really long tab" closable="true" />
-				<swifttab label="tab5 jsut a tab"  />
+				<swifttab label="tab5 jsut a tab" />
 			</tabs>
 			<tabpanels>
 				<tabpanel>tab 1</tabpanel>
@@ -20,15 +20,41 @@
 			</tabpanels>
 		</tabbox>
 
-		<label value="movable light tab box " />
-		<tabbox>
+
+
+		<label value="movable light tab box" /><button label="invilidate" onClick="tab2.invalidate();" />
+		<tabbox id="tab2">
 			<mtabs>
-				<swifttab label="tab1"  />
+				<swifttab label="tab1" />
 				<swifttab label="tab2 for test" />
-				<swifttab label="tab3 a long tab" closable="true"  />
+				<swifttab label="tab3 a long tab" closable="true" />
 				<swifttab label="tab4 a really really really long tab" closable="true" />
-				<swifttab label="tab5 jsut a tab"  />
+				<swifttab label="tab5 jsut a tab" />
+				<swifttab label="tab6 jsut a tab" />
+				<swifttab label="tab7 jsut a tab" />
+				<swifttab label="tab8 jsut a tab" />
 			</mtabs>
+			<tabpanels>
+				<tabpanel>tab panel 1</tabpanel>
+				<tabpanel>tab panel 2</tabpanel>
+				<tabpanel>tab panel 3</tabpanel>
+				<tabpanel>tab panel 4</tabpanel>
+				<tabpanel>tab panel 5</tabpanel>
+				<tabpanel>tab panel 6</tabpanel>
+				<tabpanel>tab panel 7</tabpanel>
+				<tabpanel>tab panel 8</tabpanel>
+			</tabpanels>
+		</tabbox>
+
+		<label value="the old box for compare" />
+		<tabbox>
+			<tabs>
+				<tab label="tab1" />
+				<tab label="tab2 for test" />
+				<tab label="tab3 a long tab" closable="true" />
+				<tab label="tab4 a really really really long tab" closable="true" />
+				<tab label="tab5 jsut a tab" />
+			</tabs>
 			<tabpanels>
 				<tabpanel>tab panel 1</tabpanel>
 				<tabpanel>tab panel 2</tabpanel>
@@ -37,6 +63,5 @@
 				<tabpanel>tab panel 5</tabpanel>
 			</tabpanels>
 		</tabbox>
-
 	</window>
 </zk>
