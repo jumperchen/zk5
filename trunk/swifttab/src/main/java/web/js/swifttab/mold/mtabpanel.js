@@ -1,5 +1,4 @@
-/* mtabs.js
-
+/* mtabpanel.js
 	Purpose:
 
 	Description:

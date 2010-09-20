@@ -23,6 +23,7 @@ public class MoveTabEvent extends Event {
 	public static String NAME = "onTabMove";
 
 	private int startIndex = -1;
+
 	private int endIndex = -1;
 
 	public int getStartIndex() {
@@ -33,8 +34,8 @@ public class MoveTabEvent extends Event {
 		return endIndex;
 	}
 
-	public MoveTabEvent(String command,Component target, int start, int end) {
-		super(command,target);
+	public MoveTabEvent(String command, Component target, int start, int end) {
+		super(command, target);
 
 		startIndex = start;
 		endIndex = end;
@@ -52,6 +53,6 @@ public class MoveTabEvent extends Event {
 			throw new IllegalArgumentException("startIndex/endIndex wrong.");
 		}
 
-		return new MoveTabEvent(request.getCommand(),tabs, startIndex, endIndex);
+		return new MoveTabEvent(request.getCommand(), tabs, startIndex, endIndex);
 	}
 }

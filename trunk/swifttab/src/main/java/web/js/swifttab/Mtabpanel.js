@@ -1,4 +1,4 @@
-/* Swifttab.js
+/* Mtabpanel.js
 
 	Purpose:
 
@@ -20,5 +20,4 @@ swifttab.Mtabpanel = zk.$extends(zul.tab.Tabpanel, {
     unbind_: function(){
         this.$supers(swifttab.Mtabpanel, "unbind_", arguments);
     }
-
 });
