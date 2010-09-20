@@ -1,4 +1,15 @@
-(function(){
+/* Swifttab.js
+
+	Purpose:
+
+	Description:
+
+	History:
+		2010/9/20, Created by TonyQ
+
+Copyright (C) 2010 Potix Corporation. All Rights Reserved.
+
+*/(function(){
 
     function _getIndex(bounds, offset){
         for (var i = 1; i < bounds.length; ++i) {
