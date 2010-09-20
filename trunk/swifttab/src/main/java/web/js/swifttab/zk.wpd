@@ -1,3 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- zk.wpd
+	Purpose:
+
+	Description:
+
+	History:
+		2010/9/20, Created by TonyQ
+
+Copyright (C) 2010 Potix Corporation. All Rights Reserved.
+-->
 <package name="swifttab" language="xul/html" depends="zul.tab">
 	<widget name="Swifttab" />
 	<widget name="Mtabs" />

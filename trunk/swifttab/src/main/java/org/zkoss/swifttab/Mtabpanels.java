@@ -1,9 +1,19 @@
+/*
+ * Mtabpanels.java
+ *
+ * Purpose:
+ *
+ * Description:
+ *
+ * History: 2010/9/20, Created by TonyQ
+ *
+ * Copyright (C) 2010 Potix Corporation. All Rights Reserved.
+ */
 package org.zkoss.swifttab;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zul.Tabpanels;
-import org.zkoss.zul.Tabs;
 
 public class Mtabpanels extends Tabpanels {
 	/**
