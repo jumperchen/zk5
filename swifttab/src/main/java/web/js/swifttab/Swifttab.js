@@ -48,7 +48,6 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
                         return ghost[0];
                     },
                     starteffect: function(dg){
-                    	currentTab._sel();
                         // reload for closable tabs
                         items = instance.parent().children("." + zcls ).
                             not(instance);
@@ -107,8 +106,13 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
                     		tabs.insertBefore(currentTab,exchangedTab,false);
                     	}
                 		instance.show();
-                        currentTab.fire("onTabMove", {start:startIndex,
-                        	end:sortIndex});
+
+                        if (startIndex != sortIndex) {
+                            tabs.fire("onTabMove", {
+                                start: startIndex,
+                                end: sortIndex
+                            });
+                        }
                     },
                     zIndex: 99999
                 });
