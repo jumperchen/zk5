@@ -39,6 +39,8 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
                 handle.style.cursor = "move";
                 this._drag = new zk.Draggable(this, null, {
                     handle: handle,
+                    scroll: tabs.$n("header"),
+                    scrollSpeed:5,
                     fireOnMove: false,
                     constrint: "horizontal",
                     ghosting: function(dg, ofs, evt){
@@ -69,13 +71,13 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
                     },
                     draw: function(dg, ofs, evt){
                         var exchange = false,
+                            // i dont really know why *2 ,
+                            // but *2 is fiting the number
                             currentOfsLeft = ofs[0] +  dg.z_scrl[0]*2 ,
                             indicator = _getIndex(bounds,
                             widths[sortIndex] +	currentOfsLeft );
 
-                        if (sortIndex == bounds.length - 1  && currentOfsLeft > 0 ){
-                            return ;
-                        }
+
                         dg.node.style.left = (currentOfsLeft) + "px";
                         if (indicator != sortIndex) { // moved
                             //for last node
