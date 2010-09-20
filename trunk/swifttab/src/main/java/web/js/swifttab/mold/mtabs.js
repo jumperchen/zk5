@@ -9,4 +9,5 @@
 
 Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 
-*/zul.tab.Tabs.molds["default"];
+*/
+zul.tab.Tabs.molds["default"];

@@ -12,12 +12,12 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 */
 swifttab.Mtabs = zk.$extends(zul.tab.Tabs, {
     $init: function () {
-		this.$supers('$init', arguments);
+		this.$supers(swifttab.Mtabs,'$init', arguments);
 	},
     bind_: function(desktop, skipper, after){
-        this.$supers(zul.tab.Tabs, 'bind_', arguments);
+        this.$supers(swifttab.Mtabs, 'bind_', arguments);
     },
     unbind_: function(){
-        this.$supers(zul.tab.Tabs, "unbind_", arguments);
+        this.$supers(swifttab.Mtabs, "unbind_", arguments);
     }
 });
