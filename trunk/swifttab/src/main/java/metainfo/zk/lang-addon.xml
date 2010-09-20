@@ -41,4 +41,13 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 			<mold-uri>mold/mtabs.js</mold-uri>
 		</mold>
 	</component>
+	<component>
+		<component-name>mtabpanel</component-name>
+		<component-class>org.zkoss.swifttab.Mtabpanel</component-class>
+		<widget-class>swifttab.Mtabpanel</widget-class>
+		<mold>
+			<mold-name>default</mold-name>
+			<mold-uri>mold/mtabpanel.js</mold-uri>
+		</mold>
+	</component>
 </language-addon>

@@ -33,8 +33,6 @@ public class Mtabs extends Tabs {
 
 	private boolean _noResponse = false;
 
-	private boolean _swiftable = true;
-
 	public Mtabs() {
 		addEventListener(MoveTabEvent.NAME, tabMoveEventListener);
 	}
@@ -82,19 +80,6 @@ public class Mtabs extends Tabs {
 
 	protected boolean isNoResponse() {
 		return _noResponse;
-	}
-
-	public boolean isSwiftable() {
-		return _swiftable;
-	}
-
-	public void setSwiftable(boolean swiftable) {
-		this._swiftable = swiftable;
-		if (swiftable) {
-			this.addEventListener(MoveTabEvent.NAME, tabMoveEventListener);
-		} else {
-			this.removeEventListener(MoveTabEvent.NAME, tabMoveEventListener);
-		}
 	}
 
 	public void service(AuRequest request, boolean everError) {
