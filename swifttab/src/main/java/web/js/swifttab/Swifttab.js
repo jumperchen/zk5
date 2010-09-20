@@ -62,13 +62,21 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
                         //default behavior
                         sortIndex = _getIndex(bounds, instance.offset().left);
                         startIndex = sortIndex;
+
+                        //fix for tabs scrolling
                         instance.after(dg.node);
                         instance[0].style.display = "none";
                     },
                     draw: function(dg, ofs, evt){
-                        var exchange = false,indicator = _getIndex(bounds,
-                        		widths[sortIndex] +	ofs[0] );
-                        dg.node.style.left = ofs[0] + "px";
+                        var exchange = false,
+                            currentOfsLeft = ofs[0] +  dg.z_scrl[0]*2 ,
+                            indicator = _getIndex(bounds,
+                            widths[sortIndex] +	currentOfsLeft );
+
+                        if (sortIndex == bounds.length - 1  && currentOfsLeft > 0 ){
+                            return ;
+                        }
+                        dg.node.style.left = (currentOfsLeft) + "px";
                         if (indicator != sortIndex) { // moved
                             //for last node
                             if (indicator == bounds.length - 1) {
@@ -78,11 +86,11 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
                             }
 
                             if (indicator > sortIndex) // move to right
-                                dg.node.style.left = (ofs[0] -
+                                dg.node.style.left = (currentOfsLeft -
                                     items.eq(sortIndex).width()) + "px";
                             else //move to left
                                  dg.node.style.left = (items.eq(sortIndex - 1).
-                                     width() + ofs[0]) + "px";
+                                     width() + currentOfsLeft) + "px";
 
                             sortIndex = indicator; //update location
                         }
