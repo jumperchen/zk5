@@ -15,27 +15,36 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
  * <p>Default {@link #getZclass}: z-horpanel.
  */
 hatab.Horpanel = zk.$extends(zul.Widget, {
+	
+	$define: {
+		/**
+		 * 
+		 */
+		/**
+		 * 
+		 */
+		title: function() {
+			this.rerender();
+		},
+		/**
+		 * 
+		 */
+		/**
+		 * 
+		 */
+		selected: function(selected) {
+			this._sel();
+		}
+	},
+	
 	/** Returns the horbox owns this component.
 	 * @return Horbox
 	 */
 	getHorbox: function() {
 		return this.parent ? this.parent.parent : null;
 	},
-	isVisible: function() {
-		return this.$supers('isVisible', arguments) && this.isSelected();
-	},
 	getZclass: function() {
 		return this._zclass? this._zclass : 'z-horpanel';
-	},
-	/** Returns the tab associated with this tab panel.
-	 * @return Tab
-	 */
-	getLinkedTab: function() {
-		var horbox =  this.getHorbox();
-		if (!horbox) return null;
-		
-		var tabs = horbox.getTabs();
-		return tabs ? tabs.getChildAt(this.getIndex()) : null;
 	},
 	/** Returns the index of this panel, or -1 if it doesn't belong to any
 	 * tabpanels.
@@ -44,40 +53,70 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 	getIndex: function() {
 		return this.getChildIndex();
 	},
-	/** Returns whether this tab panel is selected.
-	 * @return boolean
-	 */
-	isSelected: function() {
-		var tab = this.getLinkedTab();
-		return tab && tab.isSelected();
-	},
 	// TODO: check all
+	_sel: function (notify, init) {
+		// check
+		var horbox = this.getHorbox();
+		if (!horbox) return;
+		var oldpanel = horbox._selPanel;
+		if (oldpanel != this || init) {
+			if (oldpanel && oldpanel != this) {
+				this._changeSel(oldpanel);
+				this._setSel(oldpanel, false, false, init);
+			}
+			this._setSel(this, true, notify, init);
+		}
+	},
 	// Bug 3026669
 	_changeSel: function (oldPanel) {
 		if (oldPanel) {
 			var cave = this.$n('cave');
-			if (cave && !cave.style.height && (oldPanel = oldPanel.$n('cave')))
-				cave.style.height = oldPanel.style.height;
+			if (cave && !cave.style.width && (oldPanel = oldPanel.$n('cave')))
+				cave.style.width = oldPanel.style.width;
 		}
 	},
-	_sel: function (toSel, animation) { //don't rename (zkmax counts on it)!!
+	_setSel: function(panel, toSel, notify, init) {
+		var horbox = this.getHorbox(),
+			zcls = this.getZclass(),
+			bound = this.desktop;
+		if (panel.isSelected() == toSel && notify)
+			return;
+
+		if (toSel)
+			horbox._selPanel = panel; //avoid loopback
+		panel._selected = toSel;
+		
+		if (!bound) return;
+		
+		if (toSel)
+			jq(panel).addClass(zcls + "-seld");
+		else
+			jq(panel).removeClass(zcls + "-seld");
+		
+		panel._selPanel(toSel, !init);
+
+		if (notify)
+			this.fire('onSelect', {items: [this], reference: this.uuid});
+	},
+	_selPanel: function (toSel, animation) {
 		if (animation) {
-			var p = this.$n("real"); //accordion uses 'real'
-			zk(p)[toSel ? "slideDown" : "slideUp"](this);
+			var p = this.$n();
+			zk(p)[toSel ? "slideDown" : "slideUp"](this, {anchor:"l"});
 		} else {
-			var $pl = jq(this.$n("real")),
-				vis = $pl.zk.isVisible();
+			var $pl = jq(this.$n());
+				//vis = $pl.zk.isVisible();
 			if (toSel) {
-				if (!vis) {
+				//if (!vis) {
 					$pl.show();
 					zWatch.fireDown('onShow', this);
-				}
-			} else if (vis) {
+				//}
+			} else {
 				zWatch.fireDown('onHide', this);
 				$pl.hide();
 			}
 		}
 	},
+	/*
 	_fixPanelHgh: function() {
 		var horbox = this.getHorbox();
 		var tbx = horbox.$n(),
@@ -103,9 +142,7 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
        		}
 		}
 	},
-	domClass_: function () {
-		return this.$supers('domClass_', arguments) + ' ' + this.getZclass() + '-cnt';
-	},
+	*/
 	onSize: _zkf = function() {
 		var horbox = this.getHorbox();
 		if (!zk(this.$n("real")).isVisible())
@@ -124,8 +161,28 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		if (v != 'min') v = false;
 		this.$super(hatab.Horpanel, 'setHflex', v);
 	},
-	bind_: function() {
+	bind_: function(desktop, skipper, after) {
 		this.$supers(hatab.Horpanel, 'bind_', arguments);
+		
+		var tab = this.$n('tab');
+		if (tab) {
+			this.domListen_(tab, "onClick", '_doTabClick');
+			if (!tab.style.cursor)
+				tab.style.cursor = "default";
+			/*
+			if (zk.ie6_)
+				this.domListen_(tab, "onMouseOver", '_toggleBtnOver')
+					.domListen_(tab, "onMouseOut", '_toggleBtnOver');
+			*/
+		}
+		
+		var panel = this;
+		after.push(function () {
+			zk.afterMount(function () {
+    			if (panel.isSelected()) 
+    				panel._sel(false, true);
+			});
+		});
 		/*
 		if (this.getHorbox().isHorizontal()) {
 			this._zwatched = true;
@@ -141,5 +198,10 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		}
 		*/
 		this.$supers(hatab.Horpanel, 'unbind_', arguments);
+	},
+	_doTabClick : function(evt) {
+		if (this._disabled) return;
+		this._sel(true);
+		this.$supers('doClick_', arguments);
 	}
 });

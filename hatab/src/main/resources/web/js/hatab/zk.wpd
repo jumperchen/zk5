@@ -1,7 +1,4 @@
 <package name="hatab" language="xul/html" depends="zul">
 	<widget name="Horbox" />
-	<widget name="Hortabs" />
-	<widget name="Hortab" />
-	<widget name="Horpanels" />
 	<widget name="Horpanel" />
 </package>

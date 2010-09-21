@@ -18,10 +18,9 @@ package org.zkoss.hatab;
 
 import java.io.IOException;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.UiException;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.sys.ContentRenderer;
-//import org.zkoss.zul.Tabbox.Listener;
 import org.zkoss.zul.impl.XulElement;
 
 /**
@@ -30,14 +29,9 @@ import org.zkoss.zul.impl.XulElement;
  */
 public class Horbox extends XulElement{
 	
-	private transient Horpanels _hatabpanels;
 	private transient Horpanel _selPanel;
 	/** The event listener used to listen onSelect for each tab. */
 	///* package */transient EventListener _listener;
-	
-	public Horpanels getHatabpanels(){
-		return _hatabpanels;
-	}
 	
 	/**
 	 * 
@@ -73,9 +67,7 @@ public class Horbox extends XulElement{
 	 * @param j
 	 */
 	public void setSelectedIndex(int j){
-		if(_hatabpanels == null)
-			throw new IllegalStateException("No hatabpenals");
-		setSelectedPanel((Horpanel) _hatabpanels.getChildren().get(j));
+		//setSelectedPanel((Horpanel) _hatabpanels.getChildren().get(j));
 	}
 	
 	/**
@@ -87,8 +79,22 @@ public class Horbox extends XulElement{
 	
 	
 	
+	public void beforeChildAdded(Component child, Component insertBefore) {
+		// TODO Auto-generated method stub
+		super.beforeChildAdded(child, insertBefore);
+	}
 	
+	public void beforeParentChanged(Component parent) {
+		// TODO Auto-generated method stub
+		super.beforeParentChanged(parent);
+	}
 	
+	public boolean insertBefore(Component arg0, Component arg1) {
+		// TODO Auto-generated method stub
+		// select newly added tab
+		return super.insertBefore(arg0, arg1);
+	}
+
 	protected void renderProperties(ContentRenderer renderer)
 			throws IOException {
 		super.renderProperties(renderer);

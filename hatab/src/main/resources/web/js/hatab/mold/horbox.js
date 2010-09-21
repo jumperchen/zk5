@@ -11,8 +11,11 @@
 Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 */
 function(out) {
-	out.push('<div ', this.domAttrs_(), '>');
-	if (this.horpanels) 
-		this.horpanels.redraw(out);
-	out.push("</div>");
+	var zcls = this.getZclass(),
+		uuid = this.uuid;
+	
+	out.push('<div ', this.domAttrs_(), '><ul id="', uuid, '-list" class="', zcls, '-list">');
+	for (var w = this.firstChild; w; w = w.nextSibling)
+		w.redraw(out);
+	out.push('</ul></div>');
 }

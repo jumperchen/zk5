@@ -25,21 +25,10 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 		/**
 		 * 
 		 */
-		panelSpacing: _zkf = function () {
+		tabWidth: _zkf = function () {
 			this.rerender();
 		}
-	},
-	/**
-	 * 
-	 */
-	getHortabs: function () {
-		return this.hortabs;
-	},
-	/**
-	 * 
-	 */
-	getHorpanels: function () {
-		return this.horpanels;
+		//TODO: set tab negative margin value
 	},
 	/**
 	 * 
@@ -52,67 +41,46 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 	 * @return int
 	 */
 	getSelectedIndex: function() {
-		return this._selTab ? this._selTab.getIndex() : -1 ;
+		return this._selPanel ? this._selPanel.getIndex() : -1 ;
 	},
 	/**
 	 * Sets the selected index.
 	 * @param int index
 	 */
 	setSelectedIndex: function(index) {
-		if (this.tabs)
-			this.setSelectedTab(this.tabs.getChildAt(index));
+		this.setSelectedPanel(this.getChildAt(index));
 	},
 	/**
-	 * Returns the selected tab panel.
-	 * @return Tabpanel
+	 * Returns the selected panel.
+	 * @return Panel
 	 */
 	getSelectedPanel: function() {
-		return this._selTab ? this._selTab.getLinkedPanel() : null;
+		return this._selPanel;
 	},
 	/**
-	 * Sets the selected tab panel.
-	 * @param Tabpanel panel
+	 * Sets the selected panel.
+	 * @param Panel panel
 	 */
 	setSelectedPanel: function(panel) {
-		if (panel && panel.getTabbox() != this)
-			return
-		var tab = panel.getLinkedTab();
-		if (tab)
-			this.setSelectedTab(tab);
-	},
-	/**
-	 * Returns the selected tab.
-	 * @return Tab
-	 */
-	getSelectedTab: function() {
-		return this._selTab;
-	},
-	/**
-	 * Sets the selected tab.
-	 * @param Tab tab
-	 */
-	setSelectedTab: function(tab) {
-		if (typeof tab == 'string')
-			tab = zk.Widget.$(tab);
-		if (this._selTab != tab) {
-			if (tab)
-				tab.setSelected(true);
-				//it will set _selTab (but we still set it later just in case)
-			this._selTab = tab;
+		if (typeof panel == 'string')
+			panel = zk.Widget.$(panel);
+		if (this._selPanel != panel) {
+			if (panel)
+				panel.setSelected(true);
+				//it will set _selPanel (but we still set it later just in case)
+			this._selPanel = panel;
 		}
 	},
 	//TODO: check all below
 	bind_: function (desktop, skipper, after) {
 		this.$supers(hatab.Horbox, 'bind_', arguments);
 		
-		// used in Tabs.js
-		this._scrolling = false;
-		var tab = this._selTab;
-		
 		zWatch.listen({onResponse: this});
-		if (tab)
+		
+		var panel = this._selPanel;
+		if (panel)
 			after.push(function() {
-				tab.setSelected(true);
+				panel.setSelected(true);
 			});
 	},
 	unbind_: function () {
@@ -133,20 +101,25 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 	//super//
 	removeChildHTML_: function (child) {
 		this.$supers('removeChildHTML_', arguments);
+		/*
 		if (this.isVertical() && child.$instanceof(hatab.Hortabs))
 			jq(child.uuid + '-line', zk).remove();
+		*/
 	},
 	onChildAdded_: function (child) {
 		this.$supers('onChildAdded_', arguments);
+		/*
 		if (child.$instanceof(hatab.Hortabs))
 			this.tabs = child;
 		else if (child.$instanceof(hatab.Horpanels)) {
 			this.tabpanels = child;
 		}
+		*/
 		this.rerender();
 	},
 	onChildRemoved_: function (child) {
 		this.$supers('onChildRemoved_', arguments);
+		/*
 		if (child == this.toolbar)
 			this.toolbar = null;
 		else if (child == this.tabs)
@@ -155,6 +128,7 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 			this.tabpanels = null;
 		if (!this.childReplacing_)
 			this.rerender();
+		*/
 	},
 	setWidth: function (width) {
 		this.$supers('setWidth', arguments);
