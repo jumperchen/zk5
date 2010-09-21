@@ -78,7 +78,8 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 	_setSel: function(panel, toSel, notify, init) {
 		var horbox = this.getHorbox(),
 			zcls = this.getZclass(),
-			bound = this.desktop;
+			bound = this.desktop,
+			tab = this.$n('tab');
 		if (panel.isSelected() == toSel && notify)
 			return;
 
@@ -88,17 +89,22 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		
 		if (!bound) return;
 		
-		if (toSel)
+		if (toSel) {
 			jq(panel).addClass(zcls + "-seld");
-		else
+			jq(tab).addClass(zcls + "-tab-seld");
+		} else {
 			jq(panel).removeClass(zcls + "-seld");
+			jq(tab).removeClass(zcls + "-tab-seld");
+		}
 		
-		panel._selPanel(toSel, !init);
-
+		panel._selAnima(toSel, !init);
+		
 		if (notify)
-			this.fire('onSelect', {items: [this], reference: this.uuid});
+			this.fire('onSelect');
+			//this.fire('onSelect', {items: [this], reference: this.uuid});
 	},
-	_selPanel: function (toSel, animation) {
+	_selAnima: function (toSel, animation) {
+		// animation
 		if (animation) {
 			var p = this.$n();
 			zk(p)[toSel ? "slideDown" : "slideUp"](this, {anchor:"l"});
@@ -191,6 +197,9 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		*/
 	},
 	unbind_: function () {
+		var tab = this.$n('tab');
+		if (tab)
+			this.domUnlisten_(tab, "onClick", '_doTabClick');
 		/*
 		if (this._zwatched) {
 			zWatch.unlisten({onSize: this, onShow: this});
