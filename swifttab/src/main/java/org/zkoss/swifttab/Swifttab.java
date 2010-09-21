@@ -16,14 +16,19 @@ import org.zkoss.zk.ui.Page;
 import org.zkoss.zul.Tab;
 
 public class Swifttab extends Tab {
+
 	protected void addMoved(Component oldparent, Page oldpg, Page newpg) {
 
-		if(this.getParent() instanceof Mtabs ){
+		if (this.getParent() instanceof Mtabs) {
 			Mtabs tabs = (Mtabs) getParent();
-			if(tabs.isNoResponse()){
+			if (tabs.isNoResponse()) {
 				return;
 			}
 		}
 		super.addMoved(oldparent, oldpg, newpg);
+	}
+
+	public String getZclass() {
+		return (this._zclass != null ? this._zclass : "z-swifttab");
 	}
 }

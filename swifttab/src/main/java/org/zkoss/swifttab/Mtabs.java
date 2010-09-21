@@ -20,6 +20,11 @@ import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 
+/**
+ *
+ *
+ *
+ */
 public class Mtabs extends Tabs {
 
 	/**
@@ -66,11 +71,10 @@ public class Mtabs extends Tabs {
 
 				}
 
+				// avoid selected not work problem.
 				getTabbox().setSelectedIndex(0);
 				getTabbox().setSelectedTab(startTab);
 
-			} catch (Exception ex) {
-				ex.printStackTrace();
 			} finally {
 				_noResponse = false;
 			}
@@ -78,7 +82,8 @@ public class Mtabs extends Tabs {
 		}
 	};
 
-	protected boolean isNoResponse() {
+	/** package */
+	boolean isNoResponse() {
 		return _noResponse;
 	}
 
