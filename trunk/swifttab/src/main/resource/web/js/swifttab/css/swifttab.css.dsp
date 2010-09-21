@@ -16,15 +16,15 @@ it will be useful, but WITHOUT ANY WARRANTY.
 
 .z-swifttab .z-swifttab-link,.z-swifttab .z-swifttab-text,.z-swifttab .z-swifttab-sort {
 	background: url("${c:encodeURL('~./img/swifttab/swifttab-bg.png')}") no-repeat scroll 0px 0px transparent;
-	position:relative;
+	position: relative;
 }
 .z-swifttab .z-swifttab-sort{
-	background-position:-112px -80px;
-	cursor:move;
-	display:block;
-	float:left;
-	height:20px;
-	width:20px;
+	background-position: -112px -80px;
+	cursor: move;
+	display: block;
+	float: left;
+	height: 20px;
+	width: 20px;
 }
 
 li.z-swifttab {
