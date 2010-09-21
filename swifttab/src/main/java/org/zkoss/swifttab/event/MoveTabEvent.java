@@ -18,9 +18,14 @@ import org.zkoss.zk.au.AuRequests;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 
+/**
+ *
+ * @author tony
+ *
+ */
 public class MoveTabEvent extends Event {
 
-	public static String NAME = "onTabMove";
+	public final static String NAME = "onTabMove";
 
 	private int startIndex = -1;
 
