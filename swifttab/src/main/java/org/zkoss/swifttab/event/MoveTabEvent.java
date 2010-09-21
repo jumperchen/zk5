@@ -17,15 +17,16 @@ import org.zkoss.zk.au.AuRequest;
 import org.zkoss.zk.au.AuRequests;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zul.api.Tab;
 
 /**
- *
- * @author tony
  *
  */
 public class MoveTabEvent extends Event {
 
 	public final static String NAME = "onTabMove";
+
+	private Tab movedTab = null;
 
 	private int startIndex = -1;
 
@@ -44,6 +45,11 @@ public class MoveTabEvent extends Event {
 
 		startIndex = start;
 		endIndex = end;
+		movedTab = (Tab) target.getChildren().get(start);
+	}
+
+	public Tab getMovedTab() {
+		return movedTab;
 	}
 
 	public static final MoveTabEvent getMoveTabEvent(AuRequest request) {
