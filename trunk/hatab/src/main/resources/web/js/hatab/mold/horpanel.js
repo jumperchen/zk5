@@ -13,12 +13,12 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 function(out) {
 	var uuid = this.uuid,
 		zcls = this.getZclass(),
-		tab = this.getLinkedTab();
-	
-	out.push('<li class="', zcls, '-outer" id="', uuid, '">');
-	if (tab) tab.redraw(out);
-	out.push('<div id="', uuid, '-real"', this.domAttrs_({id:1}), '>',
-			'<div id="', uuid, '-cave" class="', zcls, '-cnt">');
+		title = this.getTitle();
+		//tab = this.getLinkedTab();
+	out.push('<li class="', zcls, '-outer">');
+	out.push('<div class="', zcls, '-tab" id="', uuid, '-tab">', title, '</div>');
+	out.push('<div ', this.domAttrs_(), '>');
+	out.push('<div id="', uuid, '-cave" class="', zcls, '-cnt">');
 	
 	for (var w = this.firstChild; w; w = w.nextSibling)
 		w.redraw(out);
