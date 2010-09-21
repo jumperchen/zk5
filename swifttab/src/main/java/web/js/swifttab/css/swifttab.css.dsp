@@ -23,6 +23,10 @@ it will be useful, but WITHOUT ANY WARRANTY.
 li.z-swifttab {
 	cursor:pointer;
 }
+li.z-swifttab-seld{
+	cursor:default;
+}
+
 .z-swifttab .z-swifttab-link{
 	color:#27537A;
 	font-weight:bold;
@@ -50,8 +54,13 @@ li.z-swifttab {
 	background-position:0 -193px;
 	color:#0F3B82;
 }
+
 .z-swifttab a.z-swifttab-link:hover .z-swifttab-text{
 	background-position:0 -258px;
+}
+.z-swifttab-seld a.z-swifttab-link:hover .z-swifttab-text{
+	background-position:0 -193px;
+	color:#0F3B82;
 }
 
 .z-swifttab-seld .z-swifttab-link{
@@ -64,6 +73,9 @@ li.z-swifttab {
 }
 .z-swifttab a.z-swifttab-link:hover{
 	background-position:100% -65px;
+}
+.z-swifttab-seld a.z-swifttab-link:hover{
+	background-position:100% 0px;
 }
 .z-swifttab .z-swifttab-text{
 	height:auto;
