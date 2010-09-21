@@ -62,7 +62,7 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
                             widths[widths.length] = widths[num] + width;
                         });
                         //default behavior
-                        sortIndex = _getIndex(bounds, instance.offset().left);
+                        sortIndex = zk.Widget.$(instance).getChildIndex();
                         startIndex = sortIndex;
 
                         //fix for tabs scrolling
