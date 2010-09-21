@@ -16,6 +16,7 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 */
 package org.zkoss.hatab;
 
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.impl.XulElement;
 
 /**
@@ -24,7 +25,9 @@ import org.zkoss.zul.impl.XulElement;
  */
 public class Horpanel extends XulElement {
 	
-	
+	static {
+		addClientEvent(Horpanel.class, Events.ON_SELECT, CE_IMPORTANT);
+	}
 	
 	public Horbox getHorbox() {
 		return null;

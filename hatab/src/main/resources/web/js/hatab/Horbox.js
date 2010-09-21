@@ -14,7 +14,7 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
  * A widget as horizontal accordion tabbox. Works like Tabbox in accordion mold,
  * but in horizontal direction. 
  * 
- * <p>Default {@link #getZclass}: z-hor.
+ * <p>Default {@link #getZclass}: z-horbox.
  */
 hatab.Horbox = zk.$extends(zul.Widget, {
 	
