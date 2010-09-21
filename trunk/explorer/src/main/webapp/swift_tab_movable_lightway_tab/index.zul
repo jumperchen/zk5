@@ -35,14 +35,14 @@
 				<swifttab label="tab8 jsut a tab" />
 			</mtabs>
 			<tabpanels>
-				<tabpanel>tab panel 1</tabpanel>
-				<tabpanel>tab panel 2</tabpanel>
-				<tabpanel>tab panel 3</tabpanel>
-				<tabpanel>tab panel 4</tabpanel>
-				<tabpanel>tab panel 5</tabpanel>
-				<tabpanel>tab panel 6</tabpanel>
-				<tabpanel>tab panel 7</tabpanel>
-				<tabpanel>tab panel 8</tabpanel>
+				<mtabpanel>tab panel 1</tabpanel>
+				<mtabpanel>tab panel 2</tabpanel>
+				<mtabpanel>tab panel 3</tabpanel>
+				<mtabpanel>tab panel 4</tabpanel>
+				<mtabpanel>tab panel 5</tabpanel>
+				<mtabpanel>tab panel 6</tabpanel>
+				<mtabpanel>tab panel 7</tabpanel>
+				<mtabpanel>tab panel 8</tabpanel>
 			</tabpanels>
 		</tabbox>
 
