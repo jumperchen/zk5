@@ -1,11 +1,12 @@
 /* swifttab.js
 
-	Purpose:
+	Purpose:   To render the html with swifttab , support movable / closable feature.
 
 	Description:
 
 	History:
 		2010/9/20, Created by TonyQ
+		2010/9/21, updated by TonyQ - purpose
 
 Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 
@@ -16,7 +17,7 @@ function (out) {
 	out.push('<li ', this.domAttrs_(), '>','<a class="', zcls, '-link">','<span class="', zcls, '-text">');
 
 	if(this.isMovable()) {
-		out.push('<span id="', uuid, '-sort" class="', zcls, '-sort">||</span> ');
+		out.push('<span id="', uuid, '-sort" class="', zcls, '-sort"></span> ');
 	}
 	out.push( this.domContent_(), '</span>' );
 	if (this.isClosable())
