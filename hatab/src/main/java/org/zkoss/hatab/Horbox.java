@@ -18,6 +18,7 @@ package org.zkoss.hatab;
 
 import java.io.IOException;
 
+import org.zkoss.lang.Objects;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.sys.ContentRenderer;
@@ -30,9 +31,55 @@ import org.zkoss.zul.impl.XulElement;
 public class Horbox extends XulElement{
 	
 	private transient Horpanel _selPanel;
-	/** The event listener used to listen onSelect for each tab. */
-	///* package */transient EventListener _listener;
+	private String _tabWidth;
+	private String _tabBuriedWidth;
 	
+	// attributes //
+	/**
+	 * 
+	 * @return
+	 */
+	public String getTabwidth(){
+		return _tabWidth;
+	}
+	
+	/**
+	 * 
+	 * @param tabWidth
+	 */
+	public void setTabwidth(String tabWidth){
+		if (tabWidth != null && tabWidth.length() == 0)
+			tabWidth = null;
+
+		if (!Objects.equals(_tabWidth, tabWidth)) {
+			_tabWidth = tabWidth;
+			smartUpdate("tabWidth", _tabWidth);
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getTabburiedwidth(){
+		return _tabBuriedWidth;
+	}
+	
+	/**
+	 * 
+	 * @param tabBuriedWidth
+	 */
+	public void setTabburiedwidth(String tabBuriedWidth){
+		if (tabBuriedWidth != null && tabBuriedWidth.length() == 0)
+			tabBuriedWidth = null;
+
+		if (!Objects.equals(_tabBuriedWidth, tabBuriedWidth)) {
+			_tabBuriedWidth = tabBuriedWidth;
+			smartUpdate("tabBuriedWidth", _tabBuriedWidth);
+		}
+	}
+	
+	// component logic //
 	/**
 	 * 
 	 * @return
@@ -43,15 +90,10 @@ public class Horbox extends XulElement{
 	
 	/**
 	 * 
-	 * @param panel
+	 * @param horpanel
 	 */
-	public void setSelectedPanel(Horpanel panel){
-		if (panel == null)
-			throw new IllegalArgumentException("null tabpanel");
-		if (panel.getHorbox() != this)
-			throw new UiException("Not a child: " + panel);
-		
-		//_selPanel = panel;
+	public void setSelectedPanel(Horpanel horpanel){
+		selectPanelDirectly(horpanel, false);
 	}
 	
 	/**
@@ -67,40 +109,80 @@ public class Horbox extends XulElement{
 	 * @param j
 	 */
 	public void setSelectedIndex(int j){
-		//setSelectedPanel((Horpanel) _hatabpanels.getChildren().get(j));
+		setSelectedPanel((Horpanel) getChildren().get(j));
 	}
 	
-	/**
-	 * 
-	 */
+	// helper //
+	/*package*/ void selectPanelDirectly(Horpanel horpanel, boolean byClient){
+		if (horpanel == null)
+			throw new IllegalArgumentException("null tab");
+		if (horpanel.getHorbox() != this)
+			throw new UiException("Not my child: " + horpanel);
+		if (horpanel != _selPanel) {
+			if (_selPanel != null)
+				_selPanel.setSelectedDirectly(false);
+
+			_selPanel = horpanel;
+			_selPanel.setSelectedDirectly(true);
+			if (!byClient)
+				smartUpdate("selectedPanel", _selPanel.getUuid());
+		}
+	}
+	
+	// component //
 	public String getZclass() {
 		return _zclass == null ? "z-horbox" : _zclass;
 	}
 	
-	
-	
-	public void beforeChildAdded(Component child, Component insertBefore) {
-		// TODO Auto-generated method stub
-		super.beforeChildAdded(child, insertBefore);
+	public void beforeChildAdded(Component child, Component refChild) {
+		if (!(child instanceof Horpanel))
+			throw new UiException("Unsupported child for tabs: "+child);
+		super.beforeChildAdded(child, refChild);
 	}
 	
-	public void beforeParentChanged(Component parent) {
-		// TODO Auto-generated method stub
-		super.beforeParentChanged(parent);
-	}
-	
-	public boolean insertBefore(Component arg0, Component arg1) {
-		// TODO Auto-generated method stub
-		// select newly added tab
-		return super.insertBefore(arg0, arg1);
+	public boolean insertBefore(Component child, Component refChild) {
+		if (super.insertBefore(child, refChild)) {
+			// TODO: select the last panel
+			return true;
+		}
+		return false;
+		/*
+		boolean sel = getChildren().isEmpty(), desel = false;
+		final Tab newtab = (Tab)child;
+		if (!sel && newtab.isSelected()) {
+			newtab.setSelectedDirectly(false);	//turn off first
+			sel = desel = true;					//trun on later
+		}
+
+		if (super.insertBefore(child, refChild)) {
+			final Tabbox tabbox = getTabbox();
+
+			if (sel)
+				if (tabbox != null) {
+					tabbox.setSelectedTab(newtab);
+				} else {
+					newtab.setSelectedDirectly(true);
+					if (desel)
+						for (Iterator it = getChildren().iterator(); it.hasNext();) {
+							final Tab tab = (Tab)it.next();
+							if (tab != newtab && tab.isSelected()) {
+								tab.setSelectedDirectly(false);
+								break;
+							}
+						}
+				}
+			return true;
+		}
+		return false;
+		*/
 	}
 
-	protected void renderProperties(ContentRenderer renderer)
-			throws IOException {
+	protected void renderProperties(ContentRenderer renderer) throws IOException {
 		super.renderProperties(renderer);
-		
-		// TODO
-		
+		if (_tabWidth != null )
+			render(renderer, "tabWidth", _tabWidth);
+		if (_tabBuriedWidth != null )
+			render(renderer, "tabBuriedWidth", _tabBuriedWidth);
 	}
 	
 }

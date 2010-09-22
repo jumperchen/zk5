@@ -16,6 +16,8 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
  */
 hatab.Horpanel = zk.$extends(zul.Widget, {
 	
+	// TODO: bgcolor, bgimage
+	
 	$define: {
 		/**
 		 * 
@@ -23,9 +25,11 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		/**
 		 * 
 		 */
+		/*
 		title: function() {
 			this.rerender();
 		},
+		*/
 		/**
 		 * 
 		 */
@@ -36,13 +40,15 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 			this._sel();
 		}
 	},
-	
 	/** Returns the horbox owns this component.
 	 * @return Horbox
 	 */
 	getHorbox: function() {
 		return this.parent ? this.parent.parent : null;
 	},
+	/**
+	 * 
+	 */
 	getZclass: function() {
 		return this._zclass? this._zclass : 'z-horpanel';
 	},
@@ -53,20 +59,19 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 	getIndex: function() {
 		return this.getChildIndex();
 	},
-	// TODO: check all
 	_sel: function (notify, init) {
-		// check
 		var horbox = this.getHorbox();
 		if (!horbox) return;
 		var oldpanel = horbox._selPanel;
 		if (oldpanel != this || init) {
 			if (oldpanel && oldpanel != this) {
-				this._changeSel(oldpanel);
+				//this._changeSel(oldpanel);
 				this._setSel(oldpanel, false, false, init);
 			}
 			this._setSel(this, true, notify, init);
 		}
 	},
+	/*
 	// Bug 3026669
 	_changeSel: function (oldPanel) {
 		if (oldPanel) {
@@ -75,6 +80,7 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 				cave.style.width = oldPanel.style.width;
 		}
 	},
+	*/
 	_setSel: function(panel, toSel, notify, init) {
 		var horbox = this.getHorbox(),
 			zcls = this.getZclass(),
@@ -148,7 +154,6 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
        		}
 		}
 	},
-	*/
 	onSize: _zkf = function() {
 		var horbox = this.getHorbox();
 		if (!zk(this.$n("real")).isVisible())
@@ -157,6 +162,7 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		if (zk.ie && !zk.ie8) zk(horbox.$n()).redoCSS(); //Bug 2526699 - (add zk.ie7)
 	},
 	onShow: _zkf,
+	*/
 	//bug #3014664
 	setVflex: function (v) { //vflex ignored for Horpanel
 		if (v != 'min') v = false;
@@ -171,16 +177,8 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		this.$supers(hatab.Horpanel, 'bind_', arguments);
 		
 		var tab = this.$n('tab');
-		if (tab) {
+		if (tab)
 			this.domListen_(tab, "onClick", '_doTabClick');
-			if (!tab.style.cursor)
-				tab.style.cursor = "default";
-			/*
-			if (zk.ie6_)
-				this.domListen_(tab, "onMouseOver", '_toggleBtnOver')
-					.domListen_(tab, "onMouseOut", '_toggleBtnOver');
-			*/
-		}
 		
 		var panel = this;
 		after.push(function () {
@@ -209,7 +207,7 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		this.$supers(hatab.Horpanel, 'unbind_', arguments);
 	},
 	_doTabClick : function(evt) {
-		if (this._disabled) return;
+		//if (this._disabled) return;
 		this._sel(true);
 		this.$supers('doClick_', arguments);
 	}

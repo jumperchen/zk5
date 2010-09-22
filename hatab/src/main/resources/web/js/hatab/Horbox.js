@@ -27,8 +27,14 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 		 */
 		tabWidth: _zkf = function () {
 			this.rerender();
-		}
-		//TODO: set tab negative margin value
+		},
+		/**
+		 * 
+		 */
+		/**
+		 * 
+		 */
+		tabBuriedWidth: _zkf
 	},
 	/**
 	 * 
@@ -71,11 +77,10 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 			this._selPanel = panel;
 		}
 	},
-	//TODO: check all below
 	bind_: function (desktop, skipper, after) {
 		this.$supers(hatab.Horbox, 'bind_', arguments);
 		
-		zWatch.listen({onResponse: this});
+		//zWatch.listen({onResponse: this});
 		
 		var panel = this._selPanel;
 		if (panel)
@@ -83,6 +88,7 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 				panel.setSelected(true);
 			});
 	},
+	/*
 	unbind_: function () {
 		zWatch.unlisten({onResponse: this});
 		this.$supers(hatab.Horbox, 'unbind_', arguments);
@@ -98,38 +104,8 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 		if (!this.inServer && this.desktop)
 			this.onResponse();
 	},
+	*/
 	//super//
-	removeChildHTML_: function (child) {
-		this.$supers('removeChildHTML_', arguments);
-		/*
-		if (this.isVertical() && child.$instanceof(hatab.Hortabs))
-			jq(child.uuid + '-line', zk).remove();
-		*/
-	},
-	onChildAdded_: function (child) {
-		this.$supers('onChildAdded_', arguments);
-		/*
-		if (child.$instanceof(hatab.Hortabs))
-			this.tabs = child;
-		else if (child.$instanceof(hatab.Horpanels)) {
-			this.tabpanels = child;
-		}
-		*/
-		this.rerender();
-	},
-	onChildRemoved_: function (child) {
-		this.$supers('onChildRemoved_', arguments);
-		/*
-		if (child == this.toolbar)
-			this.toolbar = null;
-		else if (child == this.tabs)
-			this.tabs = null;
-		else if (child == this.tabpanels)
-			this.tabpanels = null;
-		if (!this.childReplacing_)
-			this.rerender();
-		*/
-	},
 	setWidth: function (width) {
 		this.$supers('setWidth', arguments);
 		if (this.desktop)
