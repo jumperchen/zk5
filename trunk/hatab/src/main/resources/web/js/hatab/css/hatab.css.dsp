@@ -25,7 +25,7 @@
 
 .z-horpanel-tab {
 	height: 100%;
-	width: 24px;
+	width: 30px;
 }
 
 .z-horpanel {
