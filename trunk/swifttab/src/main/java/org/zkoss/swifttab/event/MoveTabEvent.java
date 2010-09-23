@@ -26,30 +26,30 @@ public class MoveTabEvent extends Event {
 
 	public final static String NAME = "onTabMove";
 
-	private Tab movedTab = null;
+	private Tab _movedTab = null;
 
-	private int startIndex = -1;
+	private int _startIndex = -1;
 
-	private int endIndex = -1;
+	private int _endIndex = -1;
 
 	public int getStartIndex() {
-		return startIndex;
+		return _startIndex;
 	}
 
 	public int getEndIndex() {
-		return endIndex;
+		return _endIndex;
 	}
 
 	public MoveTabEvent(String command, Component target, int start, int end) {
 		super(command, target);
 
-		startIndex = start;
-		endIndex = end;
-		movedTab = (Tab) target.getChildren().get(start);
+		_startIndex = start;
+		_endIndex = end;
+		_movedTab = (Tab) target.getChildren().get(start);
 	}
 
 	public Tab getMovedTab() {
-		return movedTab;
+		return _movedTab;
 	}
 
 	public static final MoveTabEvent getMoveTabEvent(AuRequest request) {

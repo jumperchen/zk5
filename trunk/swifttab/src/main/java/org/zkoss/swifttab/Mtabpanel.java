@@ -17,6 +17,16 @@ import org.zkoss.zul.Tabpanel;
 
 public class Mtabpanel extends Tabpanel {
 
+	/**
+	 * Here to prevent the dom update when parents is Mtabs and it decide to
+	 * ignore response for this class.
+	 *
+	 * This is for the movable feature, because we will update client first and
+	 * then update server component
+	 *
+	 * The add moved will be called when its parent insertBefore or appndChild
+	 * @see Mtabs#service(org.zkoss.zk.au.AuRequest, boolean)
+	 */
 	protected void addMoved(Component oldparent, Page oldpg, Page newpg) {
 
 		if (getLinkedTab().getParent() instanceof Mtabs) {
