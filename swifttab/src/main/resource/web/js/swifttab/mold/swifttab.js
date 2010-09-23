@@ -16,10 +16,15 @@ function (out) {
 		uuid = this.uuid;
 	out.push('<li ', this.domAttrs_(), '>','<a class="', zcls, '-link">','<span class="', zcls, '-text">');
 
-	if(this.isMovable()) {
-		out.push('<span id="', uuid, '-sort" class="', zcls, '-sort"></span> ');
-	}
-	out.push( this.domContent_(), '</span>' );
+	if (this.isMovable()) {
+        //for ie6 problem for float will break the background ,
+        //so here we use padding-left + absolute to do tab-sorter.
+		out.push('<span id="', uuid, '-sort" class="', zcls, '-sort"></span> ',
+            '<span class="',zcls,'-content">',this.domContent_(),'</span></span>' );
+	}else{
+        out.push( this.domContent_(), '</span>' );
+    }
+
 	if (this.isClosable())
 		out.push('<a id="', uuid, '-close" class="', zcls, '-close"', 'onClick="return false;" ></a>');
 	out.push('</a></li>');

@@ -79,7 +79,9 @@ public class Mtabs extends Tabs {
 			}
 
 			// avoid selected not work problem.
-			getTabbox().setSelectedIndex(0);
+			// because it change the selected status , but you can't re-set it agagin ,
+			// so you need to change the index and change back that again.
+			getTabbox().setSelectedIndex( startIndex == 0 ? 1 : 0 );
 			getTabbox().setSelectedTab(startTab);
 
 		} finally {
