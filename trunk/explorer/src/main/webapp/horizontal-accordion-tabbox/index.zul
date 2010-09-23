@@ -1,0 +1,47 @@
+<?page title="Horizontal Accordion Tabbox" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<vlayout>
+		<horbox id="hb1" height="200px" width="500px">
+			<horpanel bgcolor="#E8B3A2">
+				Horpanel 1
+			</horpanel>
+			<horpanel bgcolor="#FFF2B2">
+				Horpanel 2
+			</horpanel>
+			<horpanel bgcolor="#EBBEFF">
+				Horpanel 3
+			</horpanel>
+			<horpanel bgcolor="#A2CCE8">
+				Horpanel 4
+			</horpanel>
+			<horpanel bgcolor="#B5FFBA">
+				Horpanel 5
+			</horpanel>
+		</horbox>
+		<hlayout>
+			<button label="invalidate" onClick="hb1.invalidate()" />
+		</hlayout>
+		<separator bar="true" />
+		<horbox id="hb2" height="200px" width="500px" 
+			tabwidth="40px" tabburiedwidth="10px">
+			<horpanel bgcolor="#E8B3A2">
+				Horpanel 1
+			</horpanel>
+			<horpanel bgcolor="#FFF2B2">
+				Horpanel 2
+			</horpanel>
+			<horpanel bgcolor="#EBBEFF">
+				Horpanel 3
+			</horpanel>
+			<horpanel bgcolor="#A2CCE8">
+				Horpanel 4
+			</horpanel>
+			<horpanel bgcolor="#B5FFBA">
+				Horpanel 5
+			</horpanel>
+		</horbox>
+		<hlayout>
+			<button label="invalidate" onClick="hb2.invalidate()" />
+		</hlayout>
+	</vlayout>
+</zk>
