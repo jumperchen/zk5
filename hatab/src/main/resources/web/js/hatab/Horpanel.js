@@ -16,7 +16,7 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
  */
 hatab.Horpanel = zk.$extends(zul.Widget, {
 	
-	// TODO: bgcolor, bgimage
+	// TODO: title
 	
 	$define: {
 		/**
@@ -36,6 +36,24 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		/**
 		 * 
 		 */
+		bgcolor: function() {
+			this.rerender();
+		},
+		/**
+		 * 
+		 */
+		/**
+		 * 
+		 */
+		bgimage: function() {
+			this.rerender();
+		},
+		/**
+		 * 
+		 */
+		/**
+		 * 
+		 */
 		selected: function(selected) {
 			this._sel();
 		}
@@ -44,7 +62,7 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 	 * @return Horbox
 	 */
 	getHorbox: function() {
-		return this.parent ? this.parent.parent : null;
+		return this.parent;
 	},
 	/**
 	 * 
@@ -65,27 +83,16 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		var oldpanel = horbox._selPanel;
 		if (oldpanel != this || init) {
 			if (oldpanel && oldpanel != this) {
-				//this._changeSel(oldpanel);
 				this._setSel(oldpanel, false, false, init);
 			}
 			this._setSel(this, true, notify, init);
 		}
 	},
-	/*
-	// Bug 3026669
-	_changeSel: function (oldPanel) {
-		if (oldPanel) {
-			var cave = this.$n('cave');
-			if (cave && !cave.style.width && (oldPanel = oldPanel.$n('cave')))
-				cave.style.width = oldPanel.style.width;
-		}
-	},
-	*/
 	_setSel: function(panel, toSel, notify, init) {
 		var horbox = this.getHorbox(),
 			zcls = this.getZclass(),
 			bound = this.desktop,
-			tab = this.$n('tab');
+			tab = panel.$n('tab');
 		if (panel.isSelected() == toSel && notify)
 			return;
 
@@ -98,6 +105,8 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		if (toSel) {
 			jq(panel).addClass(zcls + "-seld");
 			jq(tab).addClass(zcls + "-tab-seld");
+			// set width
+			panel._fixPanelWidth();
 		} else {
 			jq(panel).removeClass(zcls + "-seld");
 			jq(tab).removeClass(zcls + "-tab-seld");
@@ -106,8 +115,7 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		panel._selAnima(toSel, !init);
 		
 		if (notify)
-			this.fire('onSelect');
-			//this.fire('onSelect', {items: [this], reference: this.uuid});
+			this.fire('onSelect', {items: [this], reference: this.uuid});
 	},
 	_selAnima: function (toSel, animation) {
 		// animation
@@ -128,32 +136,19 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 			}
 		}
 	},
-	/*
-	_fixPanelHgh: function() {
-		var horbox = this.getHorbox();
-		var tbx = horbox.$n(),
-		hgh = tbx.style.height;
-		if (hgh && hgh != "auto") {
-   			var n = this.$n(),
-   				hgh = zk(tbx).revisedHeight(tbx.offsetHeight);
-   			hgh = zk(n.parentNode).revisedHeight(hgh);
-   			for (var e = n.parentNode.firstChild; e; e = e.nextSibling)
-   				if (e != n) hgh -= e.offsetHeight;
-   			hgh -= n.firstChild.offsetHeight;
-   			hgh = zk(n.lastChild).revisedHeight(hgh);
-   			if (zk.ie8)
-   				hgh -= 1; // show the bottom border
-   			var cave = this.getCaveNode();
-   			cave.style.height = jq.px0(hgh);
-       		if (zk.ie && !zk.ie8) {
-       			var s = cave.style,
-       			z = s.zoom;
-       			s.zoom = 1;
-       			s.zoom = z;
-       			s.overflow = 'hidden';
-       		}
+	_fixPanelWidth: function() {
+		var horbox = this.getHorbox(),
+			hb = horbox.$n(),
+			width = zk(hb).revisedWidth(hb.offsetWidth),
+			cave = this.$n('cave');
+		for (var w = horbox.firstChild; w; w = w.nextSibling) {
+			width -= w.$n('tab').offsetWidth;
+			// TODO: add margin left back
 		}
+		// TODO: subtract padding
+		cave.style.width = jq.px0(width);
 	},
+	/*
 	onSize: _zkf = function() {
 		var horbox = this.getHorbox();
 		if (!zk(this.$n("real")).isVisible())
