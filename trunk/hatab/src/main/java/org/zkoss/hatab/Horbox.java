@@ -140,45 +140,10 @@ public class Horbox extends XulElement{
 		super.beforeChildAdded(child, refChild);
 	}
 	
-	public boolean insertBefore(Component child, Component refChild) {
-		if (super.insertBefore(child, refChild)) {
-			// TODO: select the last panel
-			return true;
-		}
-		return false;
-		/*
-		boolean sel = getChildren().isEmpty(), desel = false;
-		final Tab newtab = (Tab)child;
-		if (!sel && newtab.isSelected()) {
-			newtab.setSelectedDirectly(false);	//turn off first
-			sel = desel = true;					//trun on later
-		}
-
-		if (super.insertBefore(child, refChild)) {
-			final Tabbox tabbox = getTabbox();
-
-			if (sel)
-				if (tabbox != null) {
-					tabbox.setSelectedTab(newtab);
-				} else {
-					newtab.setSelectedDirectly(true);
-					if (desel)
-						for (Iterator it = getChildren().iterator(); it.hasNext();) {
-							final Tab tab = (Tab)it.next();
-							if (tab != newtab && tab.isSelected()) {
-								tab.setSelectedDirectly(false);
-								break;
-							}
-						}
-				}
-			return true;
-		}
-		return false;
-		*/
-	}
-
 	protected void renderProperties(ContentRenderer renderer) throws IOException {
 		super.renderProperties(renderer);
+		if(_selPanel == null && !getChildren().isEmpty())
+			setSelectedIndex(getChildren().size() - 1);
 		if (_tabWidth != null )
 			render(renderer, "tabWidth", _tabWidth);
 		if (_tabBuriedWidth != null )

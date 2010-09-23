@@ -18,6 +18,8 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
  */
 hatab.Horbox = zk.$extends(zul.Widget, {
 	
+	// fix height onSize
+	
 	$define: {
 		/**
 		 * 
