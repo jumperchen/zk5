@@ -34,13 +34,51 @@ import org.zkoss.zul.impl.XulElement;
 public class Horpanel extends XulElement {
 	
 	private boolean _selected;
+	private String _bgcolor;
+	private String _bgimage;
 	
-	// TODO: setBgcolor, setBgimage *
-	// TODO: manage setHeight
+	// TODO: title
+	// TODO: disable setHeight?
 	// TODO: _disabled
 	
 	static {
 		addClientEvent(Horpanel.class, Events.ON_SELECT, CE_IMPORTANT);
+	}
+	
+	// attribute //
+	/**
+	 * 
+	 */
+	public String getBgcolor(){
+		return _bgcolor;
+	}
+	
+	/**
+	 * 
+	 * @param bgcolor
+	 */
+	public void setBgcolor(String bgcolor){
+		if (bgcolor.equals(_bgcolor)) return;
+		_bgcolor = bgcolor;				
+		smartUpdate("bgcolor", _bgcolor);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getBgimage(){
+		return _bgimage;
+	}
+	
+	/**
+	 * 
+	 * @param bgimage
+	 */
+	public void setBgimage(String bgimage){
+		if (bgimage.equals(_bgimage)) return;
+		_bgimage = bgimage;				
+		smartUpdate("bgimage", _bgimage);
 	}
 	
 	// component logic //
@@ -124,6 +162,10 @@ public class Horpanel extends XulElement {
 		super.renderProperties(renderer);
 		if (_selected)
 			render(renderer, "selected", _selected);
+		if (_bgcolor != null && !_bgcolor.isEmpty())
+			render(renderer, "bgcolor", _bgcolor);
+		if (_bgimage != null && !_bgimage.isEmpty())
+			render(renderer, "bgimage", _bgimage);
 	}
 	
 }

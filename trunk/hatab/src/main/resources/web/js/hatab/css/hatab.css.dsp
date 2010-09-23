@@ -2,6 +2,7 @@
 
 .z-horbox {
 	height: 300px;
+	overflow: hidden;
 }
 
 .z-horbox-list {
@@ -34,10 +35,13 @@
 }
 
 .z-horpanel-cnt {
-	width: 300px;
+	/* padding */
 }
 
 /* debug */
+.z-horbox {
+	/* border: solid 1px #CCCCCC; */
+}
 .z-horpanel, .z-horpanel-tab {
-	border: solid 1px #CCCCCC;
+	/* border: solid 1px #CCCCCC; */
 }

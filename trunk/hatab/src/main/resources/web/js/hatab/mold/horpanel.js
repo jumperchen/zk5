@@ -14,14 +14,40 @@ function(out) {
 	var uuid = this.uuid,
 		zcls = this.getZclass(),
 		horbox = this.getHorbox(),
-		tabwidth = horbox._tabWidth,
-		buriedwidth = horbox._tabBuriedWidth,
+		index = this.getIndex();
+		tabwidth = horbox.getTabWidth(),
+		buriedwidth = horbox.getTabBuriedWidth(),
+		bgc = this.getBgcolor(),
+		bgi = this.getBgimage(),
+		panelStyle = bgc || bgi,
 		title = '';
 		//title = this.getTitle();
-		// TODO: set style for tabwidth and tabburiedwidth
+	
 	out.push('<li class="', zcls, '-outer">');
-	out.push('<div class="', zcls, '-tab" id="', uuid, '-tab">', title, '</div>');
-	out.push('<div ', this.domAttrs_(), '>');
+	out.push('<div class="', zcls, '-tab" id="', uuid, '-tab"');
+	if(tabwidth || (index && buriedwidth) || bgc || bgi) {
+		out.push(' style="');
+		if(tabwidth) 
+			out.push('width:', tabwidth, ';');
+		if(index && buriedwidth) 
+			out.push('margin-left:-', buriedwidth, ';');
+		if(bgc)
+			out.push('background-color:', bgc, ';');
+		if(bgi)
+			out.push('background-image:url(', bgi, ');');
+		out.push('"');
+	}
+	out.push('>', title, '</div>');
+	out.push('<div ', this.domAttrs_());
+	if(bgc || bgi){
+		out.push(' style="');
+		if(bgc)
+			out.push('background-color:', bgc, ';');
+		if(bgi)
+			out.push('background-image:url(', bgi, ');'); // TODO: background-position
+		out.push('"');
+	}
+	out.push('>');
 	out.push('<div id="', uuid, '-cave" class="', zcls, '-cnt">');
 	for (var w = this.firstChild; w; w = w.nextSibling)
 		w.redraw(out);
