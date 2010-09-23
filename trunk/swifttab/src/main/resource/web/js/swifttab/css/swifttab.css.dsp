@@ -27,18 +27,20 @@ li.z-swifttab-seld {
 	background: url("${c:encodeURL('~./img/swifttab/swifttab-bg.png')}") no-repeat scroll 0px 0px transparent;
 	position: relative;
 }
-.z-swifttab .z-swifttab-sort{
+.z-swifttab .z-swifttab-sort {
 	background-position: -112px -80px;
 	cursor: move;
 	display: block;
-	float: left;
-	height: 20px;
+	height: 15px;
 	width: 20px;
+	position:absolute;
 }
 
+.z-swifttab .z-swifttab-content {
+	padding-left: 20px;
+}
 .z-swifttab .z-swifttab-link {
 	color: #27537A;
-	font-weight: bold;
 	line-height: 1.2;
 	margin: 1px 0 0;
 	background-position: 100% -129px;
@@ -53,6 +55,7 @@ li.z-swifttab-seld {
 .z-swifttab .z-swifttab-text {
 	color: #416AA3;
 	background-position: 0 -322px;
+	padding-left:20px;
 }
 
 .z-swifttab-seld a.z-swifttab-link:link,
@@ -82,6 +85,7 @@ li.z-swifttab-seld {
 	position: relative;
 	top: 1px;
 	z-index: 2;
+	font-weight: bold;
 }
 
 .z-swifttab a.z-swifttab-link:hover {
