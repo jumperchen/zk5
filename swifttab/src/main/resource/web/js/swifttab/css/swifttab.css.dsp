@@ -14,6 +14,15 @@ This program is distributed under GPL Version 3.0 in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
 --%><%@ taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" %>
 
+
+li.z-swifttab {
+	cursor: pointer;
+}
+
+li.z-swifttab-seld {
+	cursor: default;
+}
+
 .z-swifttab .z-swifttab-link,.z-swifttab .z-swifttab-text,.z-swifttab .z-swifttab-sort {
 	background: url("${c:encodeURL('~./img/swifttab/swifttab-bg.png')}") no-repeat scroll 0px 0px transparent;
 	position: relative;
@@ -25,14 +34,6 @@ it will be useful, but WITHOUT ANY WARRANTY.
 	float: left;
 	height: 20px;
 	width: 20px;
-}
-
-li.z-swifttab {
-	cursor: pointer;
-}
-
-li.z-swifttab-seld {
-	cursor: default;
 }
 
 .z-swifttab .z-swifttab-link {

@@ -10,7 +10,11 @@
 Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 
 */(function(){
-
+    /**
+     * To get the current index of tab from the items. (index start with 0 )
+     * @param {Array} bounds the left offset for each items(count with the parent offset left)
+     * @param {Number} offset for the current offset(count with parent offset left)
+     */
     function _getIndex(bounds, offset){
         for (var i = 1 ,len = bounds.length; i < len; ++i) {
             if (offset < bounds[i]) {
@@ -20,7 +24,13 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
         return len - 1;
 
     }
+    /**
+     * the Swifttab widget definition
+     */
     swifttab.Swifttab = zk.$extends(zul.tab.Tab, {
+        /**
+         * we consider movable from the parent tabs.
+         */
         isMovable: function(){
             if(this.parent != null)
                 return swifttab.Mtabs.isInstance(this.getTabs());
@@ -29,13 +39,17 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
         getTabs:function(){
             return this.parent;
         },
+        /**
+         * init the draggable feature and prepare something
+         */
         _makeSortable: function(){
-            var handle = this.$n("sort"), instance = jq(this.$n()),
+            var handle = this.$n("sort");
+
+            if (handle && !this._drag) {
+                var instance = jq(this.$n()),
             	currentTab = this, zcls = this.getZclass(),startIndex = -1,
             	sortIndex = -1, bounds = [] ,widths = [],
             	tabs = this.getTabs() , items ;//TODO
-
-            if (handle && !this._drag) {
                 handle.style.cursor = "move";
                 this._drag = new zk.Draggable(this, null, {
                     handle: handle,
@@ -138,10 +152,13 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
         unbind_: function(){
             if (this._drag) {
                 this._drag.destroy();
-                //
+                this._drag = null; //prevent the binding error.
             }
             this.$supers(swifttab.Swifttab, "unbind_", arguments);
         },
+        /**
+         * default zclass is "z-siwfttab"
+         */
         getZclass: function(){
             return (this._zclass != null ? this._zclass : "z-swifttab");
         }

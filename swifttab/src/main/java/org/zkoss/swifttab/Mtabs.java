@@ -97,6 +97,9 @@ public class Mtabs extends Tabs {
 		return _noResponse;
 	}
 
+	/**
+	 * Here to handle onTabMove event.
+	 */
 	public void service(AuRequest request, boolean everError) {
 		final String cmd = request.getCommand();
 
