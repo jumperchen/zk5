@@ -10,14 +10,10 @@
 Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 
 */
+//Because i use the class type to tell swifttab that we are movable , so I save the class here.
 swifttab.Mtabs = zk.$extends(zul.tab.Tabs, {
-    $init: function () {
-		this.$supers(swifttab.Mtabs,'$init', arguments);
-	},
-    bind_: function(desktop, skipper, after){
-        this.$supers(swifttab.Mtabs, 'bind_', arguments);
-    },
-    unbind_: function(){
-        this.$supers(swifttab.Mtabs, "unbind_", arguments);
+    isMovable:function(){
+        return true;
     }
 });
+

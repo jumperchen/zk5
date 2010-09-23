@@ -51,6 +51,7 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
             	sortIndex = -1, bounds = [] ,widths = [],
             	tabs = this.getTabs() , items ;//TODO
                 handle.style.cursor = "move";
+
                 this._drag = new zk.Draggable(this, null, {
                     handle: handle,
                     scroll: tabs.$n("header"),
