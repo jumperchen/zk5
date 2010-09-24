@@ -1,22 +1,24 @@
 /* Swifttab.js
-
-	Purpose:
+ *
+	Purpose: To provide a movable and lighter tab.
 
 	Description:
 
 	History:
 		2010/9/20, Created by TonyQ
 
-Copyright (C) 2010 Potix Corporation. All Rights Reserved.
-
-*/(function(){
+ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
+ */
+(function(){
     /**
      * To get the current index of tab from the items. (index start with 0 )
-     * @param {Array} bounds the left offset for each items(count with the parent offset left)
-     * @param {Number} offset for the current offset(count with parent offset left)
+     * @param {Array} bounds the left position for each items
+     *     (count with the parent offset left)
+     * @param {Number} left for the current position
+     *     (count with parent offset left)
      */
     function _getIndex(bounds, offset){
-        for (var i = 1 ,len = bounds.length; i < len; ++i) {
+        for (var i = 1, len = bounds.length; i < len; ++i) {
             if (offset < bounds[i]) {
                 return i - 1;
             }
@@ -29,14 +31,14 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
      */
     swifttab.Swifttab = zk.$extends(zul.tab.Tab, {
         /**
-         * we consider movable from the parent tabs.
+         * we consider movable from the tabs's type.
          */
         isMovable: function(){
-            if(this.parent != null)
+            if (this.parent != null)
                 return swifttab.Mtabs.isInstance(this.getTabs());
             return false;
         },
-        getTabs:function(){
+        getTabs: function(){
             return this.parent;
         },
         /**
@@ -46,99 +48,19 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
             var handle = this.$n("sort");
 
             if (handle && !this._drag) {
-                var instance = jq(this.$n()),
-            	currentTab = this, zcls = this.getZclass(),startIndex = -1,
-            	sortIndex = -1, bounds = [] ,widths = [],
-            	tabs = this.getTabs() , items ;//TODO
                 handle.style.cursor = "move";
 
                 this._drag = new zk.Draggable(this, null, {
                     handle: handle,
-                    scroll: tabs.$n("header"),
-                    scrollSpeed:5,
+                    scroll: this.getTabs().$n("header"),
+                    scrollSpeed: 5,
                     fireOnMove: false,
                     constrint: "horizontal",
-                    ghosting: function(dg, ofs, evt){
-                        var ghost = instance.clone();
-                        ghost[0].style.position = "relative";
-                        ghost.css("opacity", "0.8");
-                        return ghost[0];
-                    },
-                    starteffect: function(dg){
-                        // reload for closable tabs
-                        items = instance.parent().children("." + zcls ).
-                            not(instance);
-                        bounds = [0];
-                        widths = [0];
-                        items.each(function(num){
-                            var width = jq(this).width();
-                            bounds[bounds.length] = (widths[num] +
-                                parseInt(width / 2, 10));
-                            widths[widths.length] = widths[num] + width;
-                        });
-                        //default behavior
-                        sortIndex = zk.Widget.$(instance).getChildIndex();
-                        startIndex = sortIndex;
-
-                        //fix for tabs scrolling
-                        instance.after(dg.node);
-                        instance[0].style.display = "none";
-                    },
-                    draw: function(dg, ofs, evt){
-                        var exchange = false,
-                            // i dont really know why *2 ,
-                            // but *2 is fiting the number
-                            currentOfsLeft = ofs[0] +  dg.z_scrl[0]*2 ,
-                            indicator = _getIndex(bounds,
-                                   widths[sortIndex] +	currentOfsLeft );
-
-
-                        dg.node.style.left = (currentOfsLeft) + "px";
-                        if (indicator != sortIndex) { // moved
-                            //for last node
-                            if (indicator == bounds.length - 1) {
-                                items.eq(indicator - 1).after(dg.node);
-                            } else {
-                                items.eq(indicator).before(dg.node);
-                            }
-
-                            if (indicator > sortIndex) // move to right
-                                dg.node.style.left = (currentOfsLeft -
-                                    items.eq(sortIndex).width()) + "px";
-                            else //move to left
-                                 dg.node.style.left = (items.eq(sortIndex - 1).
-                                     width() + currentOfsLeft) + "px";
-
-                            sortIndex = indicator; //update location
-                        }
-                    },
-                    endghosting: function(dg, origin){
-                        var el = dg.node; //ghost
-                        jq(el).remove();
-                    },
-                    endeffect: function(dg){
-                    	//update widgets
-                		var panel = currentTab.getLinkedPanel() ,
-                			panels = panel.parent ,
-                			exchangedTab = zk.Widget.$(items.eq(sortIndex)) ;
-
-                    	if(sortIndex == tabs.nChildren - 1){
-                    		tabs.appendChild(currentTab,false);
-                    		panels.appendChild(panel,false);
-                    	}else{
-                    		panels.insertBefore(panel,
-                    				exchangedTab.getLinkedPanel(),false);
-                    		tabs.insertBefore(currentTab,exchangedTab,false);
-                    	}
-                		instance.show();
-
-                        if (startIndex != sortIndex) {
-                            tabs.fire("onTabMove", {
-                                start: startIndex,
-                                end: sortIndex
-                            });
-                        }
-                    },
+                    ghosting: swifttab.Swifttab._ghosting,
+                    starteffect: swifttab.Swifttab._starteffect,
+                    draw: swifttab.Swifttab._draw,
+                    endghosting: swifttab.Swifttab._endghosting,
+                    endeffect: swifttab.Swifttab._endeffect,
                     zIndex: 99999
                 });
             }
@@ -146,9 +68,9 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
         bind_: function(desktop, skipper, after){
             this.$supers(swifttab.Swifttab, 'bind_', arguments);
 
-			if (this.isMovable()) {
-				this._makeSortable();
-			}
+            if (this.isMovable()) {
+                this._makeSortable();
+            }
         },
         unbind_: function(){
             if (this._drag) {
@@ -162,6 +84,89 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
          */
         getZclass: function(){
             return (this._zclass != null ? this._zclass : "z-swifttab");
+        }
+    }, {
+        _ghosting: function(dg, ofs, evt){
+            var ghost = jq(dg.control.$n()).clone();
+            ghost[0].style.position = "relative";
+            ghost.css("opacity", "0.8");
+            return ghost[0];
+        },
+        _starteffect: function(dg){
+            dg._startIndex = -1;
+
+            // reload for closable tabs
+            var instance = jq(dg.control.$n());
+            dg._items = instance.parent().children("." +
+            dg.control.getZclass()).not(instance);
+            dg._bounds = [0];
+            dg._widths = [0];
+            dg._items.each(function(num){
+                var width = jq(this).width();
+                dg._bounds[dg._bounds.length] = (dg._widths[num] +
+                parseInt(width / 2, 10));
+                dg._widths[dg._widths.length] = dg._widths[num] + width;
+            });
+            //default behavior
+            dg._sortIndex = dg.control.getChildIndex();//todo here
+            dg._startIndex = dg._sortIndex;
+
+            //fix for tabs scrolling
+            instance.after(dg.node);
+            instance.hide();
+        },
+        _draw: function(dg, ofs, evt){
+            var exchange = false,            // I dont really know why *2 ,
+            // but *2 is fiting the number . by TonyQ
+            currentOfsLeft = ofs[0] + dg.z_scrl[0] * 2, indicator = _getIndex(
+                dg._bounds, dg._widths[dg._sortIndex] + currentOfsLeft);
+
+
+            dg.node.style.left = (currentOfsLeft) + "px";
+            if (indicator != dg._sortIndex) { // moved
+                //for last node
+                if (indicator == dg._bounds.length - 1)
+                    dg._items.eq(indicator - 1).after(dg.node);
+                else
+                    dg._items.eq(indicator).before(dg.node);
+
+                if (indicator > dg._sortIndex) // move to right
+                    dg.node.style.left = (currentOfsLeft -
+                    dg._items.eq(dg._sortIndex).width()) +
+                    "px";
+                else //move to left
+                     dg.node.style.left = (dg._items.eq(dg._sortIndex - 1).
+                         width() + currentOfsLeft) + "px";
+
+                dg._sortIndex = indicator; //update location
+            }
+        },
+        _endghosting: function(dg, origin){
+            jq(dg.node).remove();
+        },
+        _endeffect: function(dg){
+            var currentTab = dg.control, tabs = currentTab.parent;
+            //update widgets
+            var panel = currentTab.getLinkedPanel(),
+                panels = panel.parent,
+                exchangedTab = zk.Widget.$(dg._items.eq(dg._sortIndex));
+
+            if (dg._sortIndex == tabs.nChildren - 1) {
+                tabs.appendChild(currentTab, false);
+                panels.appendChild(panel, false);
+            } else {
+                panels.insertBefore(panel, exchangedTab.getLinkedPanel(),
+                    false);
+                tabs.insertBefore(currentTab, exchangedTab, false);
+                currentTab.show();
+            }
+
+            if (dg._startIndex != dg._sortIndex) {
+                tabs.fire("onTabMove", {
+                    start: dg._startIndex,
+                    end: dg._sortIndex
+                });
+            }
         }
     });
 })();
