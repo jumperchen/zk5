@@ -11,6 +11,9 @@
 Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 */
 function(out) {
+	// TODO: 1. move widget DOM to outer li
+	// TODO: 2. merge push
+	
 	var uuid = this.uuid,
 		zcls = this.getZclass(),
 		horbox = this.getHorbox(),

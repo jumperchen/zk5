@@ -30,6 +30,12 @@ import org.zkoss.zul.impl.XulElement;
  */
 public class Horbox extends XulElement{
 	
+	// TODO:
+	// 3. transient
+	// 4. insertBefore
+	// 5. put style in domStyle_()
+	// 6. move widget dom to outer
+	
 	private transient Horpanel _selPanel;
 	private String _tabWidth;
 	private String _tabBuriedWidth;
@@ -51,10 +57,9 @@ public class Horbox extends XulElement{
 		if (tabWidth != null && tabWidth.length() == 0)
 			tabWidth = null;
 
-		if (!Objects.equals(_tabWidth, tabWidth)) {
-			_tabWidth = tabWidth;
-			smartUpdate("tabWidth", _tabWidth);
-		}
+		if (Objects.equals(_tabWidth, tabWidth)) return;
+		_tabWidth = tabWidth;
+		smartUpdate("tabWidth", _tabWidth);
 	}
 	
 	/**
@@ -73,10 +78,9 @@ public class Horbox extends XulElement{
 		if (tabBuriedWidth != null && tabBuriedWidth.length() == 0)
 			tabBuriedWidth = null;
 
-		if (!Objects.equals(_tabBuriedWidth, tabBuriedWidth)) {
-			_tabBuriedWidth = tabBuriedWidth;
-			smartUpdate("tabBuriedWidth", _tabBuriedWidth);
-		}
+		if (Objects.equals(_tabBuriedWidth, tabBuriedWidth)) return;
+		_tabBuriedWidth = tabBuriedWidth;
+		smartUpdate("tabBuriedWidth", _tabBuriedWidth);
 	}
 	
 	// component logic //
@@ -144,10 +148,9 @@ public class Horbox extends XulElement{
 		super.renderProperties(renderer);
 		if(_selPanel == null && !getChildren().isEmpty())
 			setSelectedIndex(getChildren().size() - 1);
-		if (_tabWidth != null )
-			render(renderer, "tabWidth", _tabWidth);
-		if (_tabBuriedWidth != null )
-			render(renderer, "tabBuriedWidth", _tabBuriedWidth);
+		
+		render(renderer, "tabWidth", _tabWidth);
+		render(renderer, "tabBuriedWidth", _tabBuriedWidth);
 	}
 	
 }

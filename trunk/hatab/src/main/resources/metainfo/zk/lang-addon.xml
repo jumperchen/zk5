@@ -2,7 +2,6 @@
 <language-addon>
 	<addon-name>hatab</addon-name>
 	<language-name>xul/html</language-name>
-	<depends>zul</depends>
 	
 	<version>
 		<version-class>org.zkoss.hatab.Version</version-class>
