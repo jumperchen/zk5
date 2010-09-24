@@ -116,10 +116,11 @@
             instance.hide();
         },
         _draw: function(dg, ofs, evt){
-            var exchange = false,            // I dont really know why *2 ,
-            // but *2 is fiting the number . by TonyQ
-            currentOfsLeft = ofs[0] + dg.z_scrl[0] * 2, indicator = _getIndex(
-                dg._bounds, dg._widths[dg._sortIndex] + currentOfsLeft);
+                // I dont really know why *2 ,
+                // but *2 is fiting the number . by TonyQ
+            var currentOfsLeft = ofs[0] + dg.z_scrl[0] * 2,
+                indicator = _getIndex( dg._bounds, dg._widths[dg._sortIndex] +
+                currentOfsLeft);
 
 
             dg.node.style.left = (currentOfsLeft) + "px";
@@ -145,9 +146,9 @@
             jq(dg.node).remove();
         },
         _endeffect: function(dg){
-            var currentTab = dg.control, tabs = currentTab.parent;
-            //update widgets
-            var panel = currentTab.getLinkedPanel(),
+            var currentTab = dg.control,
+                tabs = currentTab.parent,
+                panel = currentTab.getLinkedPanel(),
                 panels = panel.parent,
                 exchangedTab = zk.Widget.$(dg._items.eq(dg._sortIndex));
 
