@@ -100,7 +100,7 @@
 		<dependency>
 			<groupId>org.zkoss.swifttab</groupId>
 			<artifactId>swifttab</artifactId>
-			<version>1.0</version>
+			<version>0.8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.zkoss.hatab</groupId>
