@@ -22,12 +22,12 @@ public class Version {
 	/**
 	 * The version UID used to identify the resources.
 	 */
-	public static final String UID = "1.0";
+	public static final String UID = "1.1";
 
 	/**
 	 * The release version.
 	 *
 	 */
-	public static final String RELEASE = "1.0";
+	public static final String RELEASE = "1.1";
 
 }
