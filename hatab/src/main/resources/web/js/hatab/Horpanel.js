@@ -36,7 +36,7 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		/**
 		 * 
 		 */
-		bgcolor: function() {
+		bgcolor: _zkf = function() {
 			this.rerender();
 		},
 		/**
@@ -45,9 +45,7 @@ hatab.Horpanel = zk.$extends(zul.Widget, {
 		/**
 		 * 
 		 */
-		bgimage: function() {
-			this.rerender();
-		},
+		bgimage: _zkf,
 		/**
 		 * 
 		 */

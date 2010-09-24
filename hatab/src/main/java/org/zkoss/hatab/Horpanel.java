@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.zkoss.lang.Objects;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Events;
@@ -58,7 +59,7 @@ public class Horpanel extends XulElement {
 	 * @param bgcolor
 	 */
 	public void setBgcolor(String bgcolor){
-		if (bgcolor.equals(_bgcolor)) return;
+		if(Objects.equals(bgcolor, _bgcolor)) return;
 		_bgcolor = bgcolor;				
 		smartUpdate("bgcolor", _bgcolor);
 	}
@@ -76,7 +77,7 @@ public class Horpanel extends XulElement {
 	 * @param bgimage
 	 */
 	public void setBgimage(String bgimage){
-		if (bgimage.equals(_bgimage)) return;
+		if(Objects.equals(bgimage, _bgimage)) return;
 		_bgimage = bgimage;				
 		smartUpdate("bgimage", _bgimage);
 	}
@@ -95,12 +96,7 @@ public class Horpanel extends XulElement {
 	 */
 	public int getIndex() {
 		final Horbox horbox = getHorbox();
-		if (horbox == null)
-			return -1;
-		int j = 0;
-		for (Iterator it = horbox.getChildren().iterator();; ++j)
-			if (it.next() == this)
-				return j;
+		return horbox == null? -1 : horbox.getChildren().indexOf(this);
 	}
 	
 	/**
@@ -160,12 +156,9 @@ public class Horpanel extends XulElement {
 
 	protected void renderProperties(ContentRenderer renderer) throws IOException {
 		super.renderProperties(renderer);
-		if (_selected)
-			render(renderer, "selected", _selected);
-		if (_bgcolor != null && !_bgcolor.isEmpty())
-			render(renderer, "bgcolor", _bgcolor);
-		if (_bgimage != null && !_bgimage.isEmpty())
-			render(renderer, "bgimage", _bgimage);
+		render(renderer, "selected", _selected);
+		render(renderer, "bgcolor", _bgcolor);
+		render(renderer, "bgimage", _bgimage);
 	}
 	
 }
