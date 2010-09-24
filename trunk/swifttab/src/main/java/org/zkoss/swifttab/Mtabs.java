@@ -30,23 +30,15 @@ public class Mtabs extends Tabs {
 	private static final long serialVersionUID = 5598881168273491786L;
 
 	static {
-		addClientEvent(Mtabs.class, MoveTabEvent.NAME, CE_IMPORTANT | CE_NON_DEFERRABLE);
+		addClientEvent(Mtabs.class, MoveTabEvent.NAME, CE_IMPORTANT |
+			CE_NON_DEFERRABLE);
 	}
 
 	private boolean _noResponse = false;
 
 	/**
-	 * Trigger after user drag and move the index.
-	 *
-	 * @param event
-	 * @see MoveTabEvent#getMovedTab()
-	 */
-	public void onTabMove(MoveTabEvent event) {
-	}
-
-	/**
-	 * To change the tab's index , from startIndex to endIndex ,
-	 * index start with 0
+	 * To change the tab's index , from startIndex to endIndex , index start
+	 * with 0
 	 *
 	 * @param startIndex
 	 *            which the tab to move
@@ -72,16 +64,17 @@ public class Mtabs extends Tabs {
 			} else {
 				Tab referTab = (Tab) getChildren().get(refer);
 				panels.insertBefore(startTab.getLinkedPanel(),
-						referTab.getLinkedPanel());
+					referTab.getLinkedPanel());
 
 				insertBefore(startTab, referTab);
 
 			}
 
 			// avoid selected not work problem.
-			// because it change the selected status , but you can't re-set it agagin ,
+			// because it change the selected status , but you can't re-set it
+			// agagin ,
 			// so you need to change the index and change back that again.
-			getTabbox().setSelectedIndex( startIndex == 0 ? 1 : 0 );
+			getTabbox().setSelectedIndex(startIndex == 0 ? 1 : 0);
 			getTabbox().setSelectedTab(startTab);
 
 		} finally {
@@ -100,7 +93,7 @@ public class Mtabs extends Tabs {
 	}
 
 	/**
-	 * Here to handle onTabMove event.
+	 * Here to handle and post onTabMove event.
 	 */
 	public void service(AuRequest request, boolean everError) {
 		final String cmd = request.getCommand();
