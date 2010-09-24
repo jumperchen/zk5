@@ -11,6 +11,8 @@
  */
 package org.zkoss.swifttab;
 
+import java.util.Collections;
+
 import org.zkoss.swifttab.event.MoveTabEvent;
 import org.zkoss.zk.au.AuRequest;
 import org.zkoss.zk.ui.event.Events;
@@ -46,7 +48,6 @@ public class Mtabs extends Tabs {
 	 *            where the tab move to
 	 */
 	private void changeTab(int startIndex, int endIndex) {
-
 		if (startIndex == endIndex)
 			return;
 
