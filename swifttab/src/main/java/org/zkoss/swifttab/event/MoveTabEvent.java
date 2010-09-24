@@ -20,7 +20,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zul.api.Tab;
 
 /**
- *
+ * trigger when tab is moved by user's dragging.
  */
 public class MoveTabEvent extends Event {
 
@@ -40,6 +40,18 @@ public class MoveTabEvent extends Event {
 		return _endIndex;
 	}
 
+	/**
+	 * create a move tab event
+	 *
+	 * @param command
+	 *            event name
+	 * @param target
+	 *            event to the tabs
+	 * @param start
+	 *            the index before remove
+	 * @param end
+	 *            the index after remove
+	 */
 	public MoveTabEvent(String command, Component target, int start, int end) {
 		super(command, target);
 
@@ -48,10 +60,20 @@ public class MoveTabEvent extends Event {
 		_movedTab = (Tab) target.getChildren().get(start);
 	}
 
+	/**
+	 * the moved tab
+	 *
+	 * @return
+	 */
 	public Tab getMovedTab() {
 		return _movedTab;
 	}
 
+	/**
+	 * get the start/end paramter in the request and build a MoveTabEvent
+	 * @param request
+	 * @return
+	 */
 	public static final MoveTabEvent getMoveTabEvent(AuRequest request) {
 		final Component tabs = request.getComponent();
 
@@ -64,6 +86,7 @@ public class MoveTabEvent extends Event {
 			throw new IllegalArgumentException("startIndex/endIndex wrong.");
 		}
 
-		return new MoveTabEvent(request.getCommand(), tabs, startIndex, endIndex);
+		return new MoveTabEvent(request.getCommand(), tabs, startIndex,
+			endIndex);
 	}
 }

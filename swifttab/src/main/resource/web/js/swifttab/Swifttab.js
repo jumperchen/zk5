@@ -104,7 +104,7 @@
             dg._items.each(function(num){
                 var width = jq(this).width();
                 dg._bounds[dg._bounds.length] = (dg._widths[num] +
-                parseInt(width / 2, 10));
+                    parseInt(width / 2, 10));
                 dg._widths[dg._widths.length] = dg._widths[num] + width;
             });
             //default behavior
@@ -120,7 +120,7 @@
                 // but *2 is fiting the number . by TonyQ
             var currentOfsLeft = ofs[0] + dg.z_scrl[0] * 2,
                 indicator = _getIndex( dg._bounds, dg._widths[dg._sortIndex] +
-                currentOfsLeft);
+                    currentOfsLeft);
 
 
             dg.node.style.left = (currentOfsLeft) + "px";
@@ -133,7 +133,7 @@
 
                 if (indicator > dg._sortIndex) // move to right
                     dg.node.style.left = (currentOfsLeft -
-                    dg._items.eq(dg._sortIndex).width()) +
+                       dg._items.eq(dg._sortIndex).width()) +
                     "px";
                 else //move to left
                      dg.node.style.left = (dg._items.eq(dg._sortIndex - 1).

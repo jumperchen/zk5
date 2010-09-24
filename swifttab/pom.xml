@@ -4,7 +4,7 @@
 	<groupId>org.zkoss.swifttab</groupId>
 	<artifactId>swifttab</artifactId>
 	<packaging>jar</packaging>
-	<version>1.1</version>
+	<version>0.8.0</version>
 	<name> ZK components for swifttab</name>
 	<dependencies>
 		<dependency>
@@ -30,7 +30,7 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
-			
+
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>yuicompressor-maven-plugin</artifactId>
