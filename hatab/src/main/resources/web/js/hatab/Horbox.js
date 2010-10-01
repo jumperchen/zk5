@@ -27,7 +27,7 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 		/**
 		 * 
 		 */
-		tabWidth: _zkf = function () {
+		tabwidth: _zkf = function () {
 			this.rerender();
 		},
 		/**
@@ -36,7 +36,7 @@ hatab.Horbox = zk.$extends(zul.Widget, {
 		/**
 		 * 
 		 */
-		tabBuriedWidth: _zkf
+		tabburiedwidth: _zkf
 	},
 	/**
 	 * 

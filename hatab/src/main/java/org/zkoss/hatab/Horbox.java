@@ -31,12 +31,11 @@ import org.zkoss.zul.impl.XulElement;
 public class Horbox extends XulElement{
 	
 	// TODO:
-	// 3. transient
 	// 4. insertBefore
 	// 5. put style in domStyle_()
 	// 6. move widget dom to outer
 	
-	private transient Horpanel _selPanel;
+	private Horpanel _selPanel;
 	private String _tabWidth;
 	private String _tabBuriedWidth;
 	
@@ -59,7 +58,7 @@ public class Horbox extends XulElement{
 
 		if (Objects.equals(_tabWidth, tabWidth)) return;
 		_tabWidth = tabWidth;
-		smartUpdate("tabWidth", _tabWidth);
+		smartUpdate("tabwidth", _tabWidth);
 	}
 	
 	/**
@@ -80,7 +79,7 @@ public class Horbox extends XulElement{
 
 		if (Objects.equals(_tabBuriedWidth, tabBuriedWidth)) return;
 		_tabBuriedWidth = tabBuriedWidth;
-		smartUpdate("tabBuriedWidth", _tabBuriedWidth);
+		smartUpdate("tabburiedwidth", _tabBuriedWidth);
 	}
 	
 	// component logic //
@@ -149,8 +148,8 @@ public class Horbox extends XulElement{
 		if(_selPanel == null && !getChildren().isEmpty())
 			setSelectedIndex(getChildren().size() - 1);
 		
-		render(renderer, "tabWidth", _tabWidth);
-		render(renderer, "tabBuriedWidth", _tabBuriedWidth);
+		render(renderer, "tabwidth", _tabWidth);
+		render(renderer, "tabburiedwidth", _tabBuriedWidth);
 	}
 	
 }
