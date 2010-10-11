@@ -51,31 +51,42 @@
         $define: {
             pointstate: {},
             points: function(p,fireupdate) {
-                var terms = (p || "").split(",");
-                for (var i = 0, len = terms.length; i < len; ++i) {
-                    if (zkex.wire.Wirebox.POINTS[terms[i]]) {
-                        this._addPoint(terms[i]);
-                    } else if (terms[i] == zkex.wire.Wirebox.POINT_ALL) {
-                        for (var point in zkex.wire.Wirebox.POINTS) {
-                            this._addPoint(point);
-                        }
-                    } else {
-                        zk.error("wirebox didnt support point[" + terms[i] + "]");
-                    }
+                if(this.$n()){
+                    this._drawPoints(p);
+                    //TODO fire event to notify server here
                 }
-
+                return p || "";
             }
         },
         _updatePoints: function() {
-            var jqthis = jq(this.$n()), offset = jqthis.offset(), width = jqthis.width(), height = jqthis.height(), margin = [2, 7];
+            var jqthis = jq(this.$n()), offset = jqthis.offset(),
+                width = jqthis.width(), height = jqthis.height(),
+                    margin = [8, 7];
             for (var point in this._pointstate) {
-                var termoffset = Point.getOffset(0, 0, width, height, point, margin); //0,0 because it's relative to parent.
+                var termoffset = Point.getOffset(0, 0, width, height, point,
+                    margin); //0,0 because it's relative to parent.
+
                 jq(this.$n("term-" + point)).css({
                     "left": jq.px(termoffset[0]),
                     "top": jq.px(termoffset[1])
                 });
             }
 
+        },
+        _drawPoints:function(p){
+            var terms = (p || "").split(",");
+            for (var i = 0, len = terms.length; i < len; ++i) {
+                if (zkex.wire.Wirebox.POINTS[terms[i]]) {
+                    this._addPoint(terms[i]);
+                } else if (terms[i] == zkex.wire.Wirebox.POINT_ALL) {
+                    for (var point in zkex.wire.Wirebox.POINTS) {
+                        this._addPoint(point);
+                    }
+                } else {
+                    zk.error("wirebox didnt support point[" + terms[i] + "]");
+                }
+            }
+            this._updatePoints();
         },
         _checkPoint: function(point) {
             return zkex.wire.Wirebox.POINTS[point] && !this._pointstate[point];
@@ -109,23 +120,14 @@
         bind_: function(desktop, skipper, after) {
             this.$supers(zkex.wire.Wirebox, 'bind_', arguments);
 
-           this._addPoint("*");
-           this._updatePoints();
+            if(this._points) this._drawPoints(this._points);
         },
         getZclass: function() {
             return this._zclass || "z-wirebox";
         },
         unbind_: function() {
             this.$supers(zkex.wire.Wirebox, 'unbind_', arguments);
-            //this.domListen_(node, 'onMouseOver').domListen_(node, 'onMouseOut');
         }
-        //TODO mouse over
-        //,_doMouseOver: function (evt) {
-        //	if (this._pointElement)
-        //		jq(this._pointElement).show();
-        //},
-        //_doMouseOut: function (evt) {
-        //}
     }, {
         POINT_ALL: "*",
         POINTS: {
