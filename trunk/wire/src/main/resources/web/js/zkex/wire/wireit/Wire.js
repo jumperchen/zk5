@@ -1,46 +1,39 @@
-/**
- * This one is getting from wireit "Wire.js" v0.6.0a  2010/10/1 1754
- * TonyQ
- */
 /*global YAHOO */
 /**
+ * http://github.com/neyric/wireit/blob/v0.6.0a/js/RightSquareArrowWire.js
+ * commit  c9b903abad6bb62140ae
  * The wire widget that uses a canvas to render
  * @class Wire
  * @namespace WireIt
  * @extends WireIt.CanvasElement
  * @constructor
- * //potix tonyq
- * @param  {offset}    point1   Source terminal
- * @param  {offset}    point2   Target terminal
+ * @param  {WireIt.Terminal}    terminal1   Source terminal
+ * @param  {WireIt.Terminal}    terminal2   Target terminal
  * @param  {HTMLElement} parentEl    Container of the CANVAS tag
- * @param  {Obj}      options      Wire configuration (see options property)
+ * @param  {Obj}                options      Wire configuration (see options property)
  */
-var WireIt = {};
-//potix tonyq - increase the paramter
-WireIt.Wire = function( id,point1, point2, options) {
+WireIt.Wire = function( terminal1, terminal2, parentEl, options) {
 
    /**
     * Reference to the parent dom element
     * @property parentEl
     * @type HTMLElement
     */
-//potix tonyq
-//   this.parentEl = parentEl;
+   this.parentEl = parentEl;
 
-//potix tonyq
    /**
     * Source terminal
     * @property terminal1
-    * @type offset
+    * @type WireIt.Terminal
     */
-   this.point1 = point1;
-//potix tonyq
+   this.terminal1 = terminal1;
+
    /**
     * Target terminal
     * @property terminal2
-    * @type offset
+    * @type WireIt.Terminal || WireIt.TerminalProxy
     */
-   this.point2 = point2;
+   this.terminal2 = terminal2;
 
 
    /**
@@ -48,32 +41,28 @@ WireIt.Wire = function( id,point1, point2, options) {
     * You can register this event with myWire.eventWireClick.subscribe(function(e,params) { var wire = params[0], xy = params[1];}, scope);
     * @event eventMouseClick
     */
-//potix tonyq
-//   this.eventMouseClick = new YAHOO.util.CustomEvent("eventMouseClick");
+   this.eventMouseClick = new YAHOO.util.CustomEvent("eventMouseClick");
 
 	/**
     * Event that is fired when the mouse enter the wire
     * You can register this event with myWire.eventMouseIn.subscribe(function(e,params) { var wire = params[0], xy = params[1];}, scope);
     * @event eventMouseIn
     */
-//potix tonyq
-//	this.eventMouseIn = new YAHOO.util.CustomEvent("eventMouseIn");
+	this.eventMouseIn = new YAHOO.util.CustomEvent("eventMouseIn");
 
 	/**
     * Event that is fired when the mouse exits the wire
     * You can register this event with myWire.eventMouseOut.subscribe(function(e,params) { var wire = params[0], xy = params[1];}, scope);
     * @event eventMouseOut
     */
-//potix tonyq
-//	this.eventMouseOut = new YAHOO.util.CustomEvent("eventMouseOut");
+	this.eventMouseOut = new YAHOO.util.CustomEvent("eventMouseOut");
 
 	/**
     * Event that is fired when the mouse moves inside the wire
     * You can register this event with myWire.eventMouseMove.subscribe(function(e,params) { var wire = params[0], xy = params[1];}, scope);
     * @event eventMouseMove
     */
-//potix tonyq
-//	this.eventMouseMove = new YAHOO.util.CustomEvent("eventMouseMove");
+	this.eventMouseMove = new YAHOO.util.CustomEvent("eventMouseMove");
 
 
 
@@ -81,30 +70,23 @@ WireIt.Wire = function( id,point1, point2, options) {
    this.setOptions(options || {});
 
    // Create the canvas element and append it to parentEl
-//potix tonyq
-//   WireIt.Wire.superclass.constructor.call(this, this.parentEl);
+   WireIt.Wire.superclass.constructor.call(this, this.parentEl);
 
    // CSS classname
-   //YAHOO.util.Dom.addClass(this.element, this.className);
+   YAHOO.util.Dom.addClass(this.element, this.className);
 
-   this.area = _getArea(point1,point2);
-   this.element = _createConvas(id,this.className,
-       this.area.offsetNW,this.area.width, this.area.height ); //drawer
    // Label
-//potix tonyq  (maybe we should support this in after )
-//	if(this.label) {
-//		this.renderLabel();
-//	}
+	if(this.label) {
+		this.renderLabel();
+	}
 
    // Call addWire on both terminals
-//potix tonyq
-//   this.terminal1.addWire(this);
-//   this.terminal2.addWire(this);
-
+   this.terminal1.addWire(this);
+   this.terminal2.addWire(this);
 };
 
-//potix tonyq
-WireIt.Wire.prototype = {
+
+YAHOO.lang.extend(WireIt.Wire, WireIt.CanvasElement, {
 
 	/**
     * @property xtype
@@ -112,8 +94,7 @@ WireIt.Wire.prototype = {
     * @default "WireIt.Wire"
     * @type String
     */
-   //potix tonyq
-   //xtype: "WireIt.Wire",
+   xtype: "WireIt.Wire",
 
 	/**
     * @property className
@@ -177,8 +158,7 @@ WireIt.Wire.prototype = {
     * @default null
     * @type String
     */
-    //potix tonyQ
-	//label: null,
+	label: null,
 
 	/**
     * @property labelStyle
@@ -186,7 +166,7 @@ WireIt.Wire.prototype = {
     * @default null
     * @type Object
     */
-	//labelStyle: null,
+	labelStyle: null,
 
 	/**
     * @property labelEditor
@@ -194,7 +174,7 @@ WireIt.Wire.prototype = {
     * @default null
     * @type Object
     */
-	//labelEditor: null,
+	labelEditor: null,
 
    /**
     * Set the options by putting them in this (so it overrides the prototype default)
@@ -211,7 +191,7 @@ WireIt.Wire.prototype = {
    /**
     * Remove a Wire from the Dom
     * @method remove
-    //potix tonyQ
+    */
    remove: function() {
 
       // Remove the canvas from the dom
@@ -237,7 +217,6 @@ WireIt.Wire.prototype = {
 			this.labelEl.innerHTML = "";
 		}
    },
-   */
 
 
    /**
@@ -245,11 +224,10 @@ WireIt.Wire.prototype = {
     * @method getOtherTerminal
     * @param   {WireIt.Terminal} terminal
     * @return  {WireIt.Terminal} terminal    the terminal that is NOT passed as argument
-    //potix tonyq
+    */
    getOtherTerminal: function(terminal) {
       return (terminal == this.terminal1) ? this.terminal2 : this.terminal1;
    },
-   */
 
 
 
@@ -311,9 +289,9 @@ WireIt.Wire.prototype = {
 
       this.draw();
 
-	//	if(this.label) {
-	//		this.positionLabel();
-	//	}
+		if(this.label) {
+			this.positionLabel();
+		}
    },
 
 	/**

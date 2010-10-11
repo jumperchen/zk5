@@ -20,6 +20,7 @@ import org.zkoss.zk.ui.sys.ContentRenderer;
 
 public class Wire extends HtmlBasedComponent {
 
+
 	private static final long serialVersionUID = 20091211122313L;
 
 	private Wirebox _in;
