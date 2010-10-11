@@ -16,7 +16,6 @@ package org.zkoss.zkex.wire;
 import java.io.IOException;
 
 import org.zkoss.lang.Objects;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.HtmlBasedComponent;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.sys.ContentRenderer;

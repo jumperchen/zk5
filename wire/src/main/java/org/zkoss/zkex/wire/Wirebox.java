@@ -16,7 +16,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.zkoss.lang.Objects;
 import org.zkoss.zk.au.AuRequest;
 import org.zkoss.zk.ui.event.Events;
@@ -54,15 +53,14 @@ public class Wirebox extends XulElement implements Serializable {
 	public Wire getWire(String joint){
 		List wires = getWires();
 
-		Wire unwiredWire = null;
 		for(int i=0;i<wires.size();++i){
 			Wire w = (Wire) wires.get(i);
 
 			String[] joints=w.getJoint().split(",");
 
-			if(w.getIn()==this && StringUtils.equals(joints[0],joint) ){
+			if(w.getIn()==this && joints[0]!= null && joints[0].equals(joint) ){
 				return w;
-			}else if(w.getOut() == this && StringUtils.equals(joints[1],joint)){
+			}else if(w.getOut() == this && joints[1] != null && joints[1].equals(joint)){
 				return w;
 			}
 		}
@@ -84,15 +82,11 @@ public class Wirebox extends XulElement implements Serializable {
 		return _wires;
 	}
 
-	private void setPoints(String points, boolean ignoreUpdate) {
+	public void setPoints(String points) {
 		_points = points;
-		if (!ignoreUpdate && !Objects.equals(_points, points)) {
+		if ( !Objects.equals(_points, points)) {
 			smartUpdate("points", _points);
 		}
-	}
-
-	public void setPoints(String points) {
-		setPoints(points, false);
 	}
 
 	protected void renderProperties(ContentRenderer renderer) throws IOException {
@@ -117,7 +111,7 @@ public class Wirebox extends XulElement implements Serializable {
 			// create wire and add it here
 			WireEvent evt = WireEvent.getOnWireEvent(request);
 			Events.postEvent(evt);
-		}else if(StringUtils.equals(cmd,WireEvents.ON_UNWIRE)){
+		}else if(cmd.equals(WireEvents.ON_UNWIRE)){
 			WireEvent evt = WireEvent.getUnWireEvent(request);
 			Events.postEvent(evt);
 		}else
