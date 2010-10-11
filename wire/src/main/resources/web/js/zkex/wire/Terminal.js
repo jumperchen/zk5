@@ -178,7 +178,7 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 		}
 	}
 
-wire.Terminal = zk.$extends(zk.Widget, {
+zkex.wire.Terminal = zk.$extends(zk.Widget, {
 	$init: function (uuid, id, wirable, n, width, height) {
 		var element = document.createElement("div"),
 			parent = n.parentNode;

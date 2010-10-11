@@ -14,7 +14,7 @@ function (out, skipper) {
 	var zcls = this.getZclass(),
 		uuid = this.uuid;
 
-	out.push('<div', this.domAttrs_(), '><div id="', uuid, '-cave" class="',zcls, '-cnt">');
+	out.push('<div', this.domAttrs_(), '><div id="', uuid, '-cave" class="',zcls, '-cave">');
 		for (var w = this.firstChild; w; w = w.nextSibling)
 				w.redraw(out);
 

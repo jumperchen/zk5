@@ -6,11 +6,16 @@ canvas {
 	*z-index: -1;
 }
 
-.z-terminal {
+.z-wirebox{
+	padding:10px;  /*padding for terminal*/
+	position:relative;
+}
+
+.z-wirebox {
 	z-index: 50;
 }
 
-.z-terminal-node {
+.z-wirebox-term {
 	position: absolute;
 	width: 10px;
 	height: 10px;
@@ -18,6 +23,7 @@ canvas {
 	border: solid 1px #1111FA;
 	display: block;
 	z-index: 70;
+	cursor:pointer;
 }
 
 .z-canvas {
