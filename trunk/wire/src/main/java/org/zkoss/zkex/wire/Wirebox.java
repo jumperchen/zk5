@@ -11,4 +11,8 @@ public class Wirebox extends XulElement {
 	protected void renderProperties(ContentRenderer renderer) throws IOException {
 		super.renderProperties(renderer);
 	}
+
+	public String getZclass(){
+		return this._zclass ==null ? "z-wirebox" : this._zclass;
+	}
 }
