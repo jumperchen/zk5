@@ -11,10 +11,8 @@
  */
 package org.zkoss.zkex.wire.event;
 
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.zkoss.zk.au.AuRequest;
 import org.zkoss.zk.mesg.MZk;
 import org.zkoss.zk.ui.Component;
