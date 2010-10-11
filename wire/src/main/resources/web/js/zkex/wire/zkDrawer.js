@@ -1,32 +1,44 @@
-//function getXY(terminal, parentNode, joint) {
-//}
-
-//function setDirection(isTargetNode, joint) {
-//}
+/*
+ * zkDrawer.js
+ *
+ * Purpose:
+ *
+ * Description:
+ *
+ * History: 2010/10/6, Created by TonyQ
+ *
+ * Copyright (C) 2010 Potix Corporation. All Rights Reserved.
+ */
 
 /**
  * Here we go throught wireit's interface .
  */
-
-zkex.wire.Drawer=function(parent,className){
-    this.element = null; // for canvas
-    this.parent = parent ; //dom parent for create
-    this.className = className;
-};
-zkex.wire.Drawer.prototype={
+zkex.wire.Drawer = zk.$extends(zk.Object, {
+    _id:null,
+    _element:null,
+    _parent:null,
+    _className:null,
+    $init:function(id,parent,className){
+        this.$supers(zkex.wire.Drawer, '$init', arguments);
+        this._id = id;
+        this._element = null; // for canvas
+        this._parent = parent ; //dom parent for create
+        this._className = className;
+    },
     _createCanvas:function(left,top,width,height){
         var canvas = zk.canvas.Canvas.create(width, height);
-        if(this.className) canvas.setAttribute('class', this.className);
+        if(this._id) canvas.id = this._id;
+        if(this._className) canvas.setAttribute('class', this._className);
         jq(canvas).css({
             left: jq.px(left) ,
             top: jq.px(top)
         });
-        if(this.parent) this.parent.appendChild(canvas);
+        if(this._parent) this._parent.appendChild(canvas);
         return canvas;//convas.getContext("2d")
     },
     _getCanvas:function(left,top,width,height){
-         this.element = this.element || this._createCanvas(left,top,width,height);
-         return this.element;
+         this._element = this._element || this._createCanvas(left,top,width,height);
+         return this._element;
     },
     //potix tonyq from http://github.com/neyric/wireit/blob/v0.6.0a/js/CanvasElement.js
     SetCanvasRegion: jq.browser.msie ? // IE
@@ -41,8 +53,8 @@ zkex.wire.Drawer.prototype={
              var el = this._getCanvas(left,top,width,height);
              var newCanvas= this._createCanvas(left,top,width,height);
 
-             this.parent.replaceChild(newCanvas,el);
-             this.element = newCanvas;
+             this._parent.replaceChild(newCanvas,el);
+             this._element = newCanvas;
           } :
           // Other (Firefox)
           function(left,top,width,height){
@@ -51,9 +63,12 @@ zkex.wire.Drawer.prototype={
           }),
     //potix tonyq  from http://github.com/neyric/wireit/blob/v0.6.0a/js/CanvasElement.js
     getContext: function(mode) {
-       return this.element ? this.element.getContext(mode || "2d") : null;
+       return this._element ? this._element.getContext(mode || "2d") : null;
+    },
+    destroy:function(){
+        jq(this._element).remove();
     }
-};
+});
 
 
 /**

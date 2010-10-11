@@ -1,11 +1,11 @@
 /*
  * Version.java
  *
- * Purpose: the version of wire
+ * Purpose:
  *
  * Description:
  *
- * History: 2010/9/21, Created by TonyQ
+ * History: 2010/10/6, Created by TonyQ
  *
  * Copyright (C) 2010 Potix Corporation. All Rights Reserved.
  */

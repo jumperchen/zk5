@@ -16,10 +16,12 @@ package org.zkoss.zkex.wire;
 import java.io.IOException;
 
 import org.zkoss.zk.ui.HtmlBasedComponent;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.sys.ContentRenderer;
+import org.zkoss.zkex.wire.event.WireEvent;
+import org.zkoss.zkex.wire.event.WireEvents;
 
 public class Wire extends HtmlBasedComponent {
-
 
 	private static final long serialVersionUID = 20091211122313L;
 
@@ -38,13 +40,13 @@ public class Wire extends HtmlBasedComponent {
 		super.renderProperties(renderer);
 
 		if (_in != null) {
-			//we dont redner "in" because it will cause javascript error in ie
-			//"in" in javascript is a preserved keyboard.
+			// we dont redner "in" because it will cause javascript error in ie
+			// "in" in javascript is a preserved keyboard.
 			render(renderer, "inId", _in.getUuid());
 
 		}
 		if (_out != null) {
-			//keep same style with in
+			// keep same style with in
 			render(renderer, "outId", _out.getUuid());
 		}
 		if (_joint != null) { // if they didnt give joint , we dont show it.
@@ -90,7 +92,7 @@ public class Wire extends HtmlBasedComponent {
 	 *            wirebox's id
 	 */
 	public void setIn(String id) {
-		this._in = (Wirebox) this.getFellow(id); // TODO check this works .
+		this._in = (Wirebox) this.getFellow(id);
 	}
 
 	/**
@@ -109,6 +111,9 @@ public class Wire extends HtmlBasedComponent {
 	 */
 	public void setOut(Wirebox _out) {
 		this._out = _out;
+		if (getParent() == null) {
+			attach();
+		}
 	}
 
 	/**
@@ -140,11 +145,9 @@ public class Wire extends HtmlBasedComponent {
 	 * <li>
 	 * bezierArrow</li>
 	 * <li>
-	 * leftSquareArrow
-	 * </li>
+	 * leftSquareArrow</li>
 	 * <li>
-	 * rightSquareArrow
-	 * </li>
+	 * rightSquareArrow</li>
 	 * </ul>
 	 * </li>
 	 * <li>
@@ -170,11 +173,17 @@ public class Wire extends HtmlBasedComponent {
 		this._config = _config;
 	}
 
-	@Override
+	public void attach() {
+		if (getParent() == null && _out != null && _out.getParent() != null) {
+			setParent(_out.getParent());
+		}
+	}
+
 	public void detach() {
+		WireEvent wireEvent = new WireEvent(WireEvents.ON_UNWIRE, _out, this, null);
+		Events.postEvent(wireEvent);
 		super.detach();
 
-		// TODO here to remve the element , and fire a unwire event to out.
 	}
 
 	public String getJoint() {

@@ -1,3 +1,14 @@
+/*
+ * ArrowWire.js
+ *
+ * Purpose:
+ *
+ * Description:
+ *
+ * History: 2010/10/6, Created by TonyQ
+ *
+ * Copyright (C) 2010 Potix Corporation. All Rights Reserved.
+ */
 /**
  * modified from http://github.com/neyric/wireit/blob/v0.6.0a/js/ArrowWire.js
  * commit  c9b903abad6bb62140ae

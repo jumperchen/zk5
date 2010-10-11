@@ -1,13 +1,13 @@
-/*  Wire.js
+/*
+ * Wire.js
  *
- Purpose: To provide a movable and lighter tab.
- Description:
- Reference to WireIt JS Wiring Liberary, version 0.5.0.
- http://javascript.neyric.com/wireit/
- History:
- Dec 11, 2009 12:11:50 PM, Created by joy
- 2010/9/27 , Updated by TonyQ
- Copyright (C) 2010 Potix Corporation. All Rights Reserved.
+ * Purpose:
+ *
+ * Description:
+ *
+ * History: 2010/10/6, Created by TonyQ
+ *
+ * Copyright (C) 2010 Potix Corporation. All Rights Reserved.
  */
 (function() {
 
@@ -46,22 +46,24 @@
         },
         bind_: function(desktop, skipper, after) {
             this.$supers(zkex.wire.Wire, 'bind_', arguments);
-
-            var inbox = this.getIn(), outbox = this.getOut();
-            inbox.addPoint(this._joint[0]);
-            outbox.addPoint(this._joint[1]);
-            //addPoint
-            this.drawer = new zkex.wire.Drawer(document.body,this._config["className"]);
-
-            var drawmethod = zkex.wire.Drawmethod[this._config["drawingMethod"]];
-            if (drawmethod) {
-                drawmethod.draw(this.drawer, inbox.getPointPosition_(this._joint[0]), outbox.getPointPosition_(this._joint[1]), this.getConfig());
-            }else{
-                zk.error("draw method not found :["+this._config["drawingMethod"]+"]");
-            }
-
+            this.drawWire();
         },
+        drawWire:function(){
+            var inbox = this.getIn(), outbox = this.getOut();
+            if(!this.drawer && inbox && outbox){
+                inbox.addPoint(this._joint[0]);
+                outbox.addPoint(this._joint[1]);
 
+                this.drawer = new zkex.wire.Drawer(this.uuid,document.body,this._config["className"]);
+
+                var drawmethod = zkex.wire.Drawmethod[this._config["drawingMethod"]];
+                if (drawmethod) {
+                    drawmethod.draw(this.drawer, inbox.getPointPosition_(this._joint[0]), outbox.getPointPosition_(this._joint[1]), this.getConfig());
+                }else{
+                    zk.error("draw method not found :["+this._config["drawingMethod"]+"]");
+                }
+            }
+        },
         unbind_: function() {
             this.$supers(zkex.wire.Wire, 'unbind_', arguments);
         }
@@ -77,7 +79,7 @@
             borderwidth: 1,
             color: 'rgb(173, 216, 230)',
             bordercolor: '#0000ff',
-            drawingMethod:'straight',
+            drawingMethod:'rightSquareArrow',
             // only beziers use these option below
             coeffMulDirection: 100,
             directionIn:[0,1],
