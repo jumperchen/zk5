@@ -22,9 +22,20 @@
             this.parent = parent;
 
             this._element = this.createPoint(this._id,this._zclass);
+
             this._element.addClass(zkex.wire.Point.WIRECLASS);
             this._element[0].obj = this;
             jq(parent).append(this._element);
+
+            this._updatePosition(this._element,[0,0]);
+
+            this._scissors = this.createScissors(this._id,this._zclass);
+            this._scissors[0].obj = this;
+            jq(parent).append(this._scissors);
+
+            this._updatePosition(this._scissors,[-20,-20]);
+            this._scissors.show();
+
             this._drag = new zk.Draggable(this, this._element, {
                 handle: this._element,
                 fireOnMove: false,
@@ -36,14 +47,18 @@
                 zIndex: 99999
             });
         },
-        updatePosition:function(ofs){
-            var box = jq(this.parent), offset = ofs || box.offset(),
+        updatePosition:function(){
+           // this._updatePosition(this._element);
+           // this._updatePosition(this._scissors,[20,20]);
+        },
+        _updatePosition:function(_element,_margin){
+            var box = jq(this.parent),
                 width = box.width(), height = box.height(),
-                    margin = [8, 7];
+                    margin = _margin || [8, 7];
             var termoffset = zkex.wire.Point.getOffset(0, 0, width, height,
                 this._point, margin); //0,0 because it's relative to parent.
 
-            this._element.css({
+            _element.css({
                 "left": jq.px(termoffset[0]),
                 "top": jq.px(termoffset[1])
             });
@@ -56,7 +71,10 @@
             return [ofs.left,ofs.top];
         },
         createPoint:function(uuid,clz){
-            return jq("<div id='" + uuid + "' class='" + clz + "'></div>");
+            return jq("<div id='" + uuid + "-point-"+this._point+"' class='" + clz + "-point'></div>");
+        },
+        createScissors:function(uuid,clz){
+            return jq("<div style='display:none;' id='" + uuid + "-scissors-"+ this._point + "' class='" + clz + "-scissors'></div>");
         },
         getCenterOffset:function(){
             var ofs = this.offset();
@@ -102,18 +120,19 @@
          * @param {Object} joint
          */
         getOffset: function(left, top, width, height, point, margin) {
+            var padding = 6;
             margin = margin || [0, 0];
             if (point.indexOf("e") != -1) { //right
-                Xcenter = left + width + margin[0];
+                Xcenter = left + width + padding + margin[0];
             } else if (point.indexOf("w") != -1) { //left
-                Xcenter = left;
+                Xcenter = left - margin[0];
             } else { //center
                 Xcenter = left + width / 2;
             }
             if (point.indexOf("s") != -1) { //down
-                Ycenter = top + height + margin[1];
+                Ycenter = top + height + padding + margin[1];
             } else if (point.indexOf("n") != -1) { //top
-                Ycenter = top;
+                Ycenter = top - margin[1];
             } else { //center
                 Ycenter = top + height / 2;
             }
@@ -130,7 +149,7 @@
             "sw": 7,
             "s": 8,
             "se": 9
-        },
+        }
     });
 
 })();

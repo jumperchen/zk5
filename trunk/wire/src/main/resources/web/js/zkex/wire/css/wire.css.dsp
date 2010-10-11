@@ -42,13 +42,13 @@ canvas {
 	border: 0;
 }
 
-.z-terminal-scissors {
+.z-wirebox-scissors {
 	border: 0;
 	position: absolute;
 	width: 16px;
 	height: 16px;
 	background-color: transparent;
-	background-image: url(${c:encodeURL('~./img/wire/cut.png')});
+	background-image: url(${c:encodeURL('~./img/zkex/wire/cut.png')});
 	cursor: pointer;
 	display: none;
 	z-index: 90;

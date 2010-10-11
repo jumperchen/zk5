@@ -13,12 +13,11 @@
     zkex.wire.Wirebox = zk.$extends(zk.Widget, {
         _points:'',
         $define: {
-            pointstate: {},
+            pointstate: {}
         },
         _updatePoints: function() {
-            var offset = jq(this.$n()).offset();
             for (var point in this._pointstate) {
-                this._pointstate[point].updatePosition(offset);
+                this._pointstate[point].updatePosition();
             }
         },
         setPoints:function(p){
@@ -26,10 +25,10 @@
                 var terms = (p || "").split(",");
                 for (var i = 0, len = terms.length; i < len; ++i) {
                     if (zkex.wire.Point.allowPoint(terms[i])) {
-                        this.addPoint(terms[i], true);
+                        this.addPoint(terms[i]);
                     } else if (terms[i] == zkex.wire.Wirebox.POINT_ALL) {
                         for (var point in zkex.wire.Wirebox.POINTS) {
-                            this.addPoint(point, true);
+                            this.addPoint(point);
                         }
                         this._updatePoints();
                         this._points = zkex.wire.Wirebox.POINT_ALL;
@@ -56,21 +55,18 @@
                 return this._pointstate[point].getCenterOffset();
             }
         },
-        addPoint: function(point,ignoreUpdatePosition) {
+        addPoint: function(point) {
             var term,scissors,success = false;
             if (point == zkex.wire.Wirebox.POINT_ALL) {
                 for (var point in zkex.wire.Wirebox.POINTS) {
-                    this.addPoint(point,true);
+                    this.addPoint(point);
                 }
                 success = true;
             }
             if (this._checkPoint(point)) {
-                var pointel = new zkex.wire.Point(this,this.uuid+"-point-"+point,this.getZclass()+"-point",point);
+                var pointel = new zkex.wire.Point(this,this.uuid , this.getZclass(),point);
                 this._pointstate[point] = pointel;
                 success = true;
-            }
-            if(!ignoreUpdatePosition && success){
-                this._updatePoints();
             }
             return success;
         },
@@ -87,7 +83,7 @@
         },
         unbind_: function() {
             this.$supers(zkex.wire.Wirebox, 'unbind_', arguments);
-        },
+        }
     }, {
         POINT_ALL: "*",
         STATE_WAIT: 1,
