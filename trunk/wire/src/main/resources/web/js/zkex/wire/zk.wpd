@@ -12,7 +12,13 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 -->
 <package name="zkex.wire" language="xul/html" depends="zul.wgt,zk.canvas">
 	<script src="zkDrawer.js" />
-	<script src="Wirer.js" />
+	<script src="wireit/Wire.js" />
+	<script src="wireit/ArrowWire.js" />
+	<script src="wireit/BezierWire.js" />
+	<script src="wireit/BezierArrowWire.js" />
+	<script src="wireit/LeftSquareArrowWire.js" />
+	<script src="wireit/RightSquareArrowWire.js" />
+
 	<widget name="Wire"/>
 	<widget name="Wirebox"/>
 </package>
