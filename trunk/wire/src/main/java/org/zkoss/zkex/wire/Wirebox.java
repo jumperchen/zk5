@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.zkoss.lang.Objects;
 import org.zkoss.zk.au.AuRequest;
 import org.zkoss.zk.ui.event.Events;
@@ -44,6 +45,24 @@ public class Wirebox extends XulElement implements Serializable {
 		if (!_wires.contains(w))
 			_wires.add(w);
 
+	}
+
+	public Wire getWire(String joint){
+		List wires = getWires();
+
+		Wire unwiredWire = null;
+		for(int i=0;i<wires.size();++i){
+			Wire w = (Wire) wires.get(i);
+
+			String[] joints=w.getJoint().split(",");
+
+			if(w.getIn()==this && StringUtils.equals(joints[0],joint) ){
+				return w;
+			}else if(w.getOut() == this && StringUtils.equals(joints[1],joint)){
+				return w;
+			}
+		}
+		return null;
 	}
 
 	/* package */void removeWire(Wire w) {
@@ -93,7 +112,10 @@ public class Wirebox extends XulElement implements Serializable {
 			// create wire and add it here
 			WireEvent evt = WireEvent.getOnWireEvent(request);
 			Events.postEvent(evt);
-		} else
+		}else if(StringUtils.equals(cmd,WireEvents.ON_UNWIRE)){
+			WireEvent evt = WireEvent.getUnWireEvent(request);
+			Events.postEvent(evt);
+		}else
 			super.service(request, everError);
 	}
 }

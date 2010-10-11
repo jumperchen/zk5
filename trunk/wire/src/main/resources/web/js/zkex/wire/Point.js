@@ -15,38 +15,91 @@
         _zclass:'',
         _point:'',
         parent:null,
-        $init:function(parent,id,clz,point){
+        _editable:false,
+        _wirecount:0,
+        $init:function(parent,id,clz,point,editable){
             this._id = id;
             this._zclass = clz;
             this._point = point;
             this.parent = parent;
-
+            if (editable) this._editable = true;
             this._element = this.createPoint(this._id,this._zclass);
 
             this._element.addClass(zkex.wire.Point.WIRECLASS);
             this._element[0].obj = this;
             jq(parent).append(this._element);
-
             this._updatePosition(this._element,[0,0]);
 
-            this._scissors = this.createScissors(this._id,this._zclass);
-            this._scissors[0].obj = this;
-            jq(parent).append(this._scissors);
-
-            this._updatePosition(this._scissors,[-20,-20]);
-            this._scissors.show();
-
-            this._drag = new zk.Draggable(this, this._element, {
-                handle: this._element,
-                fireOnMove: false,
-                ghosting: false,
-                starteffect:zkex.wire.Point._dragstart,
-                draw:zkex.wire.Point._dragdraw,
-                endghosting: zk.$void,
-                endeffect: zkex.wire.Point._dragend,
-                zIndex: 99999
-            });
+            if (this._editable) {
+                this._makeEditable();
+            }
         },
+        addWireCount:function(){
+            this._wirecount++;
+        },
+        decreaseWireCount:function(){
+            if(this._wirecount>0) this._wirecount--;
+        },
+        getWireCount:function(){
+            return this._wirecount;
+        },
+        getEditable:function(){
+            return this._editable;
+        },
+        setEditable:function(editable){
+            if (this._editable != !!editable) { //!! for boolean
+                if (editable) {
+                    this._makeEditable();
+                }else{
+                    this._cancelEditable();
+                }
+                this._editable = !!editable;
+            }
+        },
+        _makeEditable:function(){
+        	if(!this._scissors){
+        		var that = this;
+	            this._scissors = this.createScissors(this._id,this._zclass);
+	            this._scissors[0].obj = this;
+	            jq(this.parent).append(this._scissors);
+	            this._scissors.hide();
+	            this._updatePosition(this._scissors,[-20,-20]);
+	            jq(this._element).hover(function(){
+	            	if(that.clearing) window.clearTimeout(that.clearing);
+                    if(that._wirecount > 0 ) that._scissors.show();
+	            },function(){
+	            	if(that._wirecount > 0 ) that.clearing = setTimeout(
+                        function(){ that._scissors.hide(); },1000);
+	            })
+                jq(this._scissors).click(function(){
+                    that.parent.fire("onUnWire", { boxid:that._id,
+                        joint:that._point });
+                })
+        	}
+
+            if(!this._drag){
+	            this._drag = new zk.Draggable(this, this._element, {
+	                handle: this._element,
+	                fireOnMove: false,
+	                ghosting: false,
+	                starteffect:zkex.wire.Point._dragstart,
+	                draw:zkex.wire.Point._dragdraw,
+	                endghosting: zk.$void,
+	                endeffect: zkex.wire.Point._dragend,
+	                zIndex: 99999
+	            });
+            }
+        },
+        _cancelEditable:function(){
+        	if(this._scissors){
+        		jq(this._scissors).hide();
+        		jq(this._element).unbind("hover");
+        	}else{
+        		this._drag.distory();
+        		this._drag = null ;
+        	}
+        },
+
         updatePosition:function(){
            // this._updatePosition(this._element);
            // this._updatePosition(this._scissors,[20,20]);
@@ -71,25 +124,30 @@
             return [ofs.left,ofs.top];
         },
         createPoint:function(uuid,clz){
-            return jq("<div id='" + uuid + "-point-"+this._point+"' class='" + clz + "-point'></div>");
+            return jq("<div id='" + uuid + "-point-"+this._point+"' class='"
+                + clz + "-point'></div>");
         },
         createScissors:function(uuid,clz){
-            return jq("<div style='display:none;' id='" + uuid + "-scissors-"+ this._point + "' class='" + clz + "-scissors'></div>");
+            return jq("<div style='display:none;' id='" + uuid + "-scissors-"
+                + this._point + "' class='" + clz + "-scissors'></div>");
         },
         getCenterOffset:function(){
             var ofs = this.offset();
-            return [ofs[0]+this._element.width()/2,ofs[1]+this._element.height()/2]
+            return [ofs[0]+this._element.width()/2,ofs[1]+
+                this._element.height()/2]
         }
     },{
         _dragstart:function(dg){
-           dg.drawer = new zkex.wire.Drawer(null,document.body,dg.node._uuid+"-fake-drawer");
+           dg.drawer = new zkex.wire.Drawer(null,document.body,dg.node._uuid+
+               "-fake-drawer");
            dg.startpoc = jq(dg.node).offset();
            dg.startpoc = [dg.startpoc.left,dg.startpoc.top];
         },
         _dragdraw:function(dg, ofs, evt){
             var drawmethod = zkex.wire.Drawmethod["bezier"];
             if (drawmethod) {
-                drawmethod.draw(dg.drawer, [dg.startpoc[0],dg.startpoc[1]] , [evt.pageX,evt.pageY], zkex.wire.Wire.opt);
+                drawmethod.draw(dg.drawer, [dg.startpoc[0],dg.startpoc[1]] ,
+                    [evt.pageX,evt.pageY], zkex.wire.Wire.opt);
             }else{
                 zk.error("draw method not found :[bezier]");
             }
@@ -97,12 +155,13 @@
         _dragend:function(dg,evt){
             var target  = jq(evt.domTarget);
             if(target.is("."+zkex.wire.Point.WIRECLASS)){
+                //fire onWire event
                 zk.Widget.$(target.parent()).fire("onWire", {
                     inbox: dg.node.parentNode.id,
                     outbox: target.parent()[0].id,
                     joint:dg.node.obj._point+","+target[0].obj._point
                 });
-                //fire onWire event
+
             }
             dg.drawer.destroy();
             dg.drawer=null;

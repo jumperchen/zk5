@@ -11,8 +11,10 @@
  */
 package org.zkoss.zkex.wire.event;
 
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.zkoss.zk.au.AuRequest;
 import org.zkoss.zk.mesg.MZk;
 import org.zkoss.zk.ui.Component;
@@ -30,7 +32,7 @@ public class WireEvent extends Event {
 	private Wire _wire;
 
 	/**
-	 * pack a event from a au request a example from client side fire event.
+	 * pack a on-wire event from a au request, a example from client side fire event.
 	 *
 	 * <pre>
 	 * fire("onWire", {
@@ -63,7 +65,40 @@ public class WireEvent extends Event {
 
 		return new WireEvent(request.getCommand(), outbox, wire, null);
 	}
+	/**
+	 * pack a unwire event from a au request,
+	 * a example from client side fire event.
+	 * <pre>
+	 *  fire("onUnWire",
+	 *  	{ boxid:that._id,
+                        point:that._point
+            }
+        );
+       </pre>
+	 * @param request
+	 * @return
+	 */
+	public static final WireEvent getUnWireEvent(AuRequest request) {
+		final Component comp = request.getComponent();
+		if (comp == null)
+			throw new UiException(MZk.ILLEGAL_REQUEST_COMPONENT_REQUIRED, request);
+		final Map data = request.getData();
 
+		Wirebox targetbox = (Wirebox) request.getDesktop().getComponentByUuidIfAny((String) data.get("boxid"));
+
+		if (targetbox == null  && !data.containsKey("joint"))
+			throw new UiException(MZk.ILLEGAL_REQUEST_WRONG_DATA, new Object[] { data, request });
+
+
+		String joint = (String) data.get("joint");
+
+		Wire unwiredWire = targetbox.getWire(joint);
+		if(unwiredWire == null )
+			throw new UiException(MZk.ILLEGAL_REQUEST_WRONG_DATA, new Object[] { data, request });
+
+		unwiredWire.detach(false);
+		return new WireEvent(request.getCommand(), unwiredWire.getOut(), unwiredWire, null);
+	}
 	/**
 	 * create a wire event
 	 *

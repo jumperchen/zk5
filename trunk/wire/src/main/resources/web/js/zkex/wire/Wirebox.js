@@ -12,6 +12,8 @@
 (function() {
     zkex.wire.Wirebox = zk.$extends(zk.Widget, {
         _points:'',
+        _wires:[],
+        _wirecount:0,
         $define: {
             pointstate: {}
         },
@@ -41,7 +43,12 @@
             }
             this._points = p || "";
        },
-        _checkPoint: function(point) {
+       /**
+        * check if point is created
+        * @param {Object} point
+        * @return boolean point is created or not , return true when not created.
+        */
+        _isBlankPoint: function(point) {
             return zkex.wire.Point.allowPoint(point) && !this._pointstate[point];
         },
         _removePoint:function(point){
@@ -55,6 +62,36 @@
                 return this._pointstate[point].getCenterOffset();
             }
         },
+        /**
+         * called by wire , to sync wire information and create point.
+         * @param {Object} wire
+         * @param {Object} point
+         */
+        addWire_:function(wire,point){
+            if (this._isBlankPoint(point)) {
+                var pointel = new zkex.wire.Point(this,this.uuid ,
+                    this.getZclass(),point,false); //make editable false.
+                this._pointstate[point] = pointel;
+            }
+            this._pointstate[point].addWireCount();
+            this._wires.push(wire);
+        },
+        /**
+         * called by wire , to sync wire information and remvoe point .
+         */
+        removeWire_:function(wire,point){
+            //we assumed here should exist the point
+            var pointel = this._pointstate[point];
+            pointel.decreaseWireCount();
+
+            //non-editable means add by wire, and wires count is 0 means all
+            //wire is removed , so we remove this wire .
+            if (pointel.getWireCount()==0 && !pointel.getEditable()) {
+                pointel.destroy();
+                this._pointstate[point] = null;
+            }
+            this._wires.$remove(wire);
+        },
         addPoint: function(point) {
             var term,scissors,success = false;
             if (point == zkex.wire.Wirebox.POINT_ALL) {
@@ -63,10 +100,17 @@
                 }
                 success = true;
             }
-            if (this._checkPoint(point)) {
-                var pointel = new zkex.wire.Point(this,this.uuid , this.getZclass(),point);
+            if (this._isBlankPoint(point)) {
+                var pointel = new zkex.wire.Point(this,this.uuid ,
+                    this.getZclass(),point,true);
                 this._pointstate[point] = pointel;
                 success = true;
+            }else{
+
+                if(!this._pointstate[point].getEditable()){
+                    this._pointstate[point].setEditable(true);
+                }
+
             }
             return success;
         },

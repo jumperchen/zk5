@@ -15,6 +15,8 @@ package org.zkoss.zkex.wire;
 
 import java.io.IOException;
 
+import org.zkoss.lang.Objects;
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.HtmlBasedComponent;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.sys.ContentRenderer;
@@ -81,8 +83,13 @@ public class Wire extends HtmlBasedComponent {
 	 *
 	 * @return
 	 */
-	public void setIn(Wirebox _in) {
-		this._in = _in;
+	public void setIn(Wirebox in) {
+		if (!Objects.equals(_in, in)) {
+			if (_in != null)
+				_in.removeWire(this);
+			_in = in;
+			_in.addWire(this);
+		}
 	}
 
 	/**
@@ -92,7 +99,7 @@ public class Wire extends HtmlBasedComponent {
 	 *            wirebox's id
 	 */
 	public void setIn(String id) {
-		this._in = (Wirebox) this.getFellow(id);
+		setIn((Wirebox) this.getFellow(id));
 	}
 
 	/**
@@ -109,10 +116,15 @@ public class Wire extends HtmlBasedComponent {
 	 *
 	 * @param _out
 	 */
-	public void setOut(Wirebox _out) {
-		this._out = _out;
-		if (getParent() == null) {
-			attach();
+	public void setOut(Wirebox out) {
+		if (!Objects.equals(_out, out)) {
+			if (_out != null)
+				_out.removeWire(this);
+			_out = out;
+			_out.addWire(this);
+			if (getParent() == null) {
+				attach();
+			}
 		}
 	}
 
@@ -123,6 +135,7 @@ public class Wire extends HtmlBasedComponent {
 	 *            wirebox's id
 	 */
 	public void setOut(String id) {
+
 		this._out = (Wirebox) this.getFellow(id);
 	}
 
@@ -134,7 +147,7 @@ public class Wire extends HtmlBasedComponent {
 	 * <li>
 	 * color : the line color , ex. #DDDD22</li>
 	 * <li>
-	 * drawingMethod: this support 4 types from wireit .
+	 * drawingMethod: this support 6 types from wireit .
 	 * <ul>
 	 * <li>
 	 * straight</li>
@@ -176,14 +189,37 @@ public class Wire extends HtmlBasedComponent {
 	public void attach() {
 		if (getParent() == null && _out != null && _out.getParent() != null) {
 			setParent(_out.getParent());
+			_out.addWire(this);
+			if (_in != null)
+				_in.addWire(this);
 		}
 	}
 
-	public void detach() {
-		WireEvent wireEvent = new WireEvent(WireEvents.ON_UNWIRE, _out, this, null);
-		Events.postEvent(wireEvent);
+	/**
+	 * detach from view . (means it will not longer exist in dom)
+	 *
+	 * @param fireUnwire
+	 *            for trigger to fire a unwire event or not , default is true.
+	 * @see {@link WireEvent#getUnWireEvent(org.zkoss.zk.au.AuRequest)}
+	 *
+	 */
+	public void detach(boolean fireUnwire) {
+		if (fireUnwire) {
+			WireEvent wireEvent = new WireEvent(WireEvents.ON_UNWIRE, _out, this, null);
+			Events.postEvent(wireEvent);
+		}
+		if (_in != null)
+			_in.removeWire(this);
+		if (_out != null)
+			_out.removeWire(this);
 		super.detach();
+	}
 
+	/**
+	 * default detach method , detach from view . (means it will not longer exist in dom)
+	 */
+	public void detach() {
+		detach(true);
 	}
 
 	public String getJoint() {

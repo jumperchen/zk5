@@ -16,7 +16,8 @@
         _out: "",
         $define: {
             config: function(conf) {
-                this._config = zk.copy(zkex.wire.Wire.parseConfig(conf), zkex.wire.Wire.opt);
+                this._config = zk.copy(zkex.wire.Wire.parseConfig(conf),
+                    zkex.wire.Wire.opt);
             },
             joint: function(joint) {
                 this._joint = joint.split(/,/g);
@@ -50,21 +51,30 @@
         },
         drawWire:function(){
             var inbox = this.getIn(), outbox = this.getOut();
-            if(!this.drawer && inbox && outbox){
-                inbox.addPoint(this._joint[0]);
-                outbox.addPoint(this._joint[1]);
+            if(!this.drawer && inbox && outbox && this._joint){
+                //inbox.addPoint(this._joint[0]);
+                inbox.addWire_(this, this._joint[0]);
+                //outbox.addPoint(this._joint[1]);
+                outbox.addWire_(this,this._joint[1]);
+                this.drawer = new zkex.wire.Drawer(this.uuid,document.body,
+                    this._config["className"]);
 
-                this.drawer = new zkex.wire.Drawer(this.uuid,document.body,this._config["className"]);
-
-                var drawmethod = zkex.wire.Drawmethod[this._config["drawingMethod"]];
+                var drawmethod = zkex.wire.Drawmethod[
+                    this._config["drawingMethod"]];
                 if (drawmethod) {
-                    drawmethod.draw(this.drawer, inbox.getPointPosition_(this._joint[0]), outbox.getPointPosition_(this._joint[1]), this.getConfig());
+                    drawmethod.draw(this.drawer, inbox.getPointPosition_(
+                        this._joint[0]), outbox.getPointPosition_(
+                            this._joint[1]), this.getConfig());
                 }else{
-                    zk.error("draw method not found :["+this._config["drawingMethod"]+"]");
+                    zk.error("draw method not found :["+
+                        this._config["drawingMethod"]+"]");
                 }
             }
         },
         unbind_: function() {
+            var inbox = this.getIn(), outbox = this.getOut();
+            if (inbox) inbox.removeWire_(this, this._joint[0]);
+            if (outbox) outbox.removeWire_(this,this._joint[1]);
             this.$supers(zkex.wire.Wire, 'unbind_', arguments);
         }
 
