@@ -65,7 +65,6 @@
             for (var point in this._pointstate) {
                 var termoffset = Point.getOffset(0, 0, width, height, point,
                     margin); //0,0 because it's relative to parent.
-
                 jq(this.$n("term-" + point)).css({
                     "left": jq.px(termoffset[0]),
                     "top": jq.px(termoffset[1])
@@ -77,10 +76,10 @@
             var terms = (p || "").split(",");
             for (var i = 0, len = terms.length; i < len; ++i) {
                 if (zkex.wire.Wirebox.POINTS[terms[i]]) {
-                    this._addPoint(terms[i]);
+                    this.addPoint(terms[i],true);
                 } else if (terms[i] == zkex.wire.Wirebox.POINT_ALL) {
                     for (var point in zkex.wire.Wirebox.POINTS) {
-                        this._addPoint(point);
+                        this.addPoint(point,true);
                     }
                 } else {
                     zk.error("wirebox didnt support point[" + terms[i] + "]");
@@ -97,21 +96,28 @@
                 delete this._pointstate[point] ;
             }
         },
-        _addPoint: function(point) {
-            var term;
+        getPointPosition_:function(point){
+            var jqoffset = jq(this.$n("term-" + point)).offset();
+            return  [jqoffset.left+5,jqoffset.top+5];
+        },
+        addPoint: function(point,ignoreUpdatePosition) {
+            var term,success = false;
             if (point == zkex.wire.Wirebox.POINT_ALL) {
                 for (var point in zkex.wire.Wirebox.POINTS) {
-                    this._addPoint(point);
+                    this.addPoint(point,true);
                 }
-                return true;
+                success = true;
             }
             if (this._checkPoint(point)) {
                 term = Point.create(this.uuid + "-term-" + point, this.getZclass() + "-term");
                 jq(this.$n()).append(term);
                 this._pointstate[point] = zkex.wire.Wirebox.STATE_WAIT;
-                return true;
+                success = true;
             }
-            return false;
+            if(!ignoreUpdatePosition && success){
+                this._updatePoints();
+            }
+            return success;
         },
         $init: function() {
             this.$supers(zkex.wire.Wirebox, '$init', arguments);

@@ -38,10 +38,14 @@ public class Wire extends HtmlBasedComponent {
 		super.renderProperties(renderer);
 
 		if (_in != null) {
-			render(renderer, "in", _in.getUuid());
+			//we dont redner "in" because it will cause javascript error in ie
+			//"in" in javascript is a preserved keyboard.
+			render(renderer, "inId", _in.getUuid());
+
 		}
 		if (_out != null) {
-			render(renderer, "out", _out.getUuid());
+			//keep same style with in
+			render(renderer, "outId", _out.getUuid());
 		}
 		if (_joint != null) { // if they didnt give joint , we dont show it.
 			render(renderer, "joint", _joint);
@@ -132,9 +136,15 @@ public class Wire extends HtmlBasedComponent {
 	 * <li>
 	 * bezier</li>
 	 * <li>
-	 * arrows</li>
+	 * arrow</li>
 	 * <li>
-	 * bezierArrows</li>
+	 * bezierArrow</li>
+	 * <li>
+	 * leftSquareArrow
+	 * </li>
+	 * <li>
+	 * rightSquareArrow
+	 * </li>
 	 * </ul>
 	 * </li>
 	 * <li>

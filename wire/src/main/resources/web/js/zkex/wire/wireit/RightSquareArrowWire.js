@@ -3,35 +3,22 @@
  * commit  c9b903abad6bb62140ae
  * Square type of arrows for representing loops (but not restricted to) in CFG
  * @class RightSquareArrow
- * @extends WireIt.Wire
- * @constructor
- * @param  {WireIt.Terminal}    terminal1   Source terminal
- * @param  {WireIt.Terminal}    terminal2   Target terminal
- * @param  {HTMLElement} parentEl    Container of the CANVAS tag
- * @param  {Obj}                options      Wire configuration (see options property)
+ * The RightSquareArrow drawmethod .
+ * Every draw method should implements
+ * draw: function(drawer,p1,p2,opt) {}
+ *
  */
-WireIt.RightSquareArrow = function( terminal1, terminal2, parentEl, options) {
-	WireIt.RightSquareArrow.superclass.constructor.call(this, terminal1, terminal2, parentEl, options);
-};
 
-YAHOO.lang.extend(WireIt.RightSquareArrow, WireIt.Wire, {
-
-	/**
-    * @property xtype
-    * @description String representing this class for exporting as JSON
-    * @default "WireIt.RightSquareArrow"
-    * @type String
-    */
-   xtype: "WireIt.RightSquareArrow",
+zkex.wire.Drawmethod.rightSquareArrow= {
 
 	/**
     * Drawing method
     */
-   draw: function() {
+   draw: function(drawer,p1,p2,opt) {
 
       // Get the positions of the terminals
-      var p1 = this.terminal1.getXY();
-      var p2 = this.terminal2.getXY();
+      //var p1 = this.terminal1.getXY();
+      //var p2 = this.terminal2.getXY();
       var distance=Math.sqrt(Math.pow(p1[0]-p2[0],2)+Math.pow(p1[1]-p2[1],2));
 	  	var d = 7; // arrow width/2
       var redim = d + distance*0.5; //we have to make the canvas a little bigger because of arrows
@@ -49,10 +36,10 @@ YAHOO.lang.extend(WireIt.RightSquareArrow, WireIt.Wire, {
       p2[0]=p2[0]-min[0];
       p2[1]=p2[1]-min[1];
 
-      this.SetCanvasRegion(min[0],min[1],lw,lh);
+      drawer.SetCanvasRegion(min[0],min[1],lw,lh);//potix tonyq
 
 
-      var ctxt=this.getContext();
+      var ctxt=drawer.getContext();//potix tonyq
 
 		//	  (p1) *------- . (e1)
 		//	  		  |
@@ -60,17 +47,17 @@ YAHOO.lang.extend(WireIt.RightSquareArrow, WireIt.Wire, {
 		//			  |
 		//	  (p2) *<------. (e2)
 
-	  var e1 = this.terminal1.getXY();
-	  var e2 = this.terminal2.getXY();
+	  var e1 = [];//potix tonyq
+	  var e2 = [];//potix tonyq
 	  e1[0] = p1[0] + distance/4 + 5;	  // Change the x coordinate; y remains same
 	  e1[1] = p1[1];
 	  e2[0] = p2[0] + distance/4 + 5;
 	  e2[1] = p2[1];
 
       // Draw the border
-      ctxt.lineCap=this.bordercap;
-      ctxt.strokeStyle=this.bordercolor;
-      ctxt.lineWidth=this.width+this.borderwidth*2;
+      ctxt.lineCap=opt.bordercap; //potix tonyq
+      ctxt.strokeStyle=opt.bordercolor;//potix tonyq
+      ctxt.lineWidth=opt.width+opt.borderwidth*2;//potix tonyq
       ctxt.beginPath();
       ctxt.moveTo(p1[0], p1[1]);
 	  	ctxt.lineTo(e1[0], e1[1]);
@@ -80,9 +67,9 @@ YAHOO.lang.extend(WireIt.RightSquareArrow, WireIt.Wire, {
 
 
       // Draw the inner bezier curve
-      ctxt.lineCap=this.cap;
-      ctxt.strokeStyle=this.color;
-      ctxt.lineWidth=this.width;
+      ctxt.lineCap=opt.cap;
+      ctxt.strokeStyle=opt.color;
+      ctxt.lineWidth=opt.width;
       ctxt.beginPath();
       ctxt.moveTo(p1[0],p1[1]);
 	  	ctxt.lineTo(e1[0], e1[1]);
@@ -141,7 +128,7 @@ YAHOO.lang.extend(WireIt.RightSquareArrow, WireIt.Wire, {
    	}
 
    	//triangle fill
-   	ctxt.fillStyle = this.color;
+   	ctxt.fillStyle = opt.color;//potix tonyq
    	ctxt.beginPath();
    	ctxt.moveTo(t2[0],t2[1]);
    	ctxt.lineTo(x1,y1);
@@ -149,8 +136,8 @@ YAHOO.lang.extend(WireIt.RightSquareArrow, WireIt.Wire, {
    	ctxt.fill();
 
    	//triangle border
-   	ctxt.strokeStyle = this.bordercolor;
-   	ctxt.lineWidth = this.borderwidth;
+   	ctxt.strokeStyle = opt.bordercolor;//potix tonyq
+   	ctxt.lineWidth = opt.borderwidth;//potix tonyq
    	ctxt.beginPath();
    	ctxt.moveTo(t2[0],t2[1]);
    	ctxt.lineTo(x1,y1);
@@ -159,4 +146,4 @@ YAHOO.lang.extend(WireIt.RightSquareArrow, WireIt.Wire, {
    	ctxt.stroke();
    }
 
-});
+};

@@ -1,50 +1,28 @@
 /**
  * http://github.com/neyric/wireit/blob/v0.6.0a/js/BezierArrowWire.js
  * commit  c9b903abad6bb62140ae
-
- * The bezier wire widget
- * @class BezierArrowWire
- * @namespace WireIt
- * @extends WireIt.BezierWire
- * @constructor
- * @param  {WireIt.Terminal}    terminal1   Source terminal
- * @param  {WireIt.Terminal}    terminal2   Target terminal
- * @param  {HTMLElement} parentEl    Container of the CANVAS tag
- * @param  {Obj}                options      Wire configuration (see options property)
+ *
+ * The bezierArrow drawmethod .
+ * Every draw method should implements
+ * draw: function(drawer,p1,p2,opt) {}
  */
-WireIt.BezierArrowWire = function( terminal1, terminal2, parentEl, options) {
-	WireIt.BezierArrowWire.superclass.constructor.call(this, terminal1, terminal2, parentEl, options);
-};
 
+zkex.wire.Drawmethod.bezierArrow = { //potix tonyq
+   draw: function(drawer,p1,p2,opt) { //potix tonyq
 
-YAHOO.lang.extend(WireIt.BezierArrowWire, WireIt.BezierWire, {
-
-	/**
-     * @property xtype
-     * @description String representing this class for exporting as JSON
-     * @default "WireIt.BezierArrowWire"
-     * @type String
-     */
-   xtype: "WireIt.BezierArrowWire",
-
-	/**
-    * Attempted bezier drawing method for arrows
-    */
-   draw: function() {
-
-		var arrowWidth = Math.round(this.width * 1.5 + 20);
-		var arrowLength = Math.round(this.width * 1.2 + 20);
+		var arrowWidth = Math.round(opt.width * 1.5 + 20); //potix tonyq
+		var arrowLength = Math.round(opt.width * 1.2 + 20); //potix tonyq
 		var d = arrowWidth/2; // arrow width/2
       var redim = d+3; //we have to make the canvas a little bigger because of arrows
       var margin=[4+redim,4+redim];
 
       // Get the positions of the terminals
-      var p1 = this.terminal1.getXY();
-      var p2 = this.terminal2.getXY();
+    //  var p1 = this.terminal1.getXY(); //potix tonyq
+    //  var p2 = this.terminal2.getXY();//potix tonyq
 
       // Coefficient multiplicateur de direction
       // 100 par defaut, si distance(p1,p2) < 100, on passe en distance/2
-      var coeffMulDirection = this.coeffMulDirection;
+      var coeffMulDirection = opt.coeffMulDirection; ////potix tonyq
 
 
       var distance=Math.sqrt(Math.pow(p1[0]-p2[0],2)+Math.pow(p1[1]-p2[1],2));
@@ -53,10 +31,10 @@ YAHOO.lang.extend(WireIt.BezierArrowWire, WireIt.BezierWire, {
       }
 
       // Calcul des vecteurs directeurs d1 et d2 :
-      var d1 = [this.terminal1.direction[0]*coeffMulDirection,
-                this.terminal1.direction[1]*coeffMulDirection];
-      var d2 = [this.terminal2.direction[0]*coeffMulDirection,
-                this.terminal2.direction[1]*coeffMulDirection];
+      var d1 = [opt.directionIn[0]*coeffMulDirection,
+                opt.directionIn[1]*coeffMulDirection];
+      var d2 = [opt.directionOut[0]*coeffMulDirection,
+                opt.directionOut[1]*coeffMulDirection];
 
       var bezierPoints=[];
       bezierPoints[0] = p1;
@@ -91,33 +69,33 @@ YAHOO.lang.extend(WireIt.BezierArrowWire, WireIt.BezierWire, {
       var lh = Math.abs(max[1]-min[1]);
 
 		// Store the min, max positions to display the label later
-		this.min = min;
-		this.max = max;
+		//this.min = min;//potix tonyq
+		//this.max = max;//potix tonyq
 
-      this.SetCanvasRegion(min[0],min[1],lw,lh);
+      drawer.SetCanvasRegion(min[0],min[1],lw,lh);//potix tonyq
 
-      var ctxt = this.getContext();
+      var ctxt = drawer.getContext();//potix tonyq
       for(i = 0 ; i<bezierPoints.length ; i++){
          bezierPoints[i][0] = bezierPoints[i][0]-min[0];
          bezierPoints[i][1] = bezierPoints[i][1]-min[1];
       }
 
       // Draw the border
-      ctxt.lineCap = this.bordercap;
-      ctxt.strokeStyle = this.bordercolor;
-      ctxt.lineWidth = this.width+this.borderwidth*2;
+      ctxt.lineCap = opt.bordercap;
+      ctxt.strokeStyle = opt.bordercolor;
+      ctxt.lineWidth = opt.width+opt.borderwidth*2;
       ctxt.beginPath();
       ctxt.moveTo(bezierPoints[0][0],bezierPoints[0][1]);
-      ctxt.bezierCurveTo(bezierPoints[1][0],bezierPoints[1][1],bezierPoints[2][0],bezierPoints[2][1],bezierPoints[3][0],bezierPoints[3][1]+arrowLength/2*this.terminal2.direction[1]);
+      ctxt.bezierCurveTo(bezierPoints[1][0],bezierPoints[1][1],bezierPoints[2][0],bezierPoints[2][1],bezierPoints[3][0],bezierPoints[3][1]+arrowLength/2*opt.directionOut[1]);
       ctxt.stroke();
 
       // Draw the inner bezier curve
-      ctxt.lineCap = this.cap;
-      ctxt.strokeStyle = this.color;
-      ctxt.lineWidth = this.width;
+      ctxt.lineCap = opt.cap;
+      ctxt.strokeStyle = opt.color;
+      ctxt.lineWidth = opt.width;
       ctxt.beginPath();
       ctxt.moveTo(bezierPoints[0][0],bezierPoints[0][1]);
-      ctxt.bezierCurveTo(bezierPoints[1][0],bezierPoints[1][1],bezierPoints[2][0],bezierPoints[2][1],bezierPoints[3][0],bezierPoints[3][1]+arrowLength/2*this.terminal2.direction[1]);
+      ctxt.bezierCurveTo(bezierPoints[1][0],bezierPoints[1][1],bezierPoints[2][0],bezierPoints[2][1],bezierPoints[3][0],bezierPoints[3][1]+arrowLength/2* opt.directionOut[1]);
       ctxt.stroke();
 
 		//Variables from drawArrows
@@ -174,7 +152,7 @@ YAHOO.lang.extend(WireIt.BezierArrowWire, WireIt.BezierWire, {
 		}
 
 		// triangle fill
-		ctxt.fillStyle = this.color;
+		ctxt.fillStyle = opt.color;
 		ctxt.beginPath();
 		ctxt.moveTo(t2[0],t2[1]);
 		ctxt.lineTo(x1,y1);
@@ -182,8 +160,8 @@ YAHOO.lang.extend(WireIt.BezierArrowWire, WireIt.BezierWire, {
 		ctxt.fill();
 
 		// triangle border
-		ctxt.strokeStyle = this.bordercolor;
-		ctxt.lineWidth = this.borderwidth;
+		ctxt.strokeStyle = opt.bordercolor;
+		ctxt.lineWidth = opt.borderwidth;
 		ctxt.beginPath();
 		ctxt.moveTo(t2[0],t2[1]);
 		ctxt.lineTo(x1,y1);
@@ -194,4 +172,4 @@ YAHOO.lang.extend(WireIt.BezierArrowWire, WireIt.BezierWire, {
 		return [p1,p2,t1,t2];
    }
 
-});
+};
