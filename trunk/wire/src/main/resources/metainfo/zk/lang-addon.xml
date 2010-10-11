@@ -6,13 +6,13 @@ Purpose:
 
 Description:
 
-History: 2010/9/20,
- Created by TonyQ
+History: 2010/10/6, Created by TonyQ
 
  Copyright (C) 2010 Potix Corporation.
 
  All Rights Reserved.
  -->
+
 <language-addon>
 	<addon-name>wire</addon-name>
 	<language-name>xul/html</language-name>

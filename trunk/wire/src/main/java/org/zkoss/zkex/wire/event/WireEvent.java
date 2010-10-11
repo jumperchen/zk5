@@ -1,15 +1,14 @@
-/* WireEvent.java
-
-	Purpose:
-
-	Description:
-
-	History:
-		Jan 7, 2010 10:05:59 AM , Created by joy
-
-Copyright (C) 2009 Potix Corporation. All Rights Reserved.
-
-*/
+/*
+ * WireEvent.java
+ *
+ * Purpose:
+ *
+ * Description:
+ *
+ * History: 2010/10/6, Created by TonyQ
+ *
+ * Copyright (C) 2010 Potix Corporation. All Rights Reserved.
+ */
 package org.zkoss.zkex.wire.event;
 
 import java.util.Map;
@@ -19,6 +18,8 @@ import org.zkoss.zk.mesg.MZk;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zkex.wire.Wire;
+import org.zkoss.zkex.wire.Wirebox;
 
 /**
  * @author Joy Lo
@@ -26,63 +27,68 @@ import org.zkoss.zk.ui.event.Event;
  */
 public class WireEvent extends Event {
 
-	private final String _sourceId, _targetId, _joints, _config, _domtargetId, _uuid;
+	private Wire _wire;
 
-	/** Converts an AU request to a wire event.
-	 * @param desktop
+	/**
+	 * pack a event from a au request a example from client side fire event.
+	 *
+	 * <pre>
+	 * fire("onWire", {
+	 *     inbox: wire.getIn(),
+	 *     outbox: wire.getOut(),
+	 *     joint:wire._joint
+	 * })
+	 * </pre>
+	 *
+	 * @see Wirebox#service(AuRequest, boolean)
+	 * @param request
+	 *            the au Request from client.
+	 * @return
 	 */
-	public static final WireEvent getWireEvent(AuRequest request) {
+	public static final WireEvent getOnWireEvent(AuRequest request) {
 		final Component comp = request.getComponent();
 		if (comp == null)
 			throw new UiException(MZk.ILLEGAL_REQUEST_COMPONENT_REQUIRED, request);
 		final Map data = request.getData();
-		if (data.get("domtargetId") == null || data.get("uuid") == null)
-			throw new UiException(MZk.ILLEGAL_REQUEST_WRONG_DATA,
-				new Object[] {data, request});
-		return new WireEvent(request.getCommand(), comp,
-			(String)data.get("sourceId"), (String)data.get("targetId"),
-			(String)data.get("joints"), (String)data.get("config"),
-			(String)data.get("domtargetId"), (String)data.get("uuid"));
+
+		Wirebox inbox = (Wirebox) request.getDesktop().getComponentByUuidIfAny((String) data.get("inbox"));
+		Wirebox outbox = (Wirebox) request.getDesktop().getComponentByUuidIfAny((String) data.get("outbox"));
+		if (inbox == null || outbox == null || !data.containsKey("joint"))
+			throw new UiException(MZk.ILLEGAL_REQUEST_WRONG_DATA, new Object[] { data, request });
+
+		Wire wire = new Wire();
+		wire.setIn(inbox);
+		wire.setOut(outbox);
+		wire.setJoint((String) data.get("joint"));
+
+		return new WireEvent(request.getCommand(), outbox, wire, null);
 	}
 
-	public WireEvent(String name, Component target, String sourceId, String targetId, String joints,
-			String config, String domtargetId, String uuid) {
-		super(name, target);
-		_sourceId = sourceId;
-		_targetId = targetId;
-		_joints = joints;
-		_config = config;
-		_domtargetId = domtargetId;
-		_uuid = uuid;
-	}
-	/** Returns the sourceId of the component.
+	/**
+	 * create a wire event
+	 *
+	 * @param name
+	 * @param target
+	 * @param wire
+	 * @param data
 	 */
-	public final String getSourceId() {
-		return _sourceId;
+	public WireEvent(String name, Component target, Wire wire, Object data) {
+		super(name, target, data);
+		this._wire = wire;
 	}
-	/** Returns the targetId of the component.
+
+	/**
+	 * create a wire event
+	 *
+	 * @param name
+	 * @param target
+	 * @param wire
 	 */
-	public final String getTargetId() {
-		return _targetId;
+	public WireEvent(String name, Component target, Wire wire) {
+		this(name, target, wire, null);
 	}
-	/** Returns the joints of the component.
-	 */
-	public final String getJoints() {
-		return _joints;
-	}
-	/** Returns the config of the component.
-	 */
-	public final String getConfig() {
-		return _config;
-	}
-	/** Returns the domtargetId of the component.
-	 */
-	public final String getDomtargetId() {
-		return _domtargetId;
-	}
-	/** Returns the uuid of the component.
-	 */
-	public final String getUuid() {
-		return _uuid;
+
+	public Wire getWire(){
+		return _wire;
 	}
 }

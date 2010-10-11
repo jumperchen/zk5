@@ -1,19 +1,14 @@
-/* UnWire.java
-
-	Purpose:
-
-	Description:
-
-	History:
-		Jan 7, 2010 10:37:45 AM , Created by joy
-
-Copyright (C) 2009 Potix Corporation. All Rights Reserved.
-
-{{IS_RIGHT
-	This program is distributed under LGPL Version 3.0 in the hope that
-	it will be useful, but WITHOUT ANY WARRANTY.
-}}IS_RIGHT
-*/
+/*
+ * UnwireEvent.java
+ *
+ * Purpose:
+ *
+ * Description:
+ *
+ * History: 2010/10/6, Created by TonyQ
+ *
+ * Copyright (C) 2010 Potix Corporation. All Rights Reserved.
+ */
 package org.zkoss.zkex.wire.event;
 
 import java.util.Map;
@@ -24,10 +19,6 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
 
-/**
- * @author Joy Lo
- * @since 5.0.0
- */
 public class UnwireEvent extends Event {
 
 	private final String _id;

@@ -1,4 +1,15 @@
-<%@ taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" %>
+/*
+ * wire.css.dsp
+ *
+ * Purpose:
+ *
+ * Description:
+ *
+ * History: 2010/10/6, Created by TonyQ
+ *
+ * Copyright (C) 2010 Potix Corporation. All Rights Reserved.
+ */
+ <%@ taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" %>
 
 canvas {
 	position: absolute;
@@ -15,7 +26,7 @@ canvas {
 	z-index: 50;
 }
 
-.z-wirebox-term {
+.z-wirebox-point {
 	position: absolute;
 	width: 10px;
 	height: 10px;
@@ -41,16 +52,6 @@ canvas {
 	cursor: pointer;
 	display: none;
 	z-index: 90;
-}
-
-.z-fakeWire {
- 	display: none;
-}
-
-.z-fakeWire-zIndex {
-	position: absolute;
-	z-index: 30;
-	*z-index: -1;
 }
 
 .z-wirable-window, .z-wirable-panel {

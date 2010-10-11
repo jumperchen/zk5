@@ -18,7 +18,7 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 	<script src="wireit/BezierArrowWire.js" />
 	<script src="wireit/LeftSquareArrowWire.js" />
 	<script src="wireit/RightSquareArrowWire.js" />
-
+	<script src="Point.js" />
 	<widget name="Wire"/>
 	<widget name="Wirebox"/>
 </package>
