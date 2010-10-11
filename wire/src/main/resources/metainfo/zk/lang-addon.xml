@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+lang-addon.xml
+Purpose:
+
+Description:
+
+History: 2010/9/20,
+ Created by TonyQ
+
+ Copyright (C) 2010 Potix Corporation.
+
+ All Rights Reserved.
+ -->
+<language-addon>
+	<addon-name>wire</addon-name>
+	<language-name>xul/html</language-name>
+	<version>
+		<version-class>org.zkoss.zkex.wire.Version</version-class>
+		<version-uid>0.8.0</version-uid>
+		<zk-version>5.0.3</zk-version><!-- or later -->
+	</version>
+	<component>
+		<component-name>wire</component-name>
+		<component-class>org.zkoss.zkex.wire.Wire</component-class>
+		<widget-class>zkex.wire.Wire</widget-class>
+		<mold>
+			<mold-name>default</mold-name>
+			<mold-uri>mold/wire.js</mold-uri>
+			<css-uri>css/wire.css.dsp</css-uri>
+		</mold>
+	</component>
+	<component>
+		<component-name>wirebox</component-name>
+		<component-class>org.zkoss.zkex.wire.Wirebox</component-class>
+		<widget-class>zkex.wire.Wirebox</widget-class>
+		<mold>
+			<mold-name>default</mold-name>
+			<mold-uri>mold/wirebox.js</mold-uri>
+		</mold>
+
+	</component>
+</language-addon>
