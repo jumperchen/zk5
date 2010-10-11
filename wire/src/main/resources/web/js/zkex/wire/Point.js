@@ -74,6 +74,7 @@
                 jq(this._scissors).click(function(){
                     that.parent.fire("onUnWire", { boxid:that._id,
                         joint:that._point });
+                    that._scissors.hide();
                 })
         	}
 
@@ -144,12 +145,12 @@
            dg.startpoc = [dg.startpoc.left,dg.startpoc.top];
         },
         _dragdraw:function(dg, ofs, evt){
-            var drawmethod = zkex.wire.Drawmethod["bezier"];
+            var drawmethod = zkex.wire.Drawmethod[dg.node.obj.parent.getDrawmethod()];
             if (drawmethod) {
                 drawmethod.draw(dg.drawer, [dg.startpoc[0],dg.startpoc[1]] ,
                     [evt.pageX,evt.pageY], zkex.wire.Wire.opt);
             }else{
-                zk.error("draw method not found :[bezier]");
+                zk.error("draw method not found :["+dg.node.obj.parent.getDrawmethod()+"]");
             }
         },
         _dragend:function(dg,evt){

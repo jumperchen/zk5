@@ -15,7 +15,10 @@
         _wires:[],
         _wirecount:0,
         $define: {
-            pointstate: {}
+            pointstate: {},
+            drawmethod:function(str){
+                this._drawmethod = str || "bezierArrow";
+            }
         },
         _updatePoints: function() {
             for (var point in this._pointstate) {
