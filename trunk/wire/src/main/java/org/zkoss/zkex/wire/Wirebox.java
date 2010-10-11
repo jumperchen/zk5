@@ -36,6 +36,9 @@ public class Wirebox extends XulElement implements Serializable {
 
 	private String _points = "";
 
+
+	public String _drawmethod = "bezierArrow";
+
 	public Wirebox() {
 		_wires = new ArrayList();
 	}
@@ -46,6 +49,7 @@ public class Wirebox extends XulElement implements Serializable {
 			_wires.add(w);
 
 	}
+
 
 	public Wire getWire(String joint){
 		List wires = getWires();
@@ -95,6 +99,7 @@ public class Wirebox extends XulElement implements Serializable {
 		super.renderProperties(renderer);
 
 		render(renderer, "points", _points);
+		render(renderer, "drawmethod", _drawmethod);
 	}
 
 	/**
@@ -117,5 +122,17 @@ public class Wirebox extends XulElement implements Serializable {
 			Events.postEvent(evt);
 		}else
 			super.service(request, everError);
+	}
+
+	public String getDrawmethod() {
+		return _drawmethod;
+	}
+
+
+	public void setDrawmethod(String drawmethod) {
+		if(!Objects.equals(this._drawmethod,drawmethod)){
+			smartUpdate("_drawmethod", drawmethod);
+		}
+		this._drawmethod = drawmethod;
 	}
 }
