@@ -14,19 +14,25 @@
 (function () {
 
 zkex.wire.Wire = zk.$extends(zul.Widget, {
+    _in:"",
+    _out:"",
 	$define: {
 		config: null,
-		joint: null,
-		inId: null,
-		outId: null
+		joint: null
 	},
+    setIn: function(val){
+        this._in=val;
+    } ,
+    getIn: function() {return zk.Widget.$(this._in);},
+    setOut: function(val){
+        this._out = val ;
+    } ,
+    getOut: function() {return zk.Widget.$(this._out);},
 	bind_: function (desktop, skipper, after) {
 		this.$supers(zkex.wire.Wire,'bind_', arguments);
 	},
 
 	unbind_: function () {
-	//	wire.Wirer.remove(this.uuid, this);
-	//	jq(this._element).remove();
 		this.$supers(zkex.wire.Wire,'unbind_', arguments);
 	}
 
