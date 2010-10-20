@@ -23,8 +23,7 @@ public abstract class CachedIterator<T> implements Iterator<T> {
 	
 	@Override
 	public T next() {
-		loadNext();
-		if(_next == null) throw new NoSuchElementException();
+		if(!hasNext()) throw new NoSuchElementException();
 		_ready = false;
 		return _next;
 	}
@@ -32,6 +31,11 @@ public abstract class CachedIterator<T> implements Iterator<T> {
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
+	}
+	
+	public T peek() {
+		if(!hasNext()) throw new NoSuchElementException();
+		return _next;
 	}
 	
 	protected void loadNext(){
