@@ -3,7 +3,6 @@
  */
 package org.zkoss.selector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.zkoss.selector.lang.Token;
