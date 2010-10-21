@@ -11,16 +11,18 @@ import org.zkoss.selector.util.State;
 import org.zkoss.selector.util.StateMachine;
 
 /**
+ * 
  * @author simonpai
- *
  */
 public class Parser extends StateMachine<Parser.ParseState, Token, Parser.CharClass>{
 	
+	private final String _source;
 	private final Selector _selector;
 	private SimpleSelectorSequence _currentSeq;
 	
 	public Parser(Tokenizer tokenizer){
 		super();
+		_source = tokenizer.getSourceString();
 		_selector = new Selector();
 		run(tokenizer);
 	}
@@ -33,36 +35,60 @@ public class Parser extends StateMachine<Parser.ParseState, Token, Parser.CharCl
 	
 	@Override
 	protected void init() {
-		// TODO: check with 5-states
 		
 		getState(ParseState.PRE_SELECTOR)
-			.addReturningClasses(CharClass.WHITESPACE)
 			.addTransition(CharClass.SELECTOR_LITERAL, ParseState.IN_SELECTOR);
 		
 		setState(ParseState.IN_SELECTOR,
-				new MacroState<ParseState, Token, CharClass, SubState, SubCharClass>(
-						new StateMachine<SubState, Token, SubCharClass>() {
+				new MacroState<ParseState, Token, CharClass, SubParseState, Token.Type>(
+						new StateMachine<SubParseState, Token, Token.Type>() {
 							
 							@Override
-							protected SubCharClass getClass(Token input) {
-								return null; // TODO
+							protected Token.Type getClass(Token input) {
+								return input.getType();
 							}
 							
 							@Override
-							protected SubState getLandingPoint(Token input,
-									SubCharClass inputClass) {
-								return null; // TODO
+							protected SubParseState getLandingPoint(Token input,
+									Token.Type inputClass) {
+								// TODO
+								switch(inputClass){
+								case IDENTIFIER:
+									
+								case UNIVERSAL:
+									
+								case NTN_ID:
+									
+								case NTN_CLASS:
+									
+								case NTN_PSEUDO_CLASS:
+									
+								case OPEN_BRACKET:
+									
+								default:
+									return null;
+								}
 							}
 							
 							@Override
 							protected void init() {
 								// TODO
+								// lots of states
+							}
+							
+							@Override
+							protected void onStart(Token input, Token.Type inputClass,
+									SubParseState landing){
+								Parser.this._currentSeq = new SimpleSelectorSequence();
 							}
 							
 							@Override
 							protected void onStop(boolean endOfInput){
-								// TODO
-								
+								if(!endOfInput) return;
+								// flush sequence if valid
+								// TODO: check
+								_selector.add(_currentSeq);
+								_currentSeq = null;
 							}
 							
 						}) {
@@ -74,22 +100,6 @@ public class Parser extends StateMachine<Parser.ParseState, Token, Parser.CharCl
 						addTransition(CharClass.WHITESPACE, ParseState.PRE_COMBINATOR);
 					}
 					
-					@Override
-					protected void onStart(Token input, CharClass inputClass) {
-						startNewSequence();
-						super.onStart(input, inputClass);
-					}
-					
-					@Override
-					protected void onLand(Token input, CharClass inputClass, 
-							ParseState origin) {
-						startNewSequence();
-						super.onLand(input, inputClass, origin);
-					}
-					
-					private void startNewSequence(){
-						Parser.this._currentSeq = new SimpleSelectorSequence();
-					}
 				});
 		
 		setState(ParseState.PRE_COMBINATOR, 
@@ -97,8 +107,7 @@ public class Parser extends StateMachine<Parser.ParseState, Token, Parser.CharCl
 					
 					@Override
 					protected void init() {
-						addReturningClasses(CharClass.WHITESPACE);
-						addTransition(CharClass.COMBINATOR, ParseState.PRE_SELECTOR);
+						addTransition(CharClass.COMBINATOR, ParseState.POST_COMBINATOR);
 						addTransition(CharClass.SELECTOR_LITERAL, ParseState.IN_SELECTOR);
 					}
 					
@@ -106,18 +115,24 @@ public class Parser extends StateMachine<Parser.ParseState, Token, Parser.CharCl
 					protected void onLand(Token input, CharClass inputClass, 
 							ParseState origin) {
 						
-						// TODO: set combinator
+						if(_currentSeq == null) throw new IllegalStateException();
+						_currentSeq.setCombinator(getCombinator(input));
 					}
 					
 					@Override
 					protected void onLeave(Token input, CharClass inputClass,
 							ParseState destination) {
 						
-						// TODO: flush
+						// flush sequence
+						_selector.add(_currentSeq);
+						_currentSeq = null;
 					}
 					
 					
 		});
+		
+		getState(ParseState.POST_COMBINATOR)
+			.addTransition(CharClass.WHITESPACE, ParseState.PRE_SELECTOR);
 	}
 	
 	@Override
@@ -131,24 +146,14 @@ public class Parser extends StateMachine<Parser.ParseState, Token, Parser.CharCl
 		case WHITESPACE:
 			return CharClass.WHITESPACE;
 			
-		case CHILD_CBN:
-		case ADJACENT_SIBLING_CBN:
-		case GENERAL_SIBLING_CBN:
+		case CBN_CHILD:
+		case CBN_ADJACENT_SIBLING:
+		case CBN_GENERAL_SIBLING:
 			return CharClass.COMBINATOR;
 			
-		case IDENTIFIER:
-		case UNIVERSAL:
-		case ID_NTN:
-		case CLASS_NTN:
-		case PSEUDO_CLASS_NTN:
-		case DOUBLE_QUOTE:
-		case OPEN_BRACKET:
-		case CLOSE_BRACKET:
-		case OPEN_PARAM:
-		case CLOSE_PARAM:
+		default:
 			return CharClass.SELECTOR_LITERAL;
 		}
-		return null;
 	}
 
 	@Override
@@ -166,18 +171,14 @@ public class Parser extends StateMachine<Parser.ParseState, Token, Parser.CharCl
 	
 	// state //
 	public enum ParseState {
-		PRE_SELECTOR, POST_SELECTOR, IN_SELECTOR, PRE_COMBINATOR, POST_COMBINATOR;
+		PRE_SELECTOR, IN_SELECTOR, PRE_COMBINATOR, POST_COMBINATOR;
 	}
 	
 	public enum CharClass {
 		SELECTOR_LITERAL, WHITESPACE, COMBINATOR;
 	}
 	
-	public enum SubState {
-		// TODO
-	}
-	
-	public enum SubCharClass {
+	public enum SubParseState {
 		// TODO
 	}
 	
@@ -186,11 +187,11 @@ public class Parser extends StateMachine<Parser.ParseState, Token, Parser.CharCl
 	// helper //
 	private Combinator getCombinator(Token token){
 		switch(token.getType()){
-		case CHILD_CBN:
+		case CBN_CHILD:
 			return Combinator.CHILD;
-		case ADJACENT_SIBLING_CBN:
+		case CBN_ADJACENT_SIBLING:
 			return Combinator.ADJACENT_SIBLING;
-		case GENERAL_SIBLING_CBN:
+		case CBN_GENERAL_SIBLING:
 			return Combinator.GENERAL_SIBLING;
 		}
 		throw new IllegalStateException();

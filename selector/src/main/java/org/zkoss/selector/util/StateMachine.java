@@ -28,7 +28,8 @@ public abstract class StateMachine<E extends Enum<E>, IN, C extends Enum<C>> {
 	
 	// definition //
 	public StateMachine<E, IN, C> setState(E token, State<E, IN, C> state){
-		if(state == null) throw new IllegalArgumentException("State cannot be null");
+		if(state == null) throw new IllegalArgumentException(
+				"State cannot be null. Use removeState() to remove a state.");
 		_states.put(token, state.setMaster(this));
 		return this;
 	}
@@ -52,12 +53,17 @@ public abstract class StateMachine<E extends Enum<E>, IN, C extends Enum<C>> {
 	protected abstract E getLandingPoint(IN input, C inputClass);
 	protected abstract C getClass(IN input);
 	
+	// event handler //
+	protected void onStart(IN input, C inputClass, E landing){}
+	protected void onRun(IN input, C inputClass, E origin, E destination){}
 	protected void onStop(boolean endOfInput){}
 	
 	protected void onReject(IN input){
 		throw new StateMachineException("Rejected at step " + _step + 
 				" with current state: " + _current + ", input: " + input);
 	}
+	
+	
 	
 	protected final void doReject(IN input){
 		_run = false;
@@ -67,12 +73,6 @@ public abstract class StateMachine<E extends Enum<E>, IN, C extends Enum<C>> {
 	
 	
 	// operation //
-	public void reset(){
-		_current = null;
-		_run = false;
-		_step = 0;
-	}
-	
 	public void run(Iterator<IN> inputs){
 		_run = true;
 		while(_run && inputs.hasNext())
@@ -92,27 +92,26 @@ public abstract class StateMachine<E extends Enum<E>, IN, C extends Enum<C>> {
 				doReject(input);
 				return;
 			}
-			State<E, IN, C> state = _states.get(_current);
-			if(state != null) state.onStart(input, inputClass);
-			else throw new IllegalStateException();
+			onStart(input, inputClass, _current);
+			State<E, IN, C> state = getState(_current);
+			state.onLand(input, inputClass, null);
 		} else {
-			State<E, IN, C> state = _states.get(_current);
-			if(state == null) throw new IllegalStateException();
+			State<E, IN, C> state = getState(_current);
 			
-			if(state.isReturning(inputClass)) {
-				state.onReturn(input, inputClass);
-				
-			} else if(state.isLeaving(inputClass)) {
-				E dest = state.getDestination(inputClass);
+			if(state.isLeaving(input, inputClass)) {
+				E dest = state.getDestination(input, inputClass);
 				if(dest == null) {
 					doReject(input);
 					return;
 				}
 				state.onLeave(input, inputClass, dest);
-				state = _states.get(dest);
-				if(state != null) state.onLand(input, inputClass, _current);
-				else throw new IllegalStateException();
+				onRun(input, inputClass, _current, dest);
+				getState(dest).onLand(input, inputClass, _current);
 				_current = dest;
+				
+			} else if(state.isReturning(input, inputClass)) {
+				state.onReturn(input, inputClass);
+				onRun(input, inputClass, _current, _current);
 				
 			} else { // rejected by state
 				state.onReject(input, inputClass);
@@ -133,20 +132,42 @@ public abstract class StateMachine<E extends Enum<E>, IN, C extends Enum<C>> {
 		run(input);
 	}
 	
-	public void terminate(IN input){
-		_states.get(_current).onTerminate(input);
+	public void suspend(){
+		_run = false;
+	}
+	
+	public void terminate(){
 		reset();
 	}
 	
 	
 	
 	// status query //
+	// TODO: enhance
+	public E getCurrentState(){
+		return _current;
+	}
+	
 	public boolean isTerminated(){
 		return !_run && _current == null;
 	}
 	
 	public boolean isSuspended(){
 		return !_run && _current != null;
+	}
+	
+	
+	
+	// helper //
+	private void reset(){
+		_current = null;
+		_run = false;
+		_step = 0;
+	}
+	
+	/*package*/ final void terminateAt(IN input){
+		getState(_current).onLeave(input, null, null);
+		reset();
 	}
 	
 	
