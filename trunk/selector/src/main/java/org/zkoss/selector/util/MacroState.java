@@ -20,31 +20,30 @@ public abstract class MacroState<E extends Enum<E>, IN, C extends Enum<C>,
 	
 	
 	
-	// TODO: may support additional interface for different timing
-	
-	@Override
-	protected void onStart(IN input, C inputClass) {
-		super.onStart(input, inputClass);
-		_submachine.start(input);
-	}
+	// event handler (State) //
 	@Override
 	protected void onLand(IN input, C inputClass, E origin) {
 		super.onLand(input, inputClass, origin);
+		//beforeMachineStart(input, inputClass, origin);
 		_submachine.start(input);
 	}
 	@Override
 	protected void onReturn(IN input, C inputClass) {
 		super.onReturn(input, inputClass);
+		//beforeMachineRun(input, inputClass);
 		_submachine.run(input);
 	}
 	@Override
 	protected void onLeave(IN input, C inputClass, E destination) {
-		_submachine.terminate(input);
+		_submachine.terminateAt(input);
+		//afterMachineStop(input, inputClass, destination);
 		super.onLeave(input, inputClass, destination);
 	}
-	@Override
-	protected void onTerminate(IN input) {
-		_submachine.terminate(input);
-		super.onTerminate(input);
-	}
+	
+	
+	
+	// event handler (MacroState) //
+	//protected void beforeMachineStart(IN input, C inputClass, E origin){}
+	//protected void beforeMachineRun(IN input, C inputClass){}
+	//protected void afterMachineStop(IN input, C inputClass, E destination){}
 }

@@ -19,7 +19,9 @@ public class State<E extends Enum<E>, IN, C extends Enum<C>> {
 	
 	// local properties //
 	protected Set<C> _returners;
+	protected Set<IN> _minorReturners;
 	protected Map<C, E> _transitions;
+	protected Map<IN, E> _minorTransitions;
 	
 	public State(){
 		_returners = new HashSet<C>();
@@ -47,6 +49,18 @@ public class State<E extends Enum<E>, IN, C extends Enum<C>> {
 		return this;
 	}
 	
+	public State<E, IN, C> addReturningInputs(IN ... inputs){
+		for(IN i : inputs) _minorReturners.add(i);
+		return this;
+	}
+	
+	public State<E, IN, C> addReturningInputs(Collection<IN> collection){
+		_minorReturners.addAll(collection);
+		return this;
+	}
+	
+	// TODO: support returning all
+	
 	public State<E, IN, C> addTransition(C inputClass, E destination){
 		_transitions.put(inputClass, destination);
 		return this;
@@ -57,26 +71,38 @@ public class State<E extends Enum<E>, IN, C extends Enum<C>> {
 		return this;
 	}
 	
+	public State<E, IN, C> addTransition(IN input, E destination){
+		_minorTransitions.put(input, destination);
+		return this;
+	}
+	
+	public State<E, IN, C> addTransitions(E destination, IN ... inputs){
+		for(IN i : inputs) _minorTransitions.put(i, destination);
+		return this;
+	}
+	
 	
 	
 	// query //
-	public boolean isReturning(C inputClass){
-		return _returners.contains(inputClass);
+	public boolean isReturning(IN input, C inputClass){
+		return _returners.contains(inputClass) || 
+			_minorReturners.contains(input);
 	}
 	
-	public boolean isLeaving(C inputClass){
-		return _transitions.keySet().contains(inputClass);
+	public boolean isLeaving(IN input, C inputClass){
+		return _transitions.containsKey(inputClass) || 
+			_minorTransitions.containsKey(input);
 	}
 	
-	public E getDestination(C inputClass){
-		return _transitions.get(inputClass);
+	// TODO: add switch to check/skip returning condition
+	public E getDestination(IN input, C inputClass){
+		E result = _minorTransitions.get(input);
+		return (result != null)? result : _transitions.get(inputClass);
 	}
 	
 	
 	
 	// event handler //
-	protected void onStart(IN input, C inputClass){}
-	
 	protected void onLand(IN input, C inputClass, E origin){}
 	
 	protected void onReturn(IN input, C inputClass){}
@@ -84,7 +110,5 @@ public class State<E extends Enum<E>, IN, C extends Enum<C>> {
 	protected void onReject(IN input, C inputClass){}
 	
 	protected void onLeave(IN input, C inputClass, E destination){}
-	
-	protected void onTerminate(IN input){}
 	
 }

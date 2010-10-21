@@ -3,13 +3,14 @@
  */
 package org.zkoss.selector.util;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
  * 
  * @author simonpai
  */
-public class CharSequenceIterator {
+public class CharSequenceIterator implements Iterator<Character>{
 	
 	private CharSequence _sequence;
 	private int _begin;
@@ -39,11 +40,17 @@ public class CharSequenceIterator {
 		reset();
 	}
 	
+	@Override
 	public boolean hasNext(){
 		return _curr < _end;
 	}
 	
-	public char next(){
+	@Override
+	public Character next(){
+		return nextChar();
+	}
+	
+	public char nextChar(){
 		if(!hasNext()) throw new NoSuchElementException();
 		seekNext();
 		_curr++;
@@ -88,6 +95,11 @@ public class CharSequenceIterator {
 		if(_ready) return;
 		_next = _sequence.charAt(_curr);
 		_ready = true;
+	}
+
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
 	}
 	
 }

@@ -32,10 +32,58 @@ public class Token {
 	}
 	
 	public static enum Type {
+		// selector body //
+		IDENTIFIER, UNIVERSAL,
 		
-		// noun body //
-		IDENTIFIER,
+		// white space //
+		WHITESPACE,
+		
+		// combinator //
+		CBN_CHILD, CBN_ADJACENT_SIBLING, CBN_GENERAL_SIBLING,
+		
+		// selector notation //
+		NTN_ID, NTN_CLASS, NTN_PSEUDO_CLASS,
+		
+		// attribute boolean operator //
+		OP_EQUAL, OP_BEGIN_WITH, OP_END_WITH, OP_CONTAINS,
+		
+		// pairwise //
+		DOUBLE_QUOTE, OPEN_BRACKET, CLOSE_BRACKET, OPEN_PARAM, CLOSE_PARAM;
+		
+		// query //
+		public static Type getSymbolType(char c){
+			switch(c){
+			case '>':
+				return CBN_CHILD;
+			case '+':
+				return CBN_ADJACENT_SIBLING;
+			case '~':
+				return CBN_GENERAL_SIBLING;
+				
+			case '#':
+				return NTN_ID;
+			case '.':
+				return NTN_CLASS;
+			case ':':
+				return NTN_PSEUDO_CLASS;
+			}
+			return null;
+		}
+		
+		public static Type getSymbolType(char c1, char c2){
+			// TODO
+			return null;
+		}
+		
+	}
+	
+	public enum CharType {
+		// selector body //
+		LITERAL,
 		UNIVERSAL(1),
+		SYMBOL(2),
+		
+		// white space //
 		WHITESPACE,
 		
 		// combinator //
@@ -53,21 +101,16 @@ public class Token {
 		OPEN_BRACKET(1),
 		CLOSE_BRACKET(1),
 		OPEN_PARAM(1),
-		CLOSE_PARAM(1),
-		
-		// category (pseudo tokens) //
-		SYMBOL(2);
-		
-		
+		CLOSE_PARAM(1);
 		
 		// structure //
 		private int _limit;
 		
-		Type(){
+		CharType(){
 			this(-1);
 		}
 		
-		Type(int limit){
+		CharType(int limit){
 			_limit = limit;
 		}
 		
@@ -75,17 +118,14 @@ public class Token {
 			return _limit;
 		}
 		
-		
-		
-		// query //
-		public static Type getGroup(char c, boolean escaped){
+		public static CharType getGroup(char c, boolean escaped){
 			
 			if(escaped)
-				return Character.isWhitespace(c)? WHITESPACE : IDENTIFIER;
+				return Character.isWhitespace(c)? WHITESPACE : LITERAL;
 			
 			if(Character.isLetter(c) || Character.isDigit(c) 
 					|| c=='_' || c=='-' || c=='%')
-				return IDENTIFIER;
+				return LITERAL;
 			if(Character.isWhitespace(c))
 				return WHITESPACE;
 			
@@ -114,31 +154,7 @@ public class Token {
 			
 			return null;
 		}
-		
-		public static Type getSymbolType(char c){
-			switch(c){
-			case '>':
-				return CHILD_CBN;
-			case '+':
-				return ADJACENT_SIBLING_CBN;
-			case '~':
-				return GENERAL_SIBLING_CBN;
-				
-			case '#':
-				return ID_NTN;
-			case '.':
-				return CLASS_NTN;
-			case ':':
-				return PSEUDO_CLASS_NTN;
-			}
-			return null;
-		}
-		
-		public static Type getSymbolType(char c1, char c2){
-			// TODO
-			return null;
-		}
-		
+
 	}
 	
 }
