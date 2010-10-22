@@ -13,11 +13,12 @@ import java.util.Set;
  * 
  * @author simonpai
  */
-public class State<E extends Enum<E>, IN, C extends Enum<C>> {
+public class State<E, C, IN> {
 	
-	protected StateMachine<E, IN, C> _master;
+	protected StateMachine<E, C, IN> _master;
 	
 	// local properties //
+	protected boolean _returnAll;
 	protected Set<C> _returners;
 	protected Set<IN> _minorReturners;
 	protected Map<C, E> _transitions;
@@ -25,11 +26,13 @@ public class State<E extends Enum<E>, IN, C extends Enum<C>> {
 	
 	public State(){
 		_returners = new HashSet<C>();
+		_minorReturners = new HashSet<IN>();
 		_transitions = new HashMap<C, E>();
+		_minorTransitions = new HashMap<IN, E>();
 		init();
 	}
 	
-	protected State<E, IN, C> setMaster(StateMachine<E, IN, C> master){
+	protected State<E, C, IN> setMaster(StateMachine<E, C, IN> master){
 		_master = master;
 		return this;
 	}
@@ -39,44 +42,47 @@ public class State<E extends Enum<E>, IN, C extends Enum<C>> {
 	// definition //
 	protected void init(){}
 	
-	public State<E, IN, C> addReturningClasses(C ... inputClasses){
+	public State<E, C, IN> addReturningClasses(C ... inputClasses){
 		for(C c : inputClasses) _returners.add(c);
 		return this;
 	}
 	
-	public State<E, IN, C> addReturningClasses(Collection<C> collection){
+	public State<E, C, IN> addReturningClasses(Collection<C> collection){
 		_returners.addAll(collection);
 		return this;
 	}
 	
-	public State<E, IN, C> addReturningInputs(IN ... inputs){
+	public State<E, C, IN> addReturningInputs(IN ... inputs){
 		for(IN i : inputs) _minorReturners.add(i);
 		return this;
 	}
 	
-	public State<E, IN, C> addReturningInputs(Collection<IN> collection){
+	public State<E, C, IN> addReturningInputs(Collection<IN> collection){
 		_minorReturners.addAll(collection);
 		return this;
 	}
 	
-	// TODO: support returning all
+	public State<E, C, IN> setReturningAll(boolean returnAll){
+		_returnAll = returnAll;
+		return this;
+	}
 	
-	public State<E, IN, C> addTransition(C inputClass, E destination){
+	public State<E, C, IN> addTransition(C inputClass, E destination){
 		_transitions.put(inputClass, destination);
 		return this;
 	}
 	
-	public State<E, IN, C> addTransitions(E destination, C ... inputClasses){
+	public State<E, C, IN> addTransitions(E destination, C ... inputClasses){
 		for(C c : inputClasses) _transitions.put(c, destination);
 		return this;
 	}
 	
-	public State<E, IN, C> addTransition(IN input, E destination){
+	public State<E, C, IN> addMinorTransition(IN input, E destination){
 		_minorTransitions.put(input, destination);
 		return this;
 	}
 	
-	public State<E, IN, C> addTransitions(E destination, IN ... inputs){
+	public State<E, C, IN> addMinorTransitions(E destination, IN ... inputs){
 		for(IN i : inputs) _minorTransitions.put(i, destination);
 		return this;
 	}
@@ -84,8 +90,12 @@ public class State<E extends Enum<E>, IN, C extends Enum<C>> {
 	
 	
 	// query //
+	public boolean isReturningAll(){
+		return _returnAll;
+	}
+	
 	public boolean isReturning(IN input, C inputClass){
-		return _returners.contains(inputClass) || 
+		return _returnAll || _returners.contains(inputClass) || 
 			_minorReturners.contains(input);
 	}
 	
@@ -104,11 +114,8 @@ public class State<E extends Enum<E>, IN, C extends Enum<C>> {
 	
 	// event handler //
 	protected void onLand(IN input, C inputClass, E origin){}
-	
 	protected void onReturn(IN input, C inputClass){}
-	
 	protected void onReject(IN input, C inputClass){}
-	
 	protected void onLeave(IN input, C inputClass, E destination){}
 	
 }
