@@ -4,54 +4,95 @@
 package org.zkoss.selector.lang;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import org.zkoss.selector.util.CachedIterator;
 import org.zkoss.selector.util.CharSequenceIterator;
-import org.zkoss.selector.util.MacroState;
 import org.zkoss.selector.util.StateMachine;
 
 /**
  * 
  * @author simonpai
  */
-public class Tokenizer extends CachedIterator<Token> {
+public class Tokenizer {
 	
-	private final String _source;
-	private final CharSequenceIterator _iter;
-	private final StateMachine<TokenState, Character, CharClass> _machine;
+	private final StateMachine<MainState, CharClass, Character> _machine;
+	private ArrayList<Token> _tokens;
 	
-	private int _anchor;
-	private Token _token;
-	
-	public Tokenizer(String selector){
-		_source = selector;
-		_iter = new CharSequenceIterator(selector);
-		_anchor = 0;
-		_machine = new StateMachine<TokenState, Character, CharClass>(){
+	public Tokenizer(){
+		
+		_tokens = null;
+		
+		_machine = new StateMachine<MainState, CharClass, Character>(){
 			
-			// TODO: state: current char class
+			private int _anchor;
+			private char _prevChar;
+			private CharClass _prevClass;
 			protected boolean _escaped;
+			protected boolean _opEscaped;
 			
 			@Override
 			protected void init() {
+				getState(MainState.MAIN)
+						.setReturningAll(true)
+						.addMinorTransition('[', MainState.IN_ATTRIBUTE);
+				
+				getState(MainState.IN_ATTRIBUTE)
+						.setReturningAll(true)
+						.addMinorTransition(']', MainState.MAIN);
+			}
+			
+			
+			
+			@Override
+			protected void onReset() {
+				_opEscaped = false;
 				_escaped = false;
-				
-				getState(TokenState.MAIN).addReturningClasses(CharClass.LITERAL, 
-						CharClass.WHITESPACE, CharClass.OTHER, CharClass.ESCAPE)
-						.addTransition('[', TokenState.IN_ATTRIBUTE);
-				
-				
-
+				_anchor = 0;
+				_prevChar = '!';
+				_prevClass = null;
+				_tokens = new ArrayList<Token>();
 			}
 			
 			@Override
-			protected void onRun(Character input, CharClass inputClass,
-					TokenState origin, TokenState destination) {
+			protected void onAfterStep(Character input, CharClass inputClass,
+					MainState origin, MainState destination) {
 				
-				// TODO
+				doDebug("* OP Escaped: " + _opEscaped);
+				
+				if(inputClass == CharClass.ESCAPE) return;
+				
+				boolean isPrefix = 
+					origin == MainState.IN_ATTRIBUTE && 
+					inputClass == CharClass.OTHER &&
+					(input=='^' || input=='$' || input=='*');
+				
+				// flush previous identifier/whitespace
+				if(inputClass != _prevClass &&_prevClass != null && 
+						_prevClass.isMultiple())
+					flush(_prevChar, _prevClass, false);
+				
+				// previous char is ^/$/* but input is not =
+				if(origin == MainState.IN_ATTRIBUTE && _opEscaped && input!='=')
+					flush(_prevChar, _prevClass, false);
+				
+				// flush current
+				if(!inputClass.isMultiple() && !isPrefix)
+					flush(input, inputClass, true);
+				
+				_prevChar = input;
+				_prevClass = inputClass;
+				_opEscaped = isPrefix;
+				
 			}
-			
+
+			@Override
+			protected void onStop(boolean endOfInput) {
+				if(!endOfInput) return;
+				
+				// flush last token if any
+				if(_anchor < _step)
+					flush(_prevChar, _prevClass, false);
+			}
+
 			@Override
 			protected CharClass getClass(Character c) {
 				if(_escaped)
@@ -68,57 +109,89 @@ public class Tokenizer extends CachedIterator<Token> {
 			}
 			
 			@Override
-			protected TokenState getLandingPoint(Character input,
+			protected MainState getLandingPoint(Character input,
 					CharClass inputClass) {
 				
-				if(input == '[') return TokenState.IN_ATTRIBUTE;
+				if(input == '[') return MainState.IN_ATTRIBUTE;
 				if(inputClass == CharClass.ESCAPE) _escaped = true;
-				return TokenState.MAIN;
+				return MainState.MAIN;
+			}
+			
+			private void flush(char input, CharClass inputClass, boolean withCurrChar){
+				int endIndex = _step + (withCurrChar? 1 : _escaped? -1 : 0);
+				_tokens.add(new Token(
+						getTokenType(input, inputClass), _anchor, endIndex));
+				doDebug("! flush: [" + _anchor + ", " + endIndex + "]");
+				_anchor = endIndex;
+				
+			}
+			
+			private Token.Type getTokenType(char input, CharClass inputClass){
+				
+				switch(inputClass){
+				case LITERAL:
+					return Token.Type.IDENTIFIER;
+				case WHITESPACE:
+					return Token.Type.WHITESPACE;
+				}
+				
+				switch(input){
+				case '*':
+					return Token.Type.UNIVERSAL;
+				case '>':
+					return Token.Type.CBN_CHILD;
+				case '+':
+					return Token.Type.CBN_ADJACENT_SIBLING;
+				case '~':
+					return Token.Type.CBN_GENERAL_SIBLING;
+				case '#':
+					return Token.Type.NTN_ID;
+				case '.':
+					return Token.Type.NTN_CLASS;
+				case ':':
+					return Token.Type.NTN_PSEUDO_CLASS;
+				case '"':
+					return Token.Type.DOUBLE_QUOTE;
+				case '[':
+					return Token.Type.OPEN_BRACKET;
+				case ']':
+					return Token.Type.CLOSE_BRACKET;
+				case '(':
+					return Token.Type.OPEN_PARAM;
+				case ')':
+					return Token.Type.CLOSE_PARAM;
+				case '=':
+					switch(_prevChar){
+					case '^':
+						return Token.Type.OP_BEGIN_WITH;
+					case '$':
+						return Token.Type.OP_END_WITH;
+					case '*':
+						return Token.Type.OP_CONTAINS;
+					default:
+						return Token.Type.OP_EQUAL;
+					}
+				default:
+					return null;
+				}
 			}
 			
 		};
 	}
 	
-	public String getSourceString(){
-		return _source;
+	public ArrayList<Token> tokenize(String selector){
+		_machine.start(new CharSequenceIterator(selector));
+		return _tokens;
 	}
 	
-	public List<Token> allTokens(){
-		List<Token> result = new ArrayList<Token>();
-		while(hasNext()) result.add(next());
-		return result;
+	public void setDebugMode(boolean mode){
+		_machine.setDebugMode(mode);
 	}
 	
-	@Override
-	protected Token seekNext() {
-		_machine.run(_iter);
-		return _token;
-	}
 	
-	/*
-	// helper //
-	private Token.CharType getCharTypeWithEscape(){
-		char next = _iter.peek();
-		boolean escaped = next == '\\';
-		if(escaped) {
-			_iter.skip();
-			// throw exception if reach end of string at open escape
-			if(!_iter.hasNext()) throw new SelectorParseException(_source);
-			next = _iter.peek();
-		}
-		return Token.CharType.getGroup(next, escaped);
-	}
 	
-	private Token getToken(Token.Type group, int begin, int end){
-		if(group == Token.CharType.SYMBOL)
-			group = (end == begin + 1) ? 
-					Token.Type.getSymbolType(_source.charAt(begin)) :
-					Token.Type.getSymbolType(_source.charAt(begin), _source.charAt(end));
-		return new Token(group, begin, end);
-	}
-	*/
-	
-	public enum TokenState {
+	// state, input class //
+	public enum MainState {
 		MAIN, IN_ATTRIBUTE;
 	}
 	
@@ -134,40 +207,10 @@ public class Tokenizer extends CachedIterator<Token> {
 		CharClass(boolean multiple){
 			_multiple = multiple;
 		}
-	}
-	
-	public enum SeqState {
 		
-	}
-	
-	public enum SeqCharClass {
-		
-	}
-	
-	/*
-	public class InSequenceState extends 
-		MacroState<TokenState, Character, CharClass, SeqState, SeqCharClass> {
-
-		public InSequenceState() {
-			super(new StateMachine<SeqState, Character, SeqCharClass>(){
-
-				@Override
-				protected SeqCharClass getClass(Character input) {
-					// TODO Auto-generated method stub
-					return null;
-				}
-
-				@Override
-				protected SeqState getLandingPoint(Character input,
-						SeqCharClass inputClass) {
-					// TODO Auto-generated method stub
-					return null;
-				}
-				
-			});
+		public boolean isMultiple(){
+			return _multiple;
 		}
-		
 	}
-	*/
 	
 }

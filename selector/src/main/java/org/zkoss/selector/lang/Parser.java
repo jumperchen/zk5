@@ -14,17 +14,17 @@ import org.zkoss.selector.util.StateMachine;
  * 
  * @author simonpai
  */
-public class Parser extends StateMachine<Parser.ParseState, Token, Parser.CharClass>{
+public class Parser extends StateMachine<Parser.ParseState, Parser.CharClass, Token>{
 	
-	private final String _source;
-	private final Selector _selector;
+	private String _source;
+	private Selector _selector;
 	private SimpleSelectorSequence _currentSeq;
 	
 	public Parser(Tokenizer tokenizer){
 		super();
-		_source = tokenizer.getSourceString();
-		_selector = new Selector();
-		run(tokenizer);
+		//_source = tokenizer.getSourceString();
+		//_selector = new Selector();
+		//run(tokenizer);
 	}
 	
 	public Selector getSelector(){
@@ -40,8 +40,8 @@ public class Parser extends StateMachine<Parser.ParseState, Token, Parser.CharCl
 			.addTransition(CharClass.SELECTOR_LITERAL, ParseState.IN_SELECTOR);
 		
 		setState(ParseState.IN_SELECTOR,
-				new MacroState<ParseState, Token, CharClass, SubParseState, Token.Type>(
-						new StateMachine<SubParseState, Token, Token.Type>() {
+				new MacroState<ParseState, CharClass, Token, SubParseState, Token.Type>(
+						new StateMachine<SubParseState, Token.Type, Token>() {
 							
 							@Override
 							protected Token.Type getClass(Token input) {
@@ -103,7 +103,7 @@ public class Parser extends StateMachine<Parser.ParseState, Token, Parser.CharCl
 				});
 		
 		setState(ParseState.PRE_COMBINATOR, 
-				new State<ParseState, Token, CharClass>(){
+				new State<ParseState, CharClass, Token>(){
 					
 					@Override
 					protected void init() {

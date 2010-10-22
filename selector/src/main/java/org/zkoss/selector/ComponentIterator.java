@@ -3,6 +3,7 @@
  */
 package org.zkoss.selector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.zkoss.selector.lang.Token;
@@ -31,7 +32,7 @@ public class ComponentIterator extends CachedIterator<Component> {
 		_selector = selector;
 		
 		// tokenization //
-		List<Token> tokens = new Tokenizer(selector).allTokens();
+		ArrayList<Token> tokens = new Tokenizer().tokenize(selector);
 		
 		// parsing //
 		// TODO
