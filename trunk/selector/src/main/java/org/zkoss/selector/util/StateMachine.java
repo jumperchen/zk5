@@ -13,14 +13,17 @@ import java.util.Map;
  */
 public abstract class StateMachine<E, C, IN> {
 	
-	protected Map<E, State<E, C, IN>> _states;
+	// TODO: support getStates
+	// TODO: support debug message level
+	
+	protected Map<E, StateCtx<E, C, IN>> _states;
 	protected E _current;
 	protected boolean _run;
 	protected int _step;
 	protected boolean _debug;
 	
 	public StateMachine(){
-		_states = new HashMap<E, State<E, C, IN>>();
+		_states = new HashMap<E, StateCtx<E, C, IN>>();
 		_debug = false;
 		init();
 		reset();
@@ -35,25 +38,25 @@ public abstract class StateMachine<E, C, IN> {
 	}
 	
 	// definition //
-	public StateMachine<E, C, IN> setState(E token, State<E, C, IN> state){
+	public StateMachine<E, C, IN> setState(E token, StateCtx<E, C, IN> state){
 		if(state == null) throw new IllegalArgumentException(
 				"State cannot be null. Use removeState() to remove a state.");
 		_states.put(token, state.setMaster(this));
 		return this;
 	}
 	
-	public State<E, C, IN> removeState(E token){
+	public StateCtx<E, C, IN> removeState(E token){
 		return _states.remove(token).setMaster(null);
 	}
 	
-	public State<E, C, IN> getState(E token){
+	public StateCtx<E, C, IN> getState(E token){
 		return getState(token, true);
 	}
 	
-	public State<E, C, IN> getState(E token, boolean autoCreate){
-		State<E, C, IN> result = _states.get(token);
+	public StateCtx<E, C, IN> getState(E token, boolean autoCreate){
+		StateCtx<E, C, IN> result = _states.get(token);
 		if(result == null && autoCreate) 
-			_states.put(token, result = new State<E, C, IN>().setMaster(this));
+			_states.put(token, result = new StateCtx<E, C, IN>().setMaster(this));
 		return result;
 	}
 	
@@ -69,8 +72,7 @@ public abstract class StateMachine<E, C, IN> {
 	protected void onStop(boolean endOfInput){}
 	
 	protected void onReject(IN input){
-		throw new StateMachineException("Rejected at step " + _step + 
-				" with current state: " + _current + ", input: " + input);
+		throw new StateMachineException(_step, _current, input);
 	}
 	
 	protected void onDebug(String message){
@@ -80,19 +82,26 @@ public abstract class StateMachine<E, C, IN> {
 	
 	
 	// operation //
-	public void run(Iterator<IN> inputs){
+	public final void run(Iterator<IN> inputs){
 		_run = true;
 		while(_run && inputs.hasNext())
 			run(inputs.next());
-		onStop(!inputs.hasNext());
+		
+		boolean endOfInput = !inputs.hasNext();
+		onStop(endOfInput);
+		if(_current != null)
+			getState(_current).onStop(endOfInput);
+		doDebug("");
 		doDebug("Stop");
+		doDebug("");
 	}
 	
-	public void run(IN input){
+	public final void run(IN input){
 		
 		C inputClass = getClass(input);
 		
-		doDebug("\nStep " + _step);
+		doDebug("");
+		doDebug("Step " + _step);
 		doDebug("* Input: " + input + " (" + inputClass + ")");
 		
 		onBeforeStep(input, inputClass);
@@ -114,7 +123,7 @@ public abstract class StateMachine<E, C, IN> {
 			getState(destination).onLand(input, inputClass, origin);
 			
 		} else {
-			State<E, C, IN> state = getState(origin);
+			StateCtx<E, C, IN> state = getState(origin);
 			
 			if(state.isLeaving(input, inputClass)) {
 				destination = state.getDestination(input, inputClass); // dest
@@ -123,6 +132,7 @@ public abstract class StateMachine<E, C, IN> {
 					return;
 				}
 				state.onLeave(input, inputClass, destination);
+				state.doCallback(input, inputClass);
 				getState(destination).onLand(input, inputClass, origin);
 				
 			} else if(state.isReturning(input, inputClass)) {
@@ -144,21 +154,21 @@ public abstract class StateMachine<E, C, IN> {
 		_step++;
 	}
 	
-	public void start(Iterator<IN> inputs){
+	public final void start(Iterator<IN> inputs){
 		reset();
 		run(inputs);
 	}
 	
-	public void start(IN input){
+	public final void start(IN input){
 		reset();
 		run(input);
 	}
 	
-	public void suspend(){
+	public final void suspend(){
 		_run = false;
 	}
 	
-	public void terminate(){
+	public final void terminate(){
 		reset();
 	}
 	
@@ -190,10 +200,11 @@ public abstract class StateMachine<E, C, IN> {
 		if(_debug) onDebug(message);
 	}
 	
-	private void reset(){
+	private final void reset(){
 		_current = null;
 		_run = false;
 		_step = 0;
+		doDebug("");
 		doDebug("Reset");
 		onReset();
 	}
@@ -209,8 +220,37 @@ public abstract class StateMachine<E, C, IN> {
 	public static class StateMachineException extends RuntimeException {
 		private static final long serialVersionUID = -6580348498729948101L;
 		
-		public StateMachineException(String msg) {
-			super(msg);
+		private int _step;
+		private Object _state;
+		private Object _input;
+		
+		public StateMachineException(int step, Object state, Object input){
+			this(step, state, input, "Rejected at step " + step + 
+					" with current state: " + state + ", input: " + input);
+		}
+		
+		public StateMachineException(int step, Object state, Object input, 
+				String message){
+			super(message);
+			_step = step;
+			_state = state;
+			_input = input;
+		}
+		
+		public StateMachineException(String message){
+			super(message);
+		}
+		
+		public int getStep(){
+			return _step;
+		}
+		
+		public Object getState(){
+			return _state;
+		}
+		
+		public Object getInput(){
+			return _input;
 		}
 	}
 	

@@ -35,20 +35,20 @@ public class Token {
 		// selector body //
 		IDENTIFIER, UNIVERSAL,
 		
-		// white space //
-		WHITESPACE,
+		// white space, comma //
+		WHITESPACE, COMMA,
 		
 		// combinator //
 		CBN_CHILD, CBN_ADJACENT_SIBLING, CBN_GENERAL_SIBLING,
 		
 		// selector notation //
-		NTN_ID, NTN_CLASS, NTN_PSEUDO_CLASS,
+		NTN_ID, NTN_CLASS, NTN_PSDOCLS,
 		
 		// attribute boolean operator //
-		OP_EQUAL, OP_BEGIN_WITH, OP_END_WITH, OP_CONTAINS,
+		OP_EQUAL, OP_BEGIN_WITH, OP_END_WITH, OP_CONTAIN,
 		
 		// pairwise //
-		DOUBLE_QUOTE, OPEN_BRACKET, CLOSE_BRACKET, OPEN_PARAM, CLOSE_PARAM;
+		DOUBLE_QUOTE, OPEN_BRACKET, CLOSE_BRACKET, OPEN_PAREN, CLOSE_PAREN;
 		
 	}
 	

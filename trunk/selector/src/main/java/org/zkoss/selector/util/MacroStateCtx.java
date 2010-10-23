@@ -7,12 +7,12 @@ package org.zkoss.selector.util;
  * 
  * @author simonpai
  */
-public class MacroState<E, C, IN, E2, C2> extends State<E, C, IN> {
+public class MacroStateCtx<E, C, IN, E2, C2> extends StateCtx<E, C, IN> {
 	
 	// sub machine //
 	protected StateMachine<E2, C2, IN> _submachine;
 	
-	public MacroState(StateMachine<E2, C2, IN> submachine) {
+	public MacroStateCtx(StateMachine<E2, C2, IN> submachine) {
 		super();
 		_submachine = submachine;
 	}
@@ -31,6 +31,10 @@ public class MacroState<E, C, IN, E2, C2> extends State<E, C, IN> {
 	@Override
 	protected void onLeave(IN input, C inputClass, E destination) {
 		_submachine.terminateAt(input);
+	}
+	@Override
+	protected void onStop(boolean endOfInput) {
+		_submachine.onStop(endOfInput);
 	}
 	
 }
