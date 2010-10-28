@@ -68,6 +68,10 @@ public class Selectbox extends HtmlBasedComponent {
 		return _disabled;
 	}
 
+	
+	protected boolean isChildable() {
+		return false;
+	}
 	/**
 	 * Sets whether it is disabled.
 	 */
