@@ -25,6 +25,10 @@ public class Selector extends ArrayList<SimpleSelectorSequence> {
 		get(size()-1).setCombinator(combinator);
 	}
 	
+	public Combinator getCombinator(int index){
+		return get(index).getCombinator();
+	}
+	
 	public enum Combinator {
 		
 		DESCENDANT(" "), CHILD(" > "), 

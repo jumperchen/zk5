@@ -98,13 +98,17 @@ public class SimpleSelectorSequence {
 	}
 	
 	public void attachAttributeValue(String value){
+		attachAttributeValue(value, false);
+	}
+	
+	public void attachAttributeValue(String value, boolean quoted){
 		if(_currAttribute == null) throw new IllegalStateException();
-		_currAttribute.setValue(value);
+		_currAttribute.setValue(value, quoted);
 	}
 	
 	public void attachAttributeQuote(boolean inQuote){
 		if(_currAttribute == null) throw new IllegalStateException();
-		_currAttribute.setInQuote(inQuote);
+		_currAttribute.setQuoted(inQuote);
 	}
 	
 	public void addPseudoClass(String function){

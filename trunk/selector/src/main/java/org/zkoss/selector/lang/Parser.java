@@ -306,9 +306,7 @@ public class Parser {
 					new Callback<Token, Type>(){
 				public void onTransit(Token input, Type inputClass) {
 					// set attribute value
-					// TODO: distinguish quoted variable?
-					_seq.attachAttributeQuote(true);
-					_seq.attachAttributeValue(input.source(_source));
+					_seq.attachAttributeValue(input.source(_source), true);
 				}
 			})
 			.addRoute(Type.DOUBLE_QUOTE, SubState.ATTR_POST_VALUE);
@@ -323,8 +321,16 @@ public class Parser {
 	
 	@Override
 	protected void onStop(boolean endOfInput) {
-		if(endOfInput && _current != SubState.MAIN)
-			throw new ParseException("Unexpected end of token sequence.");
+		switch (_current) {
+		case MAIN:
+		case PSDOCLS_POST_NAME:
+		case PSDOCLS_POST_PARAM:
+		case ATTR_POST_VALUE:
+			break;
+		default:
+			if (endOfInput)
+				throw new ParseException("Unexpected end of token sequence.");
+		}
 	}
 	
 	@Override
