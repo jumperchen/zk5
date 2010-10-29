@@ -123,7 +123,7 @@ public class Tokenizer {
 					return Character.isWhitespace(c)? 
 							CharClass.WHITESPACE : CharClass.LITERAL;
 				
-				if(Character.isLetter(c) || Character.isDigit(c))
+				if(Character.isLetter(c) || Character.isDigit(c) || c == '-' || c == '_')
 					return CharClass.LITERAL;
 				
 				if(Character.isWhitespace(c))

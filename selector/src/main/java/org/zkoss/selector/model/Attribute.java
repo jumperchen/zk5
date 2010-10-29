@@ -11,8 +11,8 @@ public class Attribute {
 	
 	private String _name;
 	private Operator _operator;
-	private String _value;
-	private boolean _inQuote = false;
+	private Object _value;
+	private boolean _quoted = false;
 	
 	public Attribute(String name) {
 		_name = name;
@@ -34,20 +34,25 @@ public class Attribute {
 		_operator = operator;
 	}
 	
-	public String getValue() {
+	public Object getValue() {
 		return _value;
 	}
 	
 	public void setValue(String value) {
+		setValue(value, false);
+	}
+	
+	public void setValue(String value, boolean quoted){
+		// TODO: parse value
 		_value = value;
 	}
 	
-	public boolean isInQuote(){
-		return _inQuote;
+	public boolean isQuoted(){
+		return _quoted;
 	}
 	
-	public void setInQuote(boolean inQuote){
-		_inQuote = inQuote;
+	public void setQuoted(boolean quoted){
+		_quoted = quoted;
 	}
 	
 	public enum Operator {
@@ -67,7 +72,7 @@ public class Attribute {
 	
 	@Override
 	public String toString() {
-		String qt = _inQuote? "\"" : "";
+		String qt = _quoted? "\"" : "";
 		return "[" + _name + _operator.toString() + qt + _value + qt +"]";
 	}
 	

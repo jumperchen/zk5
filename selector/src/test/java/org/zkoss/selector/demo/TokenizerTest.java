@@ -17,7 +17,7 @@ public class TokenizerTest {
 	public static void main(String[] args){
 		
 		//String selector = "div#id.class span.class2 > #id3 ~ intbox";
-		String selector = "[attr$=\"value\"]    ~   div:pseudo(2)[attr2*=596]  ";
+		String selector = ":first-child[attr$=\"value\"]    ~   div:pseudo(2)[attr2*=596]  ";
 		
 		Tokenizer t = new Tokenizer();
 		t.setDebugMode(true);
