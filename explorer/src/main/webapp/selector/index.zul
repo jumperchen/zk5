@@ -1,0 +1,47 @@
+<?page title="Selector" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style><![CDATA[
+		.top-v-align > .z-hlayout-inner {
+			vertical-align: top;
+		}
+		.code {
+			font-family: "Courier New", monospace;
+			margin-top: 1px;
+			padding-right: 5px;
+		}
+		.code input, .code textarea {
+			font-family: "Courier New", monospace;
+		}
+		.__selected__ {
+			border: 3px solid #FF0000;
+		}
+	]]></style>
+	<window apply="demo.selector.SelectorDemoController">
+		<hlayout sclass="top-v-align">
+			<window id="componentsWindow" hflex="1" />
+			<vlayout hflex="1">
+				<hlayout>
+					<div sclass="code" hflex="1">
+						<textbox id="selectorBox" hflex="1" />
+					</div>
+					<button id="stepBtn" label="Step" />
+					<button id="resetBtn" label="Reset" />
+				</hlayout>
+				<div sclass="code" hflex="1">
+					<textbox id="zulSrcBox" multiline="true" tabbable="true" 
+						rows="20" hflex="1" />
+				</div>
+				<hlayout>
+					<button id="clearBtn" label="clear" />
+				</hlayout>
+				<hlayout>
+					Index:
+					<label id="indexLb" value="-" />
+					Component: 
+					<label id="compLb" value="-" />
+				</hlayout>
+				<label id="iterLb" value="" multiline="true" />
+			</vlayout>
+		</hlayout>
+	</window>
+</zk>
