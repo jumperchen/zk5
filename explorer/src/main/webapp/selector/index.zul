@@ -15,6 +15,9 @@
 		.__selected__ {
 			border: 3px solid #FF0000;
 		}
+		.data {
+			font-weight: bold;
+		}
 	]]></style>
 	<window apply="demo.selector.SelectorDemoController">
 		<hlayout sclass="top-v-align">
@@ -31,16 +34,30 @@
 					<textbox id="zulSrcBox" multiline="true" tabbable="true" 
 						rows="20" hflex="1" />
 				</div>
-				<hlayout>
-					<button id="clearBtn" label="clear" />
+				<hlayout sclass="top-v-align">
+					<vlayout hflex="2">
+						<hlayout>
+							<label sclass="data">Index: </label>
+							<label id="indexLb" value="-" />
+						</hlayout>
+						<hlayout>
+							<label sclass="data">Component: </label>
+							<label id="compLb" value="-" />
+						</hlayout>
+						<hlayout>
+							<label sclass="data">Parse Time: </label>
+							<label id="parseLb" value="-" />
+						</hlayout>
+						<hlayout>
+							<label sclass="data">Step Time: </label>
+							<label id="timeLb" value="-" />
+						</hlayout>
+						<label id="iterLb" value="" multiline="true" />
+					</vlayout>
+					<vlayout hflex="1">
+						<listbox id="zulListbox" />
+					</vlayout>
 				</hlayout>
-				<hlayout>
-					Index:
-					<label id="indexLb" value="-" />
-					Component: 
-					<label id="compLb" value="-" />
-				</hlayout>
-				<label id="iterLb" value="" multiline="true" />
 			</vlayout>
 		</hlayout>
 	</window>
