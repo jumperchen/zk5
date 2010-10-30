@@ -48,8 +48,10 @@ public class Token {
 		OP_EQUAL, OP_BEGIN_WITH, OP_END_WITH, OP_CONTAIN,
 		
 		// pairwise //
-		DOUBLE_QUOTE, OPEN_BRACKET, CLOSE_BRACKET, OPEN_PAREN, CLOSE_PAREN;
+		DOUBLE_QUOTE, OPEN_BRACKET, CLOSE_BRACKET, OPEN_PAREN, CLOSE_PAREN,
 		
+		// unknown //
+		UNKNOWN_CHAR;
 	}
 	
 	public String source(String mother){

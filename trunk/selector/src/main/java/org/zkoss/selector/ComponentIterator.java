@@ -23,15 +23,26 @@ public class ComponentIterator extends CachedIterator<Component> {
 	private Page _page;
 	private Component _root;
 	private Selector _selector;
-	private Map<String, PseudoClassDef> _defs;
+	private Map<String, PseudoClassDef> _localDefs;
 	
 	private ComponentMatchCtx _currCtx;
 	private int _index;
 	
+	/**
+	 * Create an iterator which selects from all the components in the page.
+	 * @param page
+	 * @param selector
+	 */
 	public ComponentIterator(Page page, String selector){
 		this(page, null, selector);
 	}
 	
+	/**
+	 * Create an iterator which selects from all the descendants of a given
+	 * component, including itself.
+	 * @param root
+	 * @param selector
+	 */
 	public ComponentIterator(Component root, String selector){
 		this(root.getPage(), root, selector);
 	}
@@ -40,7 +51,7 @@ public class ComponentIterator extends CachedIterator<Component> {
 		if(page == null || selector == null || selector.isEmpty()) 
 			throw new IllegalArgumentException();
 		
-		_defs = getDefaultPseudoClassDefs();
+		_localDefs = new HashMap<String, PseudoClassDef>();
 		_selector = 
 			new Parser().parse(new Tokenizer().tokenize(selector), selector);
 		_root = root;
@@ -48,8 +59,39 @@ public class ComponentIterator extends CachedIterator<Component> {
 		_index = -1;
 	}
 	
+	/**
+	 * Returns the index of next Component.
+	 */
 	public int getIndex(){
 		return _ready? _index : _index + 1; 
+	}
+	
+	
+	
+	// custom pseudo class definition //
+	/**
+	 * Add or set pseudo class definition.
+	 * @param name
+	 * @param def
+	 */
+	public void setPseudoClassDef(String name, PseudoClassDef def){
+		_localDefs.put(name, def);
+	}
+	
+	/**
+	 * Remove a pseudo class definition.
+	 * @param name
+	 * @return the original definition
+	 */
+	public PseudoClassDef removePseudoClassDef(String name){
+		return _localDefs.remove(name);
+	}
+	
+	/**
+	 * Clear all custom pseudo class definitions.
+	 */
+	public void clearPseudoClassDefs(){
+		_localDefs.clear();
 	}
 	
 	
@@ -114,11 +156,11 @@ public class ComponentIterator extends CachedIterator<Component> {
 	
 	private ComponentMatchCtx buildNextSiblingCtx(ComponentMatchCtx ctx){
 		
-		ctx.setComponent(ctx.getComponent().getNextSibling());
+		ctx.moveToNextSibling();
 		
 		for(int i=0; i<_selector.size()-1; i++)
 			if(ctx.isQualified(i) && _selector.getCombinator(i) == 
-				Combinator.ADJACENT_SIBLING)
+				Combinator.GENERAL_SIBLING)
 					ctx.setYoungerBrother(i);
 		
 		for(int i = _selector.size() - 2; i > -1; i--){
@@ -143,51 +185,8 @@ public class ComponentIterator extends CachedIterator<Component> {
 	}
 	
 	private boolean match(ComponentMatchCtx ctx, int index){
-		return ctx.match(_selector.get(index), _defs);
+		return ctx.match(_selector.get(index), _localDefs);
 	}
-	
-	private static Map<String, PseudoClassDef> getDefaultPseudoClassDefs(){
-		Map<String, PseudoClassDef> defs = new HashMap<String, PseudoClassDef>();
-		
-		// :root
-		defs.put("root", new PseudoClassDef(){
-			public boolean qualify(ComponentMatchCtx ctx, Object... parameters) {
-				if(parameters.length > 0) return false;
-				return ctx.getComponent().getParent() == null;
-			}
-		});
-		
-		// :first-child
-		defs.put("first-child", new PseudoClassDef(){
-			public boolean qualify(ComponentMatchCtx ctx, Object... parameters) {
-				if(parameters.length > 0) return false;
-				Component component = ctx.getComponent();
-				Component parent = component.getParent();
-				return component == (parent == null? 
-						component.getPage().getFirstRoot() : 
-						parent.getFirstChild());
-			}
-		});
-		
-		// :last-child
-		// :only-child
-		// :empty
-		
-		// :odd-child
-		// :even-child
-		// :nth-child(n)
-		// :nth-last-child(n)
-		
-		// :nth-of-type(n)
-		// :nth-last-of-type(n)
-		// :first-of-type
-		// :last-of-type
-		// :only-of-type
-		
-		return defs;
-	}
-	
-	
 	
 	@Override
 	public String toString() {

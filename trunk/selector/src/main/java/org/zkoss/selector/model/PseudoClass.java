@@ -2,19 +2,19 @@ package org.zkoss.selector.model;
 
 public class PseudoClass {
 	
-	private String _function;
+	private String _name;
 	private String _parameter;
 	
-	public PseudoClass(String function){
-		_function = function;
+	public PseudoClass(String name){
+		_name = name;
 	}
 	
-	public String getFunction() {
-		return _function;
+	public String getName() {
+		return _name;
 	}
 
-	public void setFunction(String function) {
-		_function = function;
+	public void setName(String name) {
+		_name = name;
 	}
 
 	public String getParameter() {
@@ -27,7 +27,7 @@ public class PseudoClass {
 
 	@Override
 	public String toString() {
-		return ":"+_function + (_parameter==null? "" : ("("+_parameter+")"));
+		return ":"+_name + (_parameter==null? "" : ("("+_parameter+")"));
 	}
 	
 }
