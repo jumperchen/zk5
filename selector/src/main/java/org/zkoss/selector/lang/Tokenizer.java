@@ -203,7 +203,7 @@ public class Tokenizer {
 						return Type.OP_EQUAL;
 					}
 				default:
-					return null;
+					return Type.UNKNOWN_CHAR;
 				}
 			}
 			

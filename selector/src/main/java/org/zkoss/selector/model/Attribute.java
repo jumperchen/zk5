@@ -11,7 +11,7 @@ public class Attribute {
 	
 	private String _name;
 	private Operator _operator;
-	private Object _value;
+	private String _value;
 	private boolean _quoted = false;
 	
 	public Attribute(String name) {
@@ -34,7 +34,7 @@ public class Attribute {
 		_operator = operator;
 	}
 	
-	public Object getValue() {
+	public String getValue() {
 		return _value;
 	}
 	

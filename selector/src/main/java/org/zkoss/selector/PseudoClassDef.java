@@ -9,6 +9,6 @@ package org.zkoss.selector;
  */
 public interface PseudoClassDef {
 	
-	public boolean qualify(ComponentMatchCtx ctx, Object ... parameters);
+	public boolean accept(ComponentMatchCtx ctx, String ... parameters);
 	
 }

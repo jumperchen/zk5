@@ -29,69 +29,131 @@ public class ComponentMatchCtx {
 	private boolean[] _inheritance;
 	private boolean[] _brotherhood;
 	
-	public ComponentMatchCtx(Component component, int size){
+	// pseudo-class support
+	private int _compChildIndex = -1;
+	
+	
+	
+	/*package*/ ComponentMatchCtx(Component component, int size){
 		_comp = component;
 		_qualifications = new boolean[size];
 		_inheritance = new boolean[size - 1];
 		_brotherhood = new boolean[size - 1];
 	}
 	
-	public ComponentMatchCtx(Component component, ComponentMatchCtx parent){
+	/*package*/ ComponentMatchCtx(Component component, ComponentMatchCtx parent){
 		this(component, parent._qualifications.length);
 		_parent = parent;
+		_compChildIndex = 0;
 	}
 	
+	
+	
+	// operation //
+	/*package*/ void moveToNextSibling(){
+		_comp = _comp.getNextSibling();
+		_compChildIndex++;
+	}
+	
+	
+	
+	// getter //
+	/**
+	 * Return the parent context
+	 */
+	public ComponentMatchCtx getParent(){
+		return _parent;
+	}
+	
+	/**
+	 * Return the component.
+	 */
 	public Component getComponent(){
 		return _comp;
 	}
 	
-	public void setComponent(Component component){
-		_comp = component;
+	/**
+	 * Return the child index of the component. If the component is one of the 
+	 * page roots, return -1.
+	 */
+	public int getComponentChildIndex(){
+		if(_compChildIndex > -1) return _compChildIndex;
+		Component parent = _comp.getParent();
+		return parent == null ? -1 : parent.getChildren().indexOf(_comp);
 	}
 	
-	public ComponentMatchCtx getParent(){
-		return _parent;
+	/**
+	 * Return the count of total siblings of the component, including itself.
+	 * @return
+	 */
+	public int getComponentSiblingSize(){
+		Component parent = _comp.getParent();
+		return parent == null ? 
+				_comp.getPage().getRoots().size() : parent.getChildren().size();
 	}
 	
 	
 	
 	// qualify relation //
-	public void setDescendant(int index){
+	/*package*/ void setDescendant(int index){
 		setDescendant(index, true);
 	}
 	
-	public void setDescendant(int index, boolean isDescendant){
+	/*package*/ void setDescendant(int index, boolean isDescendant){
 		_inheritance[index] = isDescendant;
 	}
 	
+	/**
+	 * Return true if the component qualifies as a descendant of a 
+	 * SimpleSelectorSequence position.
+	 * @param index
+	 * @return
+	 */
 	public boolean isDescendantOf(int index){
 		return _inheritance[index];
 	}
 	
-	public void setYoungerBrother(int index){
+	/*package*/ void setYoungerBrother(int index){
 		setYoungerBrother(index, true);
 	}
 	
-	public void setYoungerBrother(int index, boolean isYoungerBrother){
+	/*package*/ void setYoungerBrother(int index, boolean isYoungerBrother){
 		_brotherhood[index] = isYoungerBrother;
 	}
 	
+	/**
+	 * Return true if the component qualifies as a General Sibling (younger
+	 * brother, as defined in CSS3 selector language) of a SimpleSelectorSequence
+	 * position.
+	 * @param index
+	 * @return
+	 */
 	public boolean isYoungerBrotherOf(int index){
 		return _brotherhood[index];
 	}
 	
-	public void setQualified(int index){
+	/*package*/ void setQualified(int index){
 		setQualified(index, true);
 	}
 	
-	public void setQualified(int index, boolean qualified){
+	/*package*/ void setQualified(int index, boolean qualified){
 		_qualifications[index] = qualified;
 	}
 	
+	/**
+	 * Return true if the component qualifies as a SimpleSelectorSequence at 
+	 * given position.
+	 * @param index
+	 * @return
+	 */
 	public boolean isQualified(int index){
 		return _qualifications[index];
 	}
 	
+	/**
+	 * Return true if the component qualifies as the last SimpleSelectorSequence.
+	 * @return
+	 */
 	public boolean isTheOne(){
 		return _qualifications[_qualifications.length - 1];
 	}
@@ -99,6 +161,13 @@ public class ComponentMatchCtx {
 	
 	
 	// qualify local property //
+	/**
+	 * Return true if the component qualifies the local properties of a given
+	 * SimpleSelectorSequence.
+	 * @param seq 
+	 * @param defs 
+	 * @return
+	 */
 	public boolean match(SimpleSelectorSequence seq, 
 			Map<String, PseudoClassDef> defs){
 		return matchType(seq.getType()) && matchID(seq.getId()) 
@@ -107,22 +176,38 @@ public class ComponentMatchCtx {
 			&& matchPseudoClasses(seq.getPseudoClasses(), defs);
 	}
 	
+	/**
+	 * Return true if the component's id matches a given id.
+	 * @param id
+	 * @return
+	 */
 	public boolean matchID(String id){
 		if(id == null) return true;
 		return id.equals(_comp.getId());
 	}
 	
+	/**
+	 * Return true if the component's type matches a given type.
+	 * @param type
+	 * @return
+	 */
+	// TODO: support namespace to distinguish zul and xhtml components
 	public boolean matchType(String type){
 		if(type == null) return true;
 		return _comp.getPage().getComponentDefinition(_comp.getClass(), true)
 			.getName().equals(type);
 	}
 	
+	/**
+	 * Return true if the component's Sclasses contains all given classes.
+	 * @param classes
+	 * @return
+	 */
 	// TODO: provide matcher for single class/attribute/pseudo-class
 	public boolean matchClasses(Set<String> classes){
 		if(classes == null || classes.isEmpty()) return true;
-		if(!(_comp instanceof HtmlBasedComponent)) return false;
 		
+		if(!(_comp instanceof HtmlBasedComponent)) return false;
 		String sclasses = ((HtmlBasedComponent) _comp).getSclass();
 		
 		for(String c : classes)
@@ -131,45 +216,66 @@ public class ComponentMatchCtx {
 		return true;
 	}
 	
+	/**
+	 * Return true if the component matches all given attributes.
+	 * @param attributes
+	 * @return
+	 */
 	public boolean matchAttributes(List<Attribute> attributes){
 		if(attributes == null || attributes.isEmpty()) return true;
 		
 		for(Attribute attr : attributes){
 			// use getter
-			Object result = invokeGetterMethod(attr.getName());
+			Object compValue = invokeGetterMethod(attr.getName());
 			
 			switch(attr.getOperator()){
 			case BEGIN_WITH:
-				if(result==null || !result.toString()
+				if(compValue==null || !compValue.toString()
 						.startsWith(attr.getValue().toString())) return false;
 				break;
 			case END_WITH:
-				if(result==null || !result.toString()
+				if(compValue==null || !compValue.toString()
 						.endsWith(attr.getValue().toString())) return false;
 				break;
 			case CONTAIN:
-				if(result==null || !result.toString()
+				if(compValue==null || !compValue.toString()
 						.contains(attr.getValue().toString())) return false;
 				break;
 			case EQUAL:
 			default:
-				if(!Objects.equals(result, attr.getValue())) return false;
+				try {
+					// TODO: check comparison
+					Object attrValue = parseData(attr.getValue(), 
+							attr.isQuoted()? String.class : compValue.getClass());
+					if(!Objects.equals(compValue, attrValue)) return false;
+				} catch (Exception e) {
+					// failed to convert attribute value to expected type
+					return false;
+				}
 			}
 		}
 		return true;
 	}
 	
+	/**
+	 * Return true if the component is accepted as all given pseudo classes.
+	 * @param pseudoClasses
+	 * @param defs
+	 * @return
+	 */
 	public boolean matchPseudoClasses(List<PseudoClass> pseudoClasses, 
 			Map<String, PseudoClassDef> defs){
 		if(pseudoClasses == null || pseudoClasses.isEmpty()) return true;
 		
 		for(PseudoClass pc : pseudoClasses){
-			PseudoClassDef def = defs.get(pc.getFunction());
-			if(def==null) return false;
-			// TODO: support multiple parameter
+			PseudoClassDef def = getPseudoClassDef(defs, pc.getName());
+			if(def == null) 
+				throw new NoSuchPseudoClassException(pc.getName());
+			
+			// TODO: support multiple parameters
 			String param = pc.getParameter();
-			if(param == null? !def.qualify(this) : 
-				!def.qualify(this, pc.getParameter())) 
+			if(param == null? !def.accept(this) : 
+				!def.accept(this, pc.getParameter())) 
 					return false;
 		}
 		return true;
@@ -193,7 +299,24 @@ public class ComponentMatchCtx {
 		}
 		return null;
 	}
-
+	
+	private PseudoClassDef getPseudoClassDef(Map<String, PseudoClassDef> defs,
+			String className) {
+		PseudoClassDef def = null;
+		if(defs != null && !defs.isEmpty())
+			def = defs.get(className);
+		if(def != null) return def;
+		return BasicPseudoClassDefs.getDefinition(className);
+	}
+	
+	private Object parseData(String source, Class<?> expectedType){
+		// TODO: enhance type support
+		if(expectedType.equals(Integer.class)) return new Integer(source);
+		if(expectedType.equals(Boolean.class)) return new Boolean(source);
+		if(expectedType.equals(Double.class))  return new Double(source);
+		return source;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer("CMCtx: ");
@@ -204,6 +327,27 @@ public class ComponentMatchCtx {
 		sb.append("], B[");
 		for(Boolean b : _brotherhood) sb.append(b?'1':'0');
 		return sb.append("]").toString();
+	}
+	
+	public static class NoSuchPseudoClassException extends RuntimeException {
+		
+		private static final long serialVersionUID = -7654462883041251375L;
+		private String _name;
+		
+		public NoSuchPseudoClassException(String name, String msg){
+			super(msg);
+			_name = name;
+		}
+		
+		public NoSuchPseudoClassException(String name){
+			super();
+			_name = name;
+		}
+		
+		public String getName(){
+			return _name;
+		}
+		
 	}
 	
 }
