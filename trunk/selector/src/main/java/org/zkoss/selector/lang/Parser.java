@@ -16,7 +16,7 @@ import org.zkoss.selector.util.Debugger;
 import org.zkoss.selector.util.MacroStateCtx;
 import org.zkoss.selector.util.StateCtx;
 import org.zkoss.selector.util.StateMachine;
-import org.zkoss.selector.util.StateCtx.Callback;
+import org.zkoss.selector.util.StateCtx.TransitionListener;
 import org.zkoss.selector.util.StateMachine.StateMachineException;
 
 /**
@@ -57,7 +57,7 @@ public class Parser {
 						@Override
 						protected void init() {
 							addTransition(CharClass.COMBINATOR, State.POST_COMBINATOR, 
-									new Callback<Token, CharClass>(){
+									new TransitionListener<Token, CharClass>(){
 								public void onTransit(Token input, CharClass inputClass) {
 									_selector.attachCombinator(getCombinator(input));
 								}
@@ -225,7 +225,7 @@ public class Parser {
 		// ID cycle
 		getState(SubState.MAIN)
 			.addRoute(Type.NTN_ID, SubState.ID_PRE_VALUE)
-			.addRoute(Type.IDENTIFIER, SubState.MAIN, new Callback<Token, Type>(){
+			.addRoute(Type.IDENTIFIER, SubState.MAIN, new TransitionListener<Token, Type>(){
 				public void onTransit(Token input, Type inputClass) {
 					// flush ID value
 					if(_seq.getId() != null) 
@@ -239,7 +239,7 @@ public class Parser {
 		// class cycle
 		getState(SubState.MAIN)
 			.addRoute(Type.NTN_CLASS, SubState.CLASS_PRE_VALUE)
-			.addRoute(Type.IDENTIFIER, SubState.MAIN, new Callback<Token, Type>(){
+			.addRoute(Type.IDENTIFIER, SubState.MAIN, new TransitionListener<Token, Type>(){
 				public void onTransit(Token input, Type inputClass) {
 					// flush class value
 					_seq.addClass(input.source(_source));
@@ -250,7 +250,7 @@ public class Parser {
 		getState(SubState.MAIN)
 			.addRoute(Type.NTN_PSDOCLS, SubState.PSDOCLS_PRE_NAME)
 			.addRoute(Type.IDENTIFIER, SubState.PSDOCLS_POST_NAME, 
-					new Callback<Token, Type>(){
+					new TransitionListener<Token, Type>(){
 				public void onTransit(Token input, Type inputClass) {
 					// flush pseudo class function name
 					_seq.addPseudoClass(input.source(_source));
@@ -258,7 +258,7 @@ public class Parser {
 			})
 			.addRoute(Type.OPEN_PAREN, SubState.PSDOCLS_PRE_PARAM)
 			.addRoute(Type.IDENTIFIER, SubState.PSDOCLS_POST_PARAM, 
-					new Callback<Token, Type>(){
+					new TransitionListener<Token, Type>(){
 				public void onTransit(Token input, Type inputClass) {
 					// flush pseudo class function parameter
 					// TODO: support multiple parameters separated by comma
@@ -278,20 +278,20 @@ public class Parser {
 		getState(SubState.MAIN)
 			.addRoute(Type.OPEN_BRACKET, SubState.ATTR_PRE_NAME)
 			.addRoute(Type.IDENTIFIER, SubState.ATTR_POST_NAME, 
-					new Callback<Token, Type>(){
+					new TransitionListener<Token, Type>(){
 				public void onTransit(Token input, Type inputClass) {
 					// set attribute name
 					_seq.addAttribute(input.source(_source));
 				}
 			})
-			.addRoutes(SubState.ATTR_PRE_VALUE, new Callback<Token, Type>(){
+			.addRoutes(SubState.ATTR_PRE_VALUE, new TransitionListener<Token, Type>(){
 				public void onTransit(Token input, Type inputClass) {
 					// set attribute operator
 					_seq.attachAttributeOperator(getOperator(inputClass));
 				}
 			}, Type.OP_EQUAL, Type.OP_BEGIN_WITH, Type.OP_END_WITH, Type.OP_CONTAIN)
 			.addRoute(Type.IDENTIFIER, SubState.ATTR_POST_VALUE, 
-					new Callback<Token, Type>(){
+					new TransitionListener<Token, Type>(){
 				public void onTransit(Token input, Type inputClass) {
 					// set attribute value
 					_seq.attachAttributeValue(input.source(_source));
@@ -303,7 +303,7 @@ public class Parser {
 		getState(SubState.ATTR_PRE_VALUE)
 			.addRoute(Type.DOUBLE_QUOTE, SubState.ATTR_PRE_VALUE_INQT)
 			.addRoute(Type.IDENTIFIER, SubState.ATTR_POST_VALUE_INQT, 
-					new Callback<Token, Type>(){
+					new TransitionListener<Token, Type>(){
 				public void onTransit(Token input, Type inputClass) {
 					// set attribute value
 					_seq.attachAttributeValue(input.source(_source), true);

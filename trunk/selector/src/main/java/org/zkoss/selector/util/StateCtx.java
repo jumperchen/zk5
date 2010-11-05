@@ -22,18 +22,18 @@ public class StateCtx<E, C, IN> {
 	protected final Set<C> _returners;
 	protected final Set<IN> _minorReturners;
 	protected final Map<C, E> _transitions;
-	protected final Map<C, Callback<IN, C>> _transitionCallbacks;
+	protected final Map<C, TransitionListener<IN, C>> _transitionListeners;
 	protected final Map<IN, E> _minorTransitions;
-	protected final Map<IN, Callback<IN, C>> _minorTransitionCallbacks;
+	protected final Map<IN, TransitionListener<IN, C>> _minorTransitionListeners;
 	
 	public StateCtx(){
 		_returnAll = false;
 		_returners = new HashSet<C>();
 		_minorReturners = new HashSet<IN>();
 		_transitions = new HashMap<C, E>();
-		_transitionCallbacks = new HashMap<C, Callback<IN, C>>();
+		_transitionListeners = new HashMap<C, TransitionListener<IN, C>>();
 		_minorTransitions = new HashMap<IN, E>();
-		_minorTransitionCallbacks = new HashMap<IN, Callback<IN, C>>();
+		_minorTransitionListeners = new HashMap<IN, TransitionListener<IN, C>>();
 		init();
 	}
 	
@@ -79,12 +79,12 @@ public class StateCtx<E, C, IN> {
 	}
 	
 	public StateCtx<E, C, IN> addTransition(C inputClass, E destination, 
-			Callback<IN, C> callback){
+			TransitionListener<IN, C> callback){
 		_transitions.put(inputClass, destination);
 		if(callback == null)
-			_transitionCallbacks.remove(inputClass);
+			_transitionListeners.remove(inputClass);
 		else
-			_transitionCallbacks.put(inputClass, callback);
+			_transitionListeners.put(inputClass, callback);
 		return this;
 	}
 	
@@ -93,7 +93,7 @@ public class StateCtx<E, C, IN> {
 	}
 	
 	public StateCtx<E, C, IN> addTransitions(E destination, 
-			Callback<IN, C> callback, C ... inputClasses){
+			TransitionListener<IN, C> callback, C ... inputClasses){
 		for(C c : inputClasses)
 			addTransition(c, destination, callback);
 		return this;
@@ -105,7 +105,7 @@ public class StateCtx<E, C, IN> {
 	}
 	
 	public StateCtx<E, C, IN> addRoute(C inputClass, E destination, 
-			Callback<IN, C> callback){
+			TransitionListener<IN, C> callback){
 		addTransition(inputClass, destination, callback);
 		return _machine.getState(destination);
 	}
@@ -114,7 +114,7 @@ public class StateCtx<E, C, IN> {
 		return addRoutes(destination, null, inputClasses);
 	}
 	
-	public StateCtx<E, C, IN> addRoutes(E destination, Callback<IN, C> callback, 
+	public StateCtx<E, C, IN> addRoutes(E destination, TransitionListener<IN, C> callback, 
 			C ... inputClasses){
 		addTransitions(destination, callback, inputClasses);
 		return _machine.getState(destination);
@@ -126,12 +126,12 @@ public class StateCtx<E, C, IN> {
 	}
 	
 	public StateCtx<E, C, IN> addMinorTransition(IN input, E destination, 
-			Callback<IN, C> callback){
+			TransitionListener<IN, C> callback){
 		_minorTransitions.put(input, destination);
 		if(callback == null)
-			_minorTransitionCallbacks.remove(input);
+			_minorTransitionListeners.remove(input);
 		else
-			_minorTransitionCallbacks.put(input, callback);
+			_minorTransitionListeners.put(input, callback);
 		return this;
 	}
 	
@@ -140,7 +140,7 @@ public class StateCtx<E, C, IN> {
 	}
 	
 	public StateCtx<E, C, IN> addMinorTransitions(E destination, 
-			Callback<IN, C> callback, IN ... inputs){
+			TransitionListener<IN, C> callback, IN ... inputs){
 		for(IN i : inputs)
 			addMinorTransition(i, destination, callback);
 		return this;
@@ -152,7 +152,7 @@ public class StateCtx<E, C, IN> {
 	}
 	
 	public StateCtx<E, C, IN> addMinorRoute(IN input, E destination, 
-			Callback<IN, C> callback){
+			TransitionListener<IN, C> callback){
 		addMinorTransition(input, destination, callback);
 		return _machine.getState(destination);
 	}
@@ -162,7 +162,7 @@ public class StateCtx<E, C, IN> {
 	}
 	
 	public StateCtx<E, C, IN> addMinorRoutes(E destination, 
-			Callback<IN, C> callback, IN ... inputs){
+			TransitionListener<IN, C> callback, IN ... inputs){
 		addMinorTransitions(destination, callback, inputs);
 		return _machine.getState(destination);
 	}
@@ -198,17 +198,17 @@ public class StateCtx<E, C, IN> {
 	protected void onLeave(IN input, C inputClass, E destination){}
 	protected void onStop(boolean endOfInput){}
 	
-	public interface Callback<IN, C> {
+	public interface TransitionListener<IN, C> {
 		public void onTransit(IN input, C inputClass);
 	}
 	
 	
 	
 	// default operation //
-	/*package*/ void doCallback(IN input, C inputClass){
-		Callback<IN, C> c = _transitionCallbacks.get(inputClass);
+	/*package*/ void doTransit(IN input, C inputClass){
+		TransitionListener<IN, C> c = _transitionListeners.get(inputClass);
 		if(c != null) c.onTransit(input, inputClass);
-		c = _minorTransitionCallbacks.get(input);
+		c = _minorTransitionListeners.get(input);
 		if(c != null) c.onTransit(input, inputClass);
 	}
 }
