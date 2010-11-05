@@ -132,7 +132,7 @@ public abstract class StateMachine<E, C, IN> {
 					return;
 				}
 				state.onLeave(input, inputClass, destination);
-				state.doCallback(input, inputClass);
+				state.doTransit(input, inputClass);
 				getState(destination).onLand(input, inputClass, origin);
 				
 			} else if(state.isReturning(input, inputClass)) {
