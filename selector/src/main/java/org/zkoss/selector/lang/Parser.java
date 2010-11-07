@@ -87,7 +87,7 @@ public class Parser {
 		}
 
 		@Override
-		protected State getLandingPoint(Token input, CharClass inputClass) {
+		protected State getLandingState(Token input, CharClass inputClass) {
 			switch(inputClass){
 			case WHITESPACE:
 				return State.PRE_SELECTOR;
@@ -200,7 +200,7 @@ public class Parser {
 	}
 	
 	@Override
-	protected SubState getLandingPoint(Token input, Type inputClass) {
+	protected SubState getLandingState(Token input, Type inputClass) {
 		
 		switch(inputClass){
 		case IDENTIFIER:

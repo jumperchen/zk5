@@ -133,7 +133,7 @@ public class Tokenizer {
 			}
 			
 			@Override
-			protected State getLandingPoint(Character input,
+			protected State getLandingState(Character input,
 					CharClass inputClass) {
 				
 				if(input == '[') return State.IN_ATTRIBUTE;

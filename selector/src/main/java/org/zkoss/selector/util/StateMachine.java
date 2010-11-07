@@ -61,7 +61,7 @@ public abstract class StateMachine<E, C, IN> {
 	}
 	
 	protected void init(){}
-	protected abstract E getLandingPoint(IN input, C inputClass);
+	protected abstract E getLandingState(IN input, C inputClass);
 	protected abstract C getClass(IN input);
 	
 	// event handler //
@@ -114,7 +114,7 @@ public abstract class StateMachine<E, C, IN> {
 			return;
 		}
 		if(origin == null){
-			destination = getLandingPoint(input, inputClass); // dest
+			destination = getLandingState(input, inputClass); // dest
 			if(destination == null) {
 				doReject(input);
 				return;
