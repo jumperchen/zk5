@@ -11,6 +11,7 @@
  */
 package org.zkoss.zkex.wire.event;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.zkoss.zk.au.AuRequest;
@@ -51,6 +52,7 @@ public class WireEvent extends Event {
 			throw new UiException(MZk.ILLEGAL_REQUEST_COMPONENT_REQUIRED, request);
 		final Map data = request.getData();
 
+		String drawmethod = (String) data.get("drawmethod");
 		Wirebox inbox = (Wirebox) request.getDesktop().getComponentByUuidIfAny((String) data.get("inbox"));
 		Wirebox outbox = (Wirebox) request.getDesktop().getComponentByUuidIfAny((String) data.get("outbox"));
 		if (inbox == null || outbox == null || !data.containsKey("joint"))
@@ -59,7 +61,9 @@ public class WireEvent extends Event {
 		Wire wire = new Wire();
 		wire.setIn(inbox);
 		wire.setOut(outbox);
+		wire.setConfig("drawingMethod="+drawmethod);
 		wire.setJoint((String) data.get("joint"));
+		wire.setParent(outbox.getParent());
 
 		return new WireEvent(request.getCommand(), outbox, wire, null);
 	}
@@ -90,11 +94,12 @@ public class WireEvent extends Event {
 
 		String joint = (String) data.get("joint");
 
-		Wire unwiredWire = targetbox.getWire(joint);
+		ArrayList list = targetbox.getWires(joint);
+		Wire unwiredWire = (Wire) list.get(0);
 		if(unwiredWire == null )
 			throw new UiException(MZk.ILLEGAL_REQUEST_WRONG_DATA, new Object[] { data, request });
 
-		unwiredWire.detach(false);
+		unwiredWire.detach();
 		return new WireEvent(request.getCommand(), unwiredWire.getOut(), unwiredWire, null);
 	}
 	/**

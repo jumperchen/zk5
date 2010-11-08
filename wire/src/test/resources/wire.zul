@@ -7,7 +7,7 @@
 		style="position:relative;left:200px;top 50px;">
 		<wirebox id="hi" points="*"></wirebox>
 
-		<wirebox id="hello" points="nw" onUnWire='alert("hi")'></wirebox>
+		<wirebox id="hello" points="nw" drawmethod="leftSquareArrow" onUnWire='alert("hi")'></wirebox>
 		<wirebox points="n"></wirebox>
 		<wirebox points="ne"></wirebox>
 		<wirebox points="e"></wirebox>
@@ -19,14 +19,14 @@
 		<wirebox points="se,w"></wirebox>
 		<wirebox points="se,w,e"></wirebox>
 
-		<wirebox points="se,w,e,*"></wirebox>
+		<wirebox points="*"></wirebox>
 
-		<wirebox points="se,*,e,*"></wirebox>
+		<wirebox drawmethod="leftSquareArrow" points="*"></wirebox>
 
 		<wirebox points="se,n,s,e"></wirebox>
 
-		<wire id="test" in="${hi}" out="${hello}" joint="w,nw"></wire>
-		<wire in="${hi}" out="${hello}" joint="e,se"></wire>
+		<wire id="test" in="hello" out="${hello}" joint="w,nw"></wire>
+		<wire in="hi" out="hello" joint="e,se"></wire>
 		<wire in="${hi}" out="${hello}" joint="ne,se"></wire>
 		<wire in="${hi}" out="${hello}" joint="nw,se"></wire>
 
