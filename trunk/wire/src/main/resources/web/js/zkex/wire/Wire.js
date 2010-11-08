@@ -15,31 +15,41 @@
         _in: "",
         _out: "",
         $define: {
+            _in:function(data){
+                this.setIn(data);
+            },
+            _out:function(data){
+                this.setOut(data);
+            },
             config: function(conf) {
-                this._config = zk.copy(zkex.wire.Wire.parseConfig(conf),
-                    zkex.wire.Wire.opt);
+                this._config = zk.copy({},zkex.wire.Wire.opt);
+                zk.copy(this._config , zkex.wire.Wire.parseConfig(conf));
             },
             joint: function(joint) {
                 this._joint = joint.split(/,/g);
             }
         },
-        setInId:function(str){
-            this.setIn(str);
-        },
-        setOutId:function(str){
-            this.setOut(str);
-        },
+//        set_In:function(str){
+//            this.setIn(str);
+//        },
+//        setOut:function(str){
+//            this.setOut(str);
+//        },
         setIn: function(val) {
+		    if (zk.Widget.isInstance(val))
+    			val = 'uuid(' + val.uuid + ')';           
             this._in = val;
         },
         getIn: function() {
-            return zk.Widget.$(this._in);
+            return this._smartFellow(this._in);
         },
         setOut: function(val) {
+		    if (zk.Widget.isInstance(val))
+    			val = 'uuid(' + val.uuid + ')';           
             this._out = val;
         },
         getOut: function() {
-            return zk.Widget.$(this._out);
+            return this._smartFellow(this._out);
         },
         $init:function(){
             this.$supers(zkex.wire.Wire, '$init', arguments);
@@ -96,7 +106,7 @@
             directionOut:[0,1]
         },
         parseConfig: function(conf) {
-            tokens = (conf || "").split(/,/), token, result = {};
+            var tokens = (conf || "").split(/,/), token, result = {};
 
             for (var i = 0, len = tokens.length; i < len; ++i) {
                 token = tokens[i].split("=");

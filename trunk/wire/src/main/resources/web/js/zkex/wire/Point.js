@@ -10,7 +10,7 @@
  * Copyright (C) 2010 Potix Corporation. All Rights Reserved.
  */
 (function() {
-      zkex.wire.Point = zk.$extends(zk.Object, {
+      var Point = zkex.wire.Point = zk.$extends(zk.Object, {
         _id:'',
         _zclass:'',
         _point:'',
@@ -22,17 +22,13 @@
             this._zclass = clz;
             this._point = point;
             this.parent = parent;
-            if (editable) this._editable = true;
             this._element = this.createPoint(this._id,this._zclass);
 
-            this._element.addClass(zkex.wire.Point.WIRECLASS);
             this._element[0].obj = this;
             jq(parent).append(this._element);
             this._updatePosition(this._element,[0,0]);
+            if (editable) this.setEditable(true);            
 
-            if (this._editable) {
-                this._makeEditable();
-            }
         },
         addWireCount:function(){
             this._wirecount++;
@@ -49,8 +45,10 @@
         setEditable:function(editable){
             if (this._editable != !!editable) { //!! for boolean
                 if (editable) {
+                    this._element.addClass(Point.WIRECLASS);                         
                     this._makeEditable();
                 }else{
+                    this._element.removeClass(Point.WIRECLASS);                         
                     this._cancelEditable();
                 }
                 this._editable = !!editable;
@@ -83,10 +81,10 @@
 	                handle: this._element,
 	                fireOnMove: false,
 	                ghosting: false,
-	                starteffect:zkex.wire.Point._dragstart,
-	                draw:zkex.wire.Point._dragdraw,
+	                starteffect:Point._dragstart,
+	                draw:Point._dragdraw,
 	                endghosting: zk.$void,
-	                endeffect: zkex.wire.Point._dragend,
+	                endeffect: Point._dragend,
 	                zIndex: 99999
 	            });
             }
@@ -109,7 +107,7 @@
             var box = jq(this.parent),
                 width = box.width(), height = box.height(),
                     margin = _margin || [8, 7];
-            var termoffset = zkex.wire.Point.getOffset(0, 0, width, height,
+            var termoffset = Point.getOffset(0, 0, width, height,
                 this._point, margin); //0,0 because it's relative to parent.
 
             _element.css({
@@ -145,6 +143,14 @@
            dg.startpoc = [dg.startpoc.left,dg.startpoc.top];
         },
         _dragdraw:function(dg, ofs, evt){
+            
+            var overing = jq(evt.domTarget);
+            if(dg.lastover && dg.lastover[0].id != overing[0].id ){
+                dg.lastover.removeClass(Point.WIRE_OVER_CLASS);                    
+            }            
+            if(overing.is("."+ Point.WIRECLASS)){
+                dg.lastover = overing.addClass(Point.WIRE_OVER_CLASS);
+            }
             var drawmethod = zkex.wire.Drawmethod[dg.node.obj.parent.getDrawmethod()];
             if (drawmethod) {
                 drawmethod.draw(dg.drawer, [dg.startpoc[0],dg.startpoc[1]] ,
@@ -154,13 +160,15 @@
             }
         },
         _dragend:function(dg,evt){
+            dg.lastover.removeClass("z-wire-over");
             var target  = jq(evt.domTarget);
             if(target.is("."+zkex.wire.Point.WIRECLASS)){
                 //fire onWire event
                 zk.Widget.$(target.parent()).fire("onWire", {
                     inbox: dg.node.parentNode.id,
                     outbox: target.parent()[0].id,
-                    joint:dg.node.obj._point+","+target[0].obj._point
+                    joint:dg.node.obj._point+","+target[0].obj._point,
+                    drawmethod:dg.node.obj.parent.getDrawmethod()
                 });
 
             }
@@ -199,7 +207,8 @@
 
             return [Xcenter, Ycenter];
         },
-        WIRECLASS:"wireable",
+        WIRE_OVER_CLASS:"z-wire-over",
+        WIRECLASS:"z-wireable",
         POINTS: {
             "nw": 1,
             "n": 2,

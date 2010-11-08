@@ -27,17 +27,17 @@
         },
         setPoints:function(p){
             if (this.$n()) {
+                if ( p ==zkex.wire.Wirebox.POINT_ALL ) {
+                    this.addPoint(p);
+                    this._updatePoints();
+                    this._points = zkex.wire.Wirebox.POINT_ALL;
+                    return;
+                }
+                    
                 var terms = (p || "").split(",");
                 for (var i = 0, len = terms.length; i < len; ++i) {
                     if (zkex.wire.Point.allowPoint(terms[i])) {
                         this.addPoint(terms[i]);
-                    } else if (terms[i] == zkex.wire.Wirebox.POINT_ALL) {
-                        for (var point in zkex.wire.Wirebox.POINTS) {
-                            this.addPoint(point);
-                        }
-                        this._updatePoints();
-                        this._points = zkex.wire.Wirebox.POINT_ALL;
-                        return;
                     } else {
                         zk.error("wirebox didnt support point[" + terms[i] + "]");
                     }
@@ -98,10 +98,10 @@
         addPoint: function(point) {
             var term,scissors,success = false;
             if (point == zkex.wire.Wirebox.POINT_ALL) {
-                for (var point in zkex.wire.Wirebox.POINTS) {
-                    this.addPoint(point);
+                for (var i = 0 ,len= zkex.wire.Wirebox.POINTS.length; i < len ; ++i) {
+                    success = this.addPoint(zkex.wire.Wirebox.POINTS[i]) || success;
                 }
-                success = true;
+                return success;
             }
             if (this._isBlankPoint(point)) {
                 var pointel = new zkex.wire.Point(this,this.uuid ,
@@ -133,6 +133,7 @@
         }
     }, {
         POINT_ALL: "*",
+        POINTS: ["nw","n","ne","w","e","sw","s","se"],
         STATE_WAIT: 1,
         STATE_CONNECTED: 2
     })

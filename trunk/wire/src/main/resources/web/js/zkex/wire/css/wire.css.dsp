@@ -25,7 +25,13 @@ canvas {
 .z-wirebox {
 	z-index: 50;
 }
-
+div.z-wire-over{
+	border:2px solid yellow;
+	background-color:red;
+}
+.z-wireable{
+	cursor:pointer;
+}
 .z-wirebox-point {
 	position: absolute;
 	width: 10px;
@@ -34,7 +40,6 @@ canvas {
 	border: solid 1px #1111FA;
 	display: block;
 	z-index: 70;
-	cursor:pointer;
 }
 
 .z-canvas {
