@@ -94,12 +94,11 @@ public class WireEvent extends Event {
 
 		String joint = (String) data.get("joint");
 
-		ArrayList list = targetbox.getWires(joint);
+		ArrayList list = targetbox.getAvailableWires(joint);
 		Wire unwiredWire = (Wire) list.get(0);
 		if(unwiredWire == null )
 			throw new UiException(MZk.ILLEGAL_REQUEST_WRONG_DATA, new Object[] { data, request });
-
-		unwiredWire.detach();
+		unwiredWire.setParent(null);
 		return new WireEvent(request.getCommand(), unwiredWire.getOut(), unwiredWire, null);
 	}
 	/**

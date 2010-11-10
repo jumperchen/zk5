@@ -146,7 +146,7 @@ public class Wire extends HtmlBasedComponent {
 			if (_out != null)
 				_out.removeIn(this);
 			_out = out;
-			_out.addIn(this);
+			_out.addOut(this);
 		}
 		_outId = null;
 	}
