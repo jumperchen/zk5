@@ -14,8 +14,10 @@ package org.zkoss.zkex.wire;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.zkoss.lang.Library;
 import org.zkoss.lang.Objects;
 import org.zkoss.zk.au.AuRequest;
 import org.zkoss.zk.ui.event.Events;
@@ -30,7 +32,6 @@ public class Wirebox extends XulElement implements Serializable {
 		addClientEvent(Wirebox.class, WireEvents.ON_WIRE, CE_IMPORTANT | CE_NON_DEFERRABLE);
 		addClientEvent(Wirebox.class, WireEvents.ON_UNWIRE, CE_IMPORTANT | CE_NON_DEFERRABLE);
 	}
-
 	private ArrayList _ins;
 
 	private ArrayList _outs;
@@ -40,6 +41,11 @@ public class Wirebox extends XulElement implements Serializable {
 	public String _drawmethod = "bezierArrow";
 
 	public Wirebox() {
+		String method = Library.getProperty("wire.drawmethod");
+		if(method !=null ){
+			_drawmethod = method;
+		}
+			
 		_ins = new ArrayList();
 		_outs= new ArrayList();
 	}
@@ -52,6 +58,20 @@ public class Wirebox extends XulElement implements Serializable {
 		if(!_outs.contains(w)) _outs.add(w);
 	}
 
+	public ArrayList getAvailableWires(String joint) {
+		ArrayList wires = getWires(joint);
+		ArrayList outputs = new ArrayList();
+		
+		for (Iterator ir = wires.iterator(); ir.hasNext();) {
+			Wire w = (Wire) ir.next();
+			if(w.getParent()!=null){
+				outputs.add(w);
+			}
+		}
+		
+		return outputs;
+		
+	}
 	public ArrayList getWires(String joint) {
 		List wires = getWires();
 		ArrayList outputs = new ArrayList();
