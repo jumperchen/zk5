@@ -122,13 +122,18 @@
             this._pointstate = {};
         },
         bind_: function(desktop, skipper, after) {
+            var that = this;
+            
             this.$supers(zkex.wire.Wirebox, 'bind_', arguments);
-            if(this._points) this.setPoints(this._points);
+            if(this._points) this.setPoints(this._points);            
+            jq("img").bind("load",function(){that._updatePoints(); } );
+
         },
         getZclass: function() {
             return this._zclass || "z-wirebox";
         },
         unbind_: function() {
+            jq("img").unbind("load");            
             this.$supers(zkex.wire.Wirebox, 'unbind_', arguments);
         }
     }, {

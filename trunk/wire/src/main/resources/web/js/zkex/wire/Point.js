@@ -100,8 +100,7 @@
         },
 
         updatePosition:function(){
-           // this._updatePosition(this._element);
-           // this._updatePosition(this._scissors,[20,20]);
+           this._updatePosition(this._element,[0,0]);
         },
         _updatePosition:function(_element,_margin){
             var box = jq(this.parent),
