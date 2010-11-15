@@ -25,11 +25,7 @@ public class Wire extends HtmlBasedComponent {
 
 	private Wirebox _in;
 
-	private String _inId;
-
 	private Wirebox _out;
-
-	private String _outId;
 
 	private String _config;
 
@@ -75,9 +71,6 @@ public class Wire extends HtmlBasedComponent {
 		if (_in != null)
 			return _in;
 
-		if (_inId != null)
-			_in = (Wirebox) getFellow(_inId);
-
 		return _in;
 	}
 
@@ -93,7 +86,6 @@ public class Wire extends HtmlBasedComponent {
 			_in = in;
 			_in.addIn(this);
 		}
-		_inId = null;
 	}
 
 	/**
@@ -105,20 +97,7 @@ public class Wire extends HtmlBasedComponent {
 	public void setIn(String id) {
 		setIn((Wirebox) getFellow(id));
 // i found out that if I use id as cache , i can't make sure the wirebox's relative with wire.
-// that would be a problem when i got to remvoe soomthing .
-		
-//		if (_in != null && _in.getId() != null && _in.getId().equals(id)) { // same
-//			return;
-//		}
-//		if (_inId != null && _inId.equals(id)) {
-//			return;
-//		}
-//		if (_in != null) {
-//			_in.removeIn(this);
-//			_in = null;
-//		}
-//
-//		_inId = id;
+// that would be a problem when i got to remove soomthing .
 	}
 
 	/**
@@ -129,9 +108,6 @@ public class Wire extends HtmlBasedComponent {
 	public Wirebox getOut() {
 		if (_out != null)
 			return _out;
-
-		if (_outId != null)
-			_out = (Wirebox) getFellow(_outId);
 
 		return _out;
 	}
@@ -148,7 +124,6 @@ public class Wire extends HtmlBasedComponent {
 			_out = out;
 			_out.addOut(this);
 		}
-		_outId = null;
 	}
 
 	/**
@@ -159,18 +134,6 @@ public class Wire extends HtmlBasedComponent {
 	 */
 	public void setOut(String id) {
 		setOut((Wirebox)getFellow(id));
-//		if (_out != null && _out.getId() != null && _out.getId().equals(id)) { // same
-//			return;
-//		}
-//		if (_outId != null && _outId.equals(id)) {
-//			return;
-//		}
-//		if (_out != null) {
-//			_out.removeIn(this);
-//			_out = null;
-//		}
-//
-//		_outId = id;
 	}
 
 	/**
