@@ -1,0 +1,83 @@
+<?page title="wired dirgram zul demo " ?>
+<?component name="wirebox" class="org.zkoss.zkex.wire.Wirebox" style="display:block;border:1px solid red; float:left;margin-left:90px;" ?>
+<zk>
+	<button label="invalidate" onClick="page.invalidate()" />
+	<button label="rmwire" onClick="test.detach()" />
+	<div width="500" height="500"
+		style="position:relative;left:200px;top 50px;">
+
+		<vlayout>
+			<hlayout>
+				<wirebox id="hi" points="*"></wirebox>
+				<wirebox id="hello" points="nw" drawmethod="leftSquareArrow"
+					onUnWire='alert("hi")'>
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=nw" />
+				</wirebox>
+				<wirebox points="n">
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=n" />
+				</wirebox>
+				<wirebox points="ne">
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=ne" />
+				</wirebox>
+			</hlayout>
+
+			<hlayout>
+				<wirebox points="e">
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=e" />
+				</wirebox>
+				<wirebox points="se">
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=se" />
+				</wirebox>
+				<wirebox points="s">
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=s" />
+				</wirebox>
+				<wirebox points="sw">
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=sw" />
+				</wirebox>
+			</hlayout>
+
+			<hlayout>
+				<wirebox points="w">
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=w" />
+				</wirebox>
+
+				<wirebox points="se,w">
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=se,w" />
+				</wirebox>
+				<wirebox points="se,w,e">
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=se,w,e" />
+				</wirebox>
+
+				<wirebox points="*">
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=*" />
+				</wirebox>
+
+				<wirebox drawmethod="leftSquareArrow" points="*">
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=*" />
+				</wirebox>
+
+				<wirebox points="se,n,s,e">
+					<image
+						src="http://dummyimage.com/50x50/dddddd/fff&amp;text=se,n,s,e" />
+				</wirebox>
+			</hlayout>
+		</vlayout>
+		<wire id="test" in="hello" out="${hello}" joint="w,nw"></wire>
+		<wire in="hi" out="hello" joint="e,se"></wire>
+		<wire in="${hi}" out="${hello}" joint="ne,se"></wire>
+		<wire in="${hi}" out="${hello}" joint="nw,se"></wire>
+
+	</div>
+</zk>
