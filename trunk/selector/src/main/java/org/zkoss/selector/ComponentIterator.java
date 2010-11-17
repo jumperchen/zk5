@@ -22,6 +22,7 @@ public class ComponentIterator extends CachedIterator<Component> {
 	
 	private Page _page;
 	private Component _root;
+	// TODO: support seeking on multiple selectors
 	private Selector _selector;
 	private Map<String, PseudoClassDef> _localDefs;
 	

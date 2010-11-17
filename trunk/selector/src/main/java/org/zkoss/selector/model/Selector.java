@@ -25,6 +25,11 @@ public class Selector extends ArrayList<SimpleSelectorSequence> {
 		get(size()-1).setCombinator(combinator);
 	}
 	
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
 	public Combinator getCombinator(int index){
 		return get(index).getCombinator();
 	}
