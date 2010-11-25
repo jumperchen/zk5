@@ -10,6 +10,10 @@
 			<id>zk repository</id>
 			<url>http://mavensync.zkoss.org/maven2</url>
 		</repository>
+		<repository>
+			<id>ZK EE Evaluation</id>
+			<url>http://mavensync.zkoss.org/zk/ee-eval</url>
+		</repository>
 	</repositories>
 	<properties>
 		<zk.version>5.0.4</zk.version>
@@ -65,6 +69,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.zkoss.zk</groupId>
+			<artifactId>zkex</artifactId>
+			<version>${zk.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.zkoss.zk</groupId>
 			<artifactId>zhtml</artifactId>
 			<version>${zk.version}</version>
 			<scope>compile</scope>
@@ -111,6 +121,11 @@
 			<groupId>org.zkoss.selector</groupId>
 			<artifactId>selector</artifactId>
 			<version>0.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.zkoss.canvas</groupId>
+			<artifactId>canvas</artifactId>
+			<version>0.8.2</version>
 		</dependency>
 		
 		<!-- Test scope -->
