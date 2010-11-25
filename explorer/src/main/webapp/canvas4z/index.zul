@@ -1,0 +1,11 @@
+<?page title="Drawable x Drawing Style Test" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Mix Test" border="normal" 
+		apply="demo.canvas4z.TestCaseController">
+		<image id="img" src="img/laughing_man_100px.png" visible="false" />
+		<grid id="grid">
+			<columns />
+			<rows />
+		</grid>
+	</window>
+</zk>
