@@ -11,18 +11,21 @@
  */
 package org.zkoss.swifttab;
 
+import java.io.IOException;
+
 import org.zkoss.swifttab.event.MoveTabEvent;
 import org.zkoss.zk.au.AuRequest;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.sys.ContentRenderer;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 
 /**
- *
- * This is a tab box for movable(which you can drag them easily) and more
- * swiftly tab implements.
- *
+ * 
+ * This is a tab box for movable(which you can drag and sort them easily) and
+ * more swiftly tab implements.
+ * 
  * @listen onTabMove(start:nStartIndex,end:nEndIndex)
  */
 public class Swifttabs extends Tabs {
@@ -33,15 +36,17 @@ public class Swifttabs extends Tabs {
 		/**
 		 * It's deferable, and it's important.
 		 */
-		addClientEvent(Swifttabs.class, MoveTabEvent.NAME, CE_IMPORTANT );
+		addClientEvent(Swifttabs.class, MoveTabEvent.NAME, CE_IMPORTANT);
 	}
+
+	private boolean _movable = false;
 
 	private boolean _noResponse = false;
 
 	/**
 	 * To change the tab's index , from startIndex to endIndex , index start
 	 * with 0
-	 *
+	 * 
 	 * @param startIndex
 	 *            which the tab to move
 	 * @param endIndex
@@ -64,9 +69,8 @@ public class Swifttabs extends Tabs {
 				appendChild(startTab);
 			} else {
 				Tab referTab = (Tab) getChildren().get(refer);
-				panels.insertBefore(startTab.getLinkedPanel(),
-					referTab.getLinkedPanel());
-				
+				panels.insertBefore(startTab.getLinkedPanel(), referTab.getLinkedPanel());
+
 				insertBefore(startTab, referTab);
 
 			}
@@ -86,11 +90,28 @@ public class Swifttabs extends Tabs {
 	/**
 	 * This method is for Mpanel and Swifttab to consider if they should update
 	 * html , while tabs append new childs.
-	 *
+	 * 
 	 * @return
 	 */
 	/* package */boolean isNoResponse() {
 		return _noResponse;
+	}
+
+	/**
+	 * default is false
+	 */
+	public boolean isMovable() {
+		return _movable;
+	}
+
+	/**
+	 * @param moveable
+	 */
+	public void setMovable(boolean movable) {
+		if (this._movable != movable) {
+			this._movable = movable;
+			smartUpdate("movable", _movable);
+		}
 	}
 
 	/**
@@ -105,6 +126,13 @@ public class Swifttabs extends Tabs {
 			Events.postEvent(evt);
 		} else
 			super.service(request, everError);
+	}
+
+	protected void renderProperties(ContentRenderer renderer) throws IOException {
+		super.renderProperties(renderer);
+
+		if (_movable)
+			renderer.render("movable", _movable);
 	}
 
 }

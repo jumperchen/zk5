@@ -23,11 +23,11 @@ li.z-swifttab-seld {
 	cursor: default;
 }
 
-.z-swifttab .z-swifttab-link,.z-swifttab .z-swifttab-text,.z-swifttab .z-swifttab-sort {
+.z-swifttab .z-swifttab-link,.z-swifttab .z-swifttab-text,.z-swifttab .z-swifttab-move {
 	background: url("${c:encodeURL('~./img/swifttab/swifttab-bg.png')}") no-repeat scroll 0px 0px transparent;
 	position: relative;
 }
-.z-swifttab .z-swifttab-sort {
+.z-swifttab .z-swifttab-move {
 	background-position: -112px -80px;
 	cursor: move;
 	display: block;
