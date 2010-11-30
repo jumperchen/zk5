@@ -102,7 +102,6 @@ li.z-swifttab-seld {
 	margin: 0 0 0 1px;
 	text-align: center;
 	min-height: 18px;
-	min-width: 64px;
 	padding: 6px 0px 0 10px;
 	display: block;
 }
