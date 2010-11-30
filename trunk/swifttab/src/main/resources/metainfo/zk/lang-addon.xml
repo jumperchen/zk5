@@ -25,7 +25,7 @@
 	</component>
 	<component>
 		<component-name>swifttabs</component-name>
-		<component-class>org.zkoss.swifttab.Mtabs</component-class>
+		<component-class>org.zkoss.swifttab.Swifttabs</component-class>
 		<widget-class>swifttab.Swifttabs</widget-class>
 		<extends>tabs</extends>
 	</component>
