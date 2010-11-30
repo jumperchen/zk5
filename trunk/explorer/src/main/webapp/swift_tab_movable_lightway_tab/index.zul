@@ -1,8 +1,11 @@
 <?page title="Test swift tab Example" ?>
+<?component name="title" extends="div" style="font-weight:bold;background:gray;color:white;" ?>
+<?component name="highlight" extends="div"  style="height:30px;padding-top:15px;" ?> 
 <zk>
 	<window id="win">
 
-		<label value="light tab box" /><button label="invilidate" onClick="tab1.invalidate();" />
+		<title>light tab box<button label="invilidate" onClick="tab1.invalidate();" /></title>
+		
 		<tabbox id="tab1">
 			<tabs>
 				<swifttab label="tab1" />
@@ -21,8 +24,7 @@
 		</tabbox>
 
 
-
-		<label value="movable light tab box" /><button label="invilidate" onClick="tab2.invalidate();" />
+		<title>movable light tab box <button label="invilidate" onClick="tab2.invalidate();" /></title>
 		<tabbox id="tab2">
 			<mtabs>
 				<swifttab label="tab1" />
@@ -45,8 +47,33 @@
 				<mtabpanel>tab panel 8</mtabpanel>
 			</tabpanels>
 		</tabbox>
-
-		<label value="the old box for compare" />
+		<title>movable light tab box  with OnTabMoveEvent <button label="invilidate" onClick="tab2.invalidate();" /></title>
+		<tabbox>
+			<mtabs>
+				<attribute name="onTabMove"><![CDATA[
+					alert(event.getMovedTab().getLabel()+" is moved");	
+				]]></attribute>
+				<swifttab label="tab1" />
+				<swifttab label="tab2 for test" />
+				<swifttab label="tab3 a long tab" closable="true" />
+				<swifttab label="tab4 a really really really long tab" closable="true" />
+				<swifttab label="tab5 jsut a tab" />
+				<swifttab label="tab6 jsut a tab" />
+				<swifttab label="tab7 jsut a tab" />
+				<swifttab label="tab8 jsut a tab" />
+			</mtabs>
+			<tabpanels>
+				<mtabpanel>tab panel 1</mtabpanel>
+				<mtabpanel>tab panel 2</mtabpanel>
+				<mtabpanel>tab panel 3</mtabpanel>
+				<mtabpanel>tab panel 4</mtabpanel>
+				<mtabpanel>tab panel 5</mtabpanel>
+				<mtabpanel>tab panel 6</mtabpanel>
+				<mtabpanel>tab panel 7</mtabpanel>
+				<mtabpanel>tab panel 8</mtabpanel>
+			</tabpanels>
+		</tabbox>
+		<title>the old tab box for compare" </title>
 		<tabbox>
 			<tabs>
 				<tab label="tab1" />
