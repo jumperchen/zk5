@@ -55,6 +55,10 @@
 			}
 		},
 		unbind_: function(){
+			if (this._drag) {
+				this._drag.destroy();
+				this._drag = null; //prevent the binding error.
+			}			
 			this.$supers(swifttab.Swifttab, "unbind_", arguments);
 		},
 
