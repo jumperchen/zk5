@@ -26,7 +26,7 @@
 
 		<title>movable light tab box <button label="invilidate" onClick="tab2.invalidate();" /></title>
 		<tabbox id="tab2">
-			<mtabs>
+			<swifttabs>
 				<swifttab label="tab1" />
 				<swifttab label="tab2 for test" />
 				<swifttab label="tab3 a long tab" closable="true" />
@@ -35,21 +35,21 @@
 				<swifttab label="tab6 jsut a tab" />
 				<swifttab label="tab7 jsut a tab" />
 				<swifttab label="tab8 jsut a tab" />
-			</mtabs>
+			</swifttabs>
 			<tabpanels>
-				<mtabpanel>tab panel 1</mtabpanel>
-				<mtabpanel>tab panel 2</mtabpanel>
-				<mtabpanel>tab panel 3</mtabpanel>
-				<mtabpanel>tab panel 4</mtabpanel>
-				<mtabpanel>tab panel 5</mtabpanel>
-				<mtabpanel>tab panel 6</mtabpanel>
-				<mtabpanel>tab panel 7</mtabpanel>
-				<mtabpanel>tab panel 8</mtabpanel>
+				<tabpanel>tab panel 1</tabpanel>
+				<tabpanel>tab panel 2</tabpanel>
+				<tabpanel>tab panel 3</tabpanel>
+				<tabpanel>tab panel 4</tabpanel>
+				<tabpanel>tab panel 5</tabpanel>
+				<tabpanel>tab panel 6</tabpanel>
+				<tabpanel>tab panel 7</tabpanel>
+				<tabpanel>tab panel 8</tabpanel>
 			</tabpanels>
 		</tabbox>
 		<title>movable light tab box  with OnTabMoveEvent <button label="invilidate" onClick="tab2.invalidate();" /></title>
 		<tabbox>
-			<mtabs>
+			<swifttabs>
 				<attribute name="onTabMove"><![CDATA[
 					alert(event.getMovedTab().getLabel()+" is moved");	
 				]]></attribute>
@@ -61,16 +61,16 @@
 				<swifttab label="tab6 jsut a tab" />
 				<swifttab label="tab7 jsut a tab" />
 				<swifttab label="tab8 jsut a tab" />
-			</mtabs>
+			</swifttabs>
 			<tabpanels>
-				<mtabpanel>tab panel 1</mtabpanel>
-				<mtabpanel>tab panel 2</mtabpanel>
-				<mtabpanel>tab panel 3</mtabpanel>
-				<mtabpanel>tab panel 4</mtabpanel>
-				<mtabpanel>tab panel 5</mtabpanel>
-				<mtabpanel>tab panel 6</mtabpanel>
-				<mtabpanel>tab panel 7</mtabpanel>
-				<mtabpanel>tab panel 8</mtabpanel>
+				<tabpanel>tab panel 1</tabpanel>
+				<tabpanel>tab panel 2</tabpanel>
+				<tabpanel>tab panel 3</tabpanel>
+				<tabpanel>tab panel 4</tabpanel>
+				<tabpanel>tab panel 5</tabpanel>
+				<tabpanel>tab panel 6</tabpanel>
+				<tabpanel>tab panel 7</tabpanel>
+				<tabpanel>tab panel 8</tabpanel>
 			</tabpanels>
 		</tabbox>
 		<title>the old tab box for compare" </title>
