@@ -24,9 +24,13 @@
 		</tabbox>
 
 
-		<title>movable light tab box <button label="invilidate" onClick="tab2.invalidate();" /></title>
+		<title>movable light tab box <button label="invilidate" onClick="tab2.invalidate();" /> 
+			Movable: 
+			<button label="on" onClick="tabs2.setMovable(true);" />
+			<button label="off" onClick="tabs2.setMovable(false);" />
+		</title>
 		<tabbox id="tab2">
-			<swifttabs>
+			<swifttabs movable="true" id="tabs2">
 				<swifttab label="tab1" />
 				<swifttab label="tab2 for test" />
 				<swifttab label="tab3 a long tab" closable="true" />
