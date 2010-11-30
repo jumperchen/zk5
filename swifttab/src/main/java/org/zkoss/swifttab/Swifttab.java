@@ -26,12 +26,12 @@ public class Swifttab extends Tab {
 	 *
 	 * The add moved will be called when its parent insertBefore or appndChild
 	 *
-	 * @see Mtabs#service(org.zkoss.zk.au.AuRequest, boolean)
+	 * @see Swifttabs#service(org.zkoss.zk.au.AuRequest, boolean)
 	 */
 	protected void addMoved(Component oldparent, Page oldpg, Page newpg) {
 
-		if (this.getParent() instanceof Mtabs) {
-			Mtabs tabs = (Mtabs) getParent();
+		if (this.getParent() instanceof Swifttabs) {
+			Swifttabs tabs = (Swifttabs) getParent();
 			if (tabs.isNoResponse()) {
 				return;
 			}

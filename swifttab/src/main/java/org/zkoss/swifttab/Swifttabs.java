@@ -25,7 +25,7 @@ import org.zkoss.zul.Tabs;
  *
  * @listen onTabMove(start:nStartIndex,end:nEndIndex)
  */
-public class Mtabs extends Tabs {
+public class Swifttabs extends Tabs {
 
 	private static final long serialVersionUID = 5598881168273491786L;
 
@@ -33,7 +33,7 @@ public class Mtabs extends Tabs {
 		/**
 		 * It's deferable, and it's important.
 		 */
-		addClientEvent(Mtabs.class, MoveTabEvent.NAME, CE_IMPORTANT );
+		addClientEvent(Swifttabs.class, MoveTabEvent.NAME, CE_IMPORTANT );
 	}
 
 	private boolean _noResponse = false;
