@@ -11,8 +11,6 @@
  */
 package org.zkoss.swifttab;
 
-import java.util.Collections;
-
 import org.zkoss.swifttab.event.MoveTabEvent;
 import org.zkoss.zk.au.AuRequest;
 import org.zkoss.zk.ui.event.Events;
@@ -32,8 +30,10 @@ public class Mtabs extends Tabs {
 	private static final long serialVersionUID = 5598881168273491786L;
 
 	static {
-		addClientEvent(Mtabs.class, MoveTabEvent.NAME, CE_IMPORTANT |
-			CE_NON_DEFERRABLE);
+		/**
+		 * It's deferable, and it's important.
+		 */
+		addClientEvent(Mtabs.class, MoveTabEvent.NAME, CE_IMPORTANT );
 	}
 
 	private boolean _noResponse = false;
@@ -66,7 +66,7 @@ public class Mtabs extends Tabs {
 				Tab referTab = (Tab) getChildren().get(refer);
 				panels.insertBefore(startTab.getLinkedPanel(),
 					referTab.getLinkedPanel());
-
+				
 				insertBefore(startTab, referTab);
 
 			}

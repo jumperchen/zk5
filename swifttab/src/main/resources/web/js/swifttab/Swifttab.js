@@ -55,7 +55,7 @@
                     scroll: this.getTabs().$n("header"),
                     scrollSpeed: 5,
                     fireOnMove: false,
-                    constrint: "horizontal",
+                    constraint: "horizontal",
                     ghosting: swifttab.Swifttab._ghosting,
                     starteffect: swifttab.Swifttab._starteffect,
                     draw: swifttab.Swifttab._draw,
@@ -80,6 +80,27 @@
             this.$supers(swifttab.Swifttab, "unbind_", arguments);
         },
         /**
+         * I copy this private method from tab because i need this.
+         * @param {Object} notify
+         * @param {Object} init
+         */
+    	_sel: function(notify, init) {
+    		var tabbox = this.getTabbox();
+    		if (!tabbox) return;
+    
+    		var	tabs = this.parent,
+    			oldtab = tabbox._selTab;
+    		if (oldtab != this || init) {
+    			if (oldtab && tabbox.inAccordionMold()) {
+    				var p = this.getLinkedPanel();
+    				if (p) p._changeSel(oldtab.getLinkedPanel());
+    			}
+    			if (oldtab && oldtab != this)
+    				this._setSel(oldtab, false, false, init);
+    			this._setSel(this, true, notify, init);
+    		}
+    	},        
+        /**
          * default zclass is "z-siwfttab"
          */
         getZclass: function(){
@@ -94,7 +115,6 @@
         },
         _starteffect: function(dg){
             dg._startIndex = -1;
-
             // reload for closable tabs
             var instance = jq(dg.control.$n());
             dg._items = instance.parent().children("." +
@@ -161,7 +181,8 @@
                 tabs.insertBefore(currentTab, exchangedTab, false);
                 currentTab.show();
             }
-
+            currentTab._sel(false,true);
+            
             if (dg._startIndex != dg._sortIndex) {
                 tabs.fire("onTabMove", {
                     start: dg._startIndex,
