@@ -24,15 +24,9 @@
 		</mold>
 	</component>
 	<component>
-		<component-name>mtabs</component-name>
+		<component-name>swifttabs</component-name>
 		<component-class>org.zkoss.swifttab.Mtabs</component-class>
-		<widget-class>swifttab.Mtabs</widget-class>
+		<widget-class>swifttab.Swifttabs</widget-class>
 		<extends>tabs</extends>
-	</component>
-	<component>
-		<component-name>mtabpanel</component-name>
-		<component-class>org.zkoss.swifttab.Mtabpanel</component-class>
-		<widget-class>zul.tab.Tabpanel</widget-class>
-		<extends>tabpanel</extends>
 	</component>
 </language-addon>

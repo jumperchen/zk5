@@ -12,5 +12,5 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 -->
 <package name="swifttab" language="xul/html" depends="zul.tab">
 	<widget name="Swifttab" />
-	<widget name="Mtabs" />
+	<widget name="Swifttabs" />
 </package>

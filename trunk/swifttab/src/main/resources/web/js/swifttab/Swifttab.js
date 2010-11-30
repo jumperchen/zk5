@@ -35,7 +35,7 @@
          */
         isMovable: function(){
             if (this.parent != null)
-                return swifttab.Mtabs.isInstance(this.getTabs());
+                return swifttab.Swifttabs.isInstance(this.getTabs());
             return false;
         },
         getTabs: function(){
