@@ -3,7 +3,7 @@
 
 A movable tab.
 
-Demo [http://www.screencast.com/users/TonyQ/folders/Jing/media/ed41d14b-4bd9-413f-9a91-4b6fec7f335f]
+Video Demo [http://www.screencast.com/users/TonyQ/folders/Jing/media/ed41d14b-4bd9-413f-9a91-4b6fec7f335f]
 
 
 = Details =
@@ -12,7 +12,7 @@ A more lighter tab and draggable tabs support .
 
 = Usage =
 
-* For generic use (without draggable feature)
+* For generic use (without draggable feature) , a more lighter tab.
 {{{
 <tabbox id="tab1">
 	<tabs>
@@ -34,11 +34,11 @@ A more lighter tab and draggable tabs support .
 
 
 * For draggable tab box 
-  * notice the "mtabs" , "mtabpanel" for draggable support.
+  * notice the "swifttabs"  for draggable support.
 {{{
 <label value="movable light tab box" />
 <tabbox id="tab2">
-	<mtabs>
+	<swifttabs movable="true" >
 		<swifttab label="tab1" />
 		<swifttab label="tab2 for test" />
 		<swifttab label="tab3 a long tab" closable="true" />
@@ -47,7 +47,7 @@ A more lighter tab and draggable tabs support .
 		<swifttab label="tab6 jsut a tab" />
 		<swifttab label="tab7 jsut a tab" />
 		<swifttab label="tab8 jsut a tab" />
-	</mtabs>
+	</swifttabs>
 	<tabpanels>
 		<mtabpanel>tab panel 1</mtabpanel>
 		<mtabpanel>tab panel 2</mtabpanel>
@@ -65,4 +65,6 @@ A more lighter tab and draggable tabs support .
 * Different with zul.tabs
 
   * We doesn't vertical and accroding tab box now.
-  * we use a/span to replace four step div. (In default case, we support for 400px max. )
+  * we use a/span to replace four step div.(limitation for 400px width maximum. )
+  * More lighter .
+
