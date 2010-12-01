@@ -12,6 +12,11 @@
 	-->
 <language-addon>
 	<addon-name>swifttab</addon-name>
+ 	<version>
+		<version-class>org.zkoss.swifttab.Version</version-class>
+		<version-uid>0.8.0</version-uid>
+		<zk-version>5.0.3</zk-version><!-- or later -->
+	</version>	
 	<language-name>xul/html</language-name>
 	<component>
 		<component-name>swifttab</component-name>

@@ -25,8 +25,9 @@ function (out) {
         out.push( this.domContent_(), '</span>' );
     }
 
+	out.push("</a>");
 	if (this.isClosable())
-		out.push('<a id="', uuid, '-close" class="', zcls, '-close"', 'onClick="return false;" ></a>');
-	out.push('</a></li>');
+		out.push('<a id="', uuid, '-close" class="', zcls, '-close"', ' ></a>');
+	out.push('</li>');
 
 }

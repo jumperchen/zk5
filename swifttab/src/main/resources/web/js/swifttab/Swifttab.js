@@ -35,7 +35,7 @@
 		 * we consider movable from the tabs's type.
 		 */
 		getMovable: function(){
-			return this._movable;
+			return this._movable; 
 		},
 		getTabs: function(){
 			return this.parent;
@@ -99,7 +99,6 @@
 			var handle = this.$n("move");
 
 			if (handle && !this._drag) {
-				handle.style.cursor = "move";
 
 				this._drag = new zk.Draggable(this, null, {
 					handle: handle,
