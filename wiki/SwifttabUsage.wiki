@@ -3,7 +3,7 @@
 
 A movable tab.
 
-Video Demo [http://www.screencast.com/users/TonyQ/folders/Jing/media/ed41d14b-4bd9-413f-9a91-4b6fec7f335f]
+Video Demo [http://www.screencast.com/users/TonyQ/folders/Jing/media/7da8c5dd-fb0b-4b0f-a283-06ba1aa21d18]
 
 
 = Details =
@@ -67,4 +67,3 @@ A more lighter tab and draggable tabs support .
   * We doesn't vertical and accroding tab box now.
   * we use a/span to replace four step div.(limitation for 400px width maximum. )
   * More lighter .
-
