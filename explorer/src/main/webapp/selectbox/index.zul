@@ -1,0 +1,22 @@
+<zk>
+	<zscript>
+		<![CDATA[
+	String[] userName = { "Tony", "Ryan", "Jumper", "Wing", "Sam" };
+	ListModelList model = new ListModelList(userName);
+
+	org.zkoss.zul.OptionRenderer render = new org.zkoss.zul.OptionRenderer() {
+
+		public String render(Object data) throws Exception {
+			return data.toString();
+		}
+	};
+]]></zscript>
+	<div>
+		Select User:
+		<selectbox id="box" model="${model}" itemRenderer="${render}"
+			onSelect='val.setValue(model.get(event.getData()));' />
+
+	</div>
+	Selected:
+	<label id="val" value="${model[0]}" />
+</zk>

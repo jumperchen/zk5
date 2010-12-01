@@ -16,7 +16,7 @@
 		</repository>
 	</repositories>
 	<properties>
-		<zk.version>5.0.4</zk.version>
+		<zk.version>5.0.5</zk.version>
 		<zkel.version>1.1.0</zkel.version>
 		<commons-lang.version>2.4</commons-lang.version>
 		<bsh.version>2.0b4</bsh.version>
@@ -123,11 +123,15 @@
 			<version>0.8.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.zkoss.zk</groupId>
+			<artifactId>selectbox</artifactId>
+			<version>0.8.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.zkoss.canvas</groupId>
 			<artifactId>canvas</artifactId>
 			<version>0.8.2</version>
 		</dependency>
-		
 		<!-- Test scope -->
 		<dependency>
 			<groupId>junit</groupId>
