@@ -12,7 +12,7 @@
 				<swifttab label="tab2 for test" closable="true" />
 				<swifttab label="tab3 a long tab" />
 				<swifttab label="tab4 a really really really long tab" closable="true" />
-				<swifttab label="tab5 jsut a tab" />
+				<swifttab label="tab5 just a tab" />
 			</tabs>
 			<tabpanels>
 				<tabpanel>tab 1</tabpanel>
@@ -35,10 +35,10 @@
 				<swifttab label="tab2 for test" />
 				<swifttab label="tab3 a long tab" closable="true" />
 				<swifttab label="tab4 a really really really long tab" closable="true" />
-				<swifttab label="tab5 jsut a tab" />
-				<swifttab label="tab6 jsut a tab" />
-				<swifttab label="tab7 jsut a tab" />
-				<swifttab label="tab8 jsut a tab" />
+				<swifttab label="tab5 just a tab" />
+				<swifttab label="tab6 just a tab" />
+				<swifttab label="tab7 just a tab" />
+				<swifttab label="tab8 just a tab" />
 			</swifttabs>
 			<tabpanels>
 				<tabpanel>tab panel 1</tabpanel>
@@ -53,7 +53,7 @@
 		</tabbox>
 		<title>movable light tab box  with OnTabMoveEvent <button label="invilidate" onClick="tab2.invalidate();" /></title>
 		<tabbox>
-			<swifttabs>
+			<swifttabs movable="true" >
 				<attribute name="onTabMove"><![CDATA[
 					alert(event.getMovedTab().getLabel()+" is moved");	
 				]]></attribute>
@@ -61,10 +61,10 @@
 				<swifttab label="tab2 for test" />
 				<swifttab label="tab3 a long tab" closable="true" />
 				<swifttab label="tab4 a really really really long tab" closable="true" />
-				<swifttab label="tab5 jsut a tab" />
-				<swifttab label="tab6 jsut a tab" />
-				<swifttab label="tab7 jsut a tab" />
-				<swifttab label="tab8 jsut a tab" />
+				<swifttab label="tab5 just a tab" />
+				<swifttab label="tab6 just a tab" />
+				<swifttab label="tab7 just a tab" />
+				<swifttab label="tab8 just a tab" />
 			</swifttabs>
 			<tabpanels>
 				<tabpanel>tab panel 1</tabpanel>
@@ -84,7 +84,7 @@
 				<tab label="tab2 for test" />
 				<tab label="tab3 a long tab" closable="true" />
 				<tab label="tab4 a really really really long tab" closable="true" />
-				<tab label="tab5 jsut a tab" />
+				<tab label="tab5 just a tab" />
 			</tabs>
 			<tabpanels>
 				<tabpanel>tab panel 1</tabpanel>
