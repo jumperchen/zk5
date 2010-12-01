@@ -3,7 +3,7 @@
 
 A movable tab.
 
-Video Demo [http://www.screencast.com/users/TonyQ/folders/Jing/media/7da8c5dd-fb0b-4b0f-a283-06ba1aa21d18]
+Video Demo [http://www.screencast.com/users/TonyQ/folders/Jing/media/38c5ab0c-8f05-4842-931a-7d88ebe1edd3]
 
 
 = Details =
