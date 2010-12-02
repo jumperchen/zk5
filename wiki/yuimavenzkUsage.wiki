@@ -1,0 +1,55 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Use maven plug-in to compress javascript and css files . (Support zk dsp extension!)
+
+= Details =
+
+Write the definition in your project POM file.
+
+{{{
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+.
+.
+.
+.  
+<!-- add ZK repositories here -->
+    <pluginRepositories>
+      <pluginRepository>
+        <id>zkrepo</id>
+        <name>zk maven repository</name>
+        <url>http://mavensync.zkoss.org/maven2/</url>
+      </pluginRepository>
+    </pluginRepositories>
+.
+.
+    <build>
+	<resources>
+		<resource>
+                        <!-- specify where the resources is. -->
+			<directory>src/main/resources/</directory>
+		</resource>
+	</resources>
+	<plugins>
+                 <!-- add plug-in confiugration here -->
+		<plugin>
+			<groupId>org.zkoss.maven</groupId>
+			<artifactId>yuicompressor-maven-plugin-zk</artifactId>
+			<version>1.1.1</version>
+			<executions>
+				<execution>
+					<goals>
+						<goal>compress</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+       </plugins>
+    </build>
+.
+.
+</project>
+}}}
+
+
