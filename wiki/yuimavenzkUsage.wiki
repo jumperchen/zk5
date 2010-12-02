@@ -3,6 +3,7 @@
 = Introduction =
 
 Use maven plug-in to compress javascript and css files . (Support zk dsp extension!)
+It extends from http://alchim.sourceforge.net/yuicompressor-maven-plugin/index.html .
 
 = Details =
 
@@ -53,3 +54,39 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 .
 </project>
 }}}
+
+= Default Phase =
+
+process-resources
+
+= Default goal = 
+
+compress
+
+= Options =
+
+*We Enhanced/Updated*
+|| KEY || DEFAULT VAL||DESCRIPTION ||
+|| maven.yuicompressor.sourcesuffix||.src||rename source to the specify suffix after compressed||
+||maven.yuicompressor.linebreakpos||-1||we CHANGE the default to -1 ,because we offen use without any line-break  ||
+||
+
+
+* Original *
+|| KEY || DEFAULT VAL||DESCRIPTION ||
+|| file.encoding||UTF-8||||
+|| maven.yuicompressor.suffix||||
+|| maven.yuicompressor.nosuffix||true||
+|| preserveAllSemiColons||||
+|| maven.yuicompressor.nomunge||||
+|| maven.yuicompressor.preserveAllSemiColons||||
+|| maven.yuicompressor.disableOptimizations||||
+|| maven.yuicompressor.force||||
+|| maven.yuicompressor.gzip||||
+|| maven.yuicompressor.statistics||||
+|| maven.yuicompressor.jswarn||||
+|| maven.yuicompressor.skip||||
+|| maven.yuicompressor.failOnWarning||||
+
+
+
