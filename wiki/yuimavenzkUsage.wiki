@@ -40,13 +40,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<groupId>org.zkoss.maven</groupId>
 			<artifactId>yuicompressor-maven-plugin-zk</artifactId>
 			<version>1.1.1</version>
-			<executions>
-				<execution>
-					<goals>
-						<goal>compress</goal>
-					</goals>
-				</execution>
-			</executions>
 		</plugin>
        </plugins>
     </build>
@@ -87,6 +80,4 @@ compress
 || maven.yuicompressor.jswarn||||
 || maven.yuicompressor.skip||||
 || maven.yuicompressor.failOnWarning||||
-
-
 
