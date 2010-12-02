@@ -1,4 +1,4 @@
-#summary A lightweight dropdown list and it can support ListModel?, Renderer, and Databinding as well.
+#summary A lightweight dropdown list and it can support ListModel, Renderer, and Databinding as well.
 
 = Introduction =
 
