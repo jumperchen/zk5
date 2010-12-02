@@ -1,0 +1,44 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk>
+	<zscript>
+		<![CDATA[
+
+     	public class MyUserBean{
+     		private String[] userList = { "Tony", "Ryan", "Jumper", "Wing", "Sam" };
+     		private int index = 0;
+     		public List getUserList(){
+     			System.out.println("hi");
+     			return Arrays.asList(userList);
+     		}
+     		public void setUserList(){
+     		}
+     		public void setIndex(int ind){
+     			index=ind;
+     		}
+     		public int getIndex(){
+     			return index;
+     		}
+     		public String getCurrentName(){
+     			return userList[index];
+     		}
+     	}
+     	
+   	MyUserBean mybean = new MyUserBean();
+
+	org.zkoss.zul.OptionRenderer render = new org.zkoss.zul.OptionRenderer() {
+
+		public String render(Object data) throws Exception {
+			return data.toString();
+		}
+	};
+]]></zscript>
+
+	<div>
+	Select User:
+	<selectbox id="box" model="@{mybean.userList}" itemRenderer="${render}"
+		selectedIndex="@{mybean.index}" />
+
+	</div>
+	Selected:
+	<label id="val" value="@{mybean.currentName }" />
+</zk>
