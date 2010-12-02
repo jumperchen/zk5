@@ -67,3 +67,7 @@ A more lighter tab and draggable tabs support .
   * We doesn't vertical and accroding tab box now.
   * we use a/span to replace four step div.(limitation for 400px width maximum. )
   * More lighter .
+
+
+* contribution
+  Any problem , suggestion or code commit is welcome, please post a issue for us with your contribution.
