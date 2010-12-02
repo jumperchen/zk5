@@ -1,4 +1,6 @@
+#summary A more lighter tab and draggable tabs support .
 #labels zk,component,swifttab,movable,tab
+
 = Introduction =
 
 A movable tab.
