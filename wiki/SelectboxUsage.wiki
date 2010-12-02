@@ -1,10 +1,10 @@
-#summary One-sentence summary of this page.
+#summary A lightweight dropdown list and it can support ListModel?, Renderer, and Databinding as well.
 
 = Introduction =
 
 A couple weeks ago, I was working on a customer's support about how to reduce memory usage from a Zul page, that time I just found an odd thing that the Zul page is pretty simple but it retains a plenty of ZK components. After some research, we found the issue was caused by a form that requires user to fill out his/her contact information, such as address, phone, age, account, and so on. The page contains a lot of dropdown lists for the form and the dropdown lists are created by ZK powerful Listbox, which includes Listitem and Listcell per item. Thus, an idea is come up that we should implement a lightweight dropdown list to fulfill such business requirement and make it support Databinding and Render feature.
 
-Video Demo [http://www.screencast.com/users/TonyQ/folders/Jing/media/656eda9a-e8d0-4819-8177-2ad658229ed0 link]
+*Video Demo* [http://www.screencast.com/users/TonyQ/folders/Jing/media/656eda9a-e8d0-4819-8177-2ad658229ed0 link]
 
 
 = Details =
