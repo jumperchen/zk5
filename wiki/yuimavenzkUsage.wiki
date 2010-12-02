@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Use maven plug-in to compress javascript and css files
 
 = Introduction =
 
