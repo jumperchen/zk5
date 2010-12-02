@@ -24,7 +24,14 @@ import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
  * some customize for zk with modifying the source suffix , and use our
  * customize css compressor.
  *
+ *
+ * from ZK:
+ * phase can decide when the compressor called ,
+ * we use the package phase for default. 
+ * 
+ *
  * @goal compress
+ *
  * @phase process-resources
  *
  * @author TonyQ
@@ -228,7 +235,10 @@ public class YuiCompressorMojo extends MojoSupport {
 
 		//zk modified here
 		if (!"".equals(sourcesuffix)) {
-			FileUtils.rename(inFile, src.toDestFile(sourcesuffix));
+			//css.dsp need .src or not? i am not sure.  by Tony  
+			if (!(".css".equalsIgnoreCase(src.getExtension()) || src.toFile().getName().endsWith(".css.dsp"))){
+				FileUtils.rename(inFile, src.toDestFile(sourcesuffix));
+			}
 		}
 		//zk modified end
 
