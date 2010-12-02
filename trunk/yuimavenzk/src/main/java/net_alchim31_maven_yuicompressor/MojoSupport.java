@@ -24,7 +24,7 @@ public abstract class MojoSupport extends AbstractMojo {
      * Javascript source directory. (result will be put to outputDirectory).
      * This allow project with "src/main/js" structure.
      *
-     * @parameter expression="${project.build.sourceDirectory}/../js"
+     * @parameter expression="${project.build.sourceDirectory}/"
      */
     private File sourceDirectory;
 
