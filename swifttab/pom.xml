@@ -14,40 +14,49 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+    <pluginRepositories>
+      <pluginRepository>
+        <id>zkrepo</id>
+        <name>zk maven repository</name>
+        <url>http://mavensync.zkoss.org/maven2/</url>
+      </pluginRepository>
+    </pluginRepositories>	
 	<build>
 		<resources>
 			<resource>
-				<directory>src/main/resource/</directory>
+				<directory>src/main/resources/</directory>
 			</resource>
 		</resources>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>net.alchim31.maven</groupId>
-					<artifactId>yuicompressor-maven-plugin</artifactId>
-					<version>1.1</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
-
+			<!-- add plug-in confiugration here -->
 			<plugin>
-				<groupId>net.alchim31.maven</groupId>
-				<artifactId>yuicompressor-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compress</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<excludes>
-						<exclude>**/*.css.dsp</exclude>
-					</excludes>
-					<nosuffix>true</nosuffix>
-				</configuration>
-			</plugin>
+				<groupId>org.zkoss.maven</groupId>
+				<artifactId>yuicompressor-maven-plugin-zk</artifactId>
+				<version>1.1.1</version>
+			<executions>
+				<execution>
+					<goals>
+						<goal>compress</goal>
+					</goals>
+				</execution>
+			</executions>						
+			</plugin>	
+	   <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+	    <artifactId>maven-javadoc-plugin</artifactId>
+	    <version>2.5</version>
+	    <configuration>
+	     <aggregate>true</aggregate>
+	    </configuration>
+	   </plugin>
+	   <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+	    <artifactId>maven-jxr-plugin</artifactId>
+	    <version>2.1</version>
+	    <configuration>
+	     <aggregate>true</aggregate>
+	    </configuration>
+	   </plugin>			
 		</plugins>
 	</build>
 </project>
