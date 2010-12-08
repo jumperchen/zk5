@@ -107,9 +107,8 @@ public class YuiCompressorMojo extends MojoSupport {
 	/**
 	 * force the compression of every files, else if compressed file already
 	 * exists and is younger than source file, nothing is done.
-	 * zk modified here
 	 * @parameter expression="${maven.yuicompressor.force}"
-	 *            default-value="true"
+	 *            default-value="false"
 	 */
 	private boolean force;
 
@@ -192,7 +191,7 @@ public class YuiCompressorMojo extends MojoSupport {
 		}
 		File inFile = src.toFile();
 		File outFile = src.toDestFile(suffix);
-
+		File copyToFile = null;
 		getLog().debug("only compress if input file is younger than existing output file");
 		if (!force && outFile.exists() && (outFile.lastModified() > inFile.lastModified())) {
 			if (getLog().isInfoEnabled()) {
@@ -203,6 +202,26 @@ public class YuiCompressorMojo extends MojoSupport {
 			return;
 		}
 
+		//zk modified here
+		if (!"".equals(sourcesuffix)) {
+			if (!(".css".equalsIgnoreCase(src.getExtension()) || src.toFile().getName().endsWith(".css.dsp"))){
+				copyToFile = src.toDestFile(sourcesuffix);
+				if(copyToFile.exists() && copyToFile.lastModified() > inFile.lastModified()) {
+					if (getLog().isInfoEnabled()) {
+						getLog().info(
+								"nothing to do, " + copyToFile
+										+ " is younger than original, clean your target instead.");
+					}
+					return;
+				}					
+				if (getLog().isDebugEnabled()) {
+					getLog().debug("copyFile inFile from: " + inFile.getAbsolutePath()
+							+ " to: " + copyToFile.getAbsolutePath());
+				}
+				FileUtils.copyFile(inFile, copyToFile);
+			}
+		}
+		
 		InputStreamReader in = null;
 		OutputStreamWriter out = null;
 		File outFileTmp = new File(outFile.getAbsolutePath() + ".tmp");
@@ -232,18 +251,17 @@ public class YuiCompressorMojo extends MojoSupport {
 			IOUtil.close(in);
 			IOUtil.close(out);
 		}
-
-		//zk modified here
-		if (!"".equals(sourcesuffix)) {
-			//css.dsp need .src or not? i am not sure.  by Tony  
-			if (!(".css".equalsIgnoreCase(src.getExtension()) || src.toFile().getName().endsWith(".css.dsp"))){
-				FileUtils.rename(inFile, src.toDestFile(sourcesuffix));
-			}
-		}
-		//zk modified end
-
+		
 		FileUtils.forceDelete(outFile);
+		if (getLog().isDebugEnabled()) {
+			getLog().debug("rename outFile from: " + outFileTmp.getAbsolutePath() + " to: " + outFile.getAbsolutePath());
+		}
 		FileUtils.rename(outFileTmp, outFile);
+		
+		// update lastModifyTime
+		if (copyToFile != null)
+			copyToFile.setLastModified(outFile.lastModified() + 500);
+		
 		File gzipped = gzipIfRequested(outFile);
 		if (statistics) {
 			inSizeTotal_ += inFile.length();
