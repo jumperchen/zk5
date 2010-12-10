@@ -24,5 +24,5 @@ zul.select.Selectbox = zk.$extends(zul.Widget, {
 		var n = this.$n();
 		this.setSelectedIndex(n.selectedIndex);
 		this.fire('onSelect', n.selectedIndex);
-	},
+	}
 });
