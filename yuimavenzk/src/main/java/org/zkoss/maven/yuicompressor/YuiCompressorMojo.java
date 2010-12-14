@@ -14,6 +14,7 @@ import net_alchim31_maven_yuicompressor.SourceFile;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
+import org.zkoss.maven.yuicompressor.util.Comments;
 
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 
@@ -112,6 +113,13 @@ public class YuiCompressorMojo extends MojoSupport {
 	 */
 	private boolean force;
 
+	/**
+	 * zk paramter.
+	 * a option to set remove the source's javascript comment or not.
+	 * @parameter expression="${maven.yuicompressor.removeSourceComment}"
+	 *            default-value="true"
+	 */
+	private boolean removeSourceComment;	
 
 	/**
 	 * a list of aggregation/concatenation to do after processing, for example
@@ -218,7 +226,13 @@ public class YuiCompressorMojo extends MojoSupport {
 					getLog().debug("copyFile inFile from: " + inFile.getAbsolutePath()
 							+ " to: " + copyToFile.getAbsolutePath());
 				}
-				FileUtils.copyFile(inFile, copyToFile);
+				if(removeSourceComment){
+					getLog().info("remove js comment: "+copyToFile.getName());
+					//TonyQ 2010/12/14 remvoe js file comment
+					String fileContent = FileUtils.fileRead(inFile, encoding);
+					FileUtils.fileWrite(copyToFile.getAbsolutePath(), encoding, Comments.removeComment(fileContent));
+				}else
+					FileUtils.copyFile(inFile, copyToFile);
 			}
 		}
 		

@@ -15,5 +15,9 @@
 			<source>${project.build.directory}/${artifactId}-${version}.jar</source>
 			<outputDirectory>/</outputDirectory>
 		</file>
+		<file>
+			<source>${project.build.directory}/${artifactId}-${version}-sources.jar</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
 	</files>
 </assembly>
