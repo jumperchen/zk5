@@ -71,13 +71,13 @@ compress
 || preserveAllSemiColons||||
 || maven.yuicompressor.suffix||.src||
 || maven.yuicompressor.nosuffix||true||
-|| maven.yuicompressor.nomunge||false||[js only] Minify only, do not obfuscate.||
-|| maven.yuicompressor.preserveAllSemiColons||false||[js only] Preserve unnecessary semicolons.||
-|| maven.yuicompressor.disableOptimizations||false||[js only] disable all micro optimizations.||
+|| maven.yuicompressor.nomunge||false||(js only) Minify only, do not obfuscate.||
+|| maven.yuicompressor.preserveAllSemiColons||false||(js only) Preserve unnecessary semicolons.||
+|| maven.yuicompressor.disableOptimizations||false||(js only) disable all micro optimizations.||
 || maven.yuicompressor.force||false||force the compression of every files, else if compressed file already exists and is younger than source file, nothing is done.||
 || maven.yuicompressor.gzip||false||request to create a gzipped version of the yuicompressed/aggregation files.||
 || maven.yuicompressor.statistics||true||show statistics (compression ratio).||
-|| maven.yuicompressor.jswarn||true||[js only] Display possible errors in the code||
+|| maven.yuicompressor.jswarn||true||(js only) Display possible errors in the code||
 || maven.yuicompressor.skip||false||Whether to skip execution||
 || maven.yuicompressor.failOnWarning||false||define if plugin must stop/fail on warnings.||
 
