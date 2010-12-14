@@ -32,12 +32,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 .
 .
     <build>
-	<resources>
-		<resource>
-                        <!-- specify where the resources is. -->
-			<directory>src/main/resources/</directory>
-		</resource>
-	</resources>
 	<plugins>
                  <!-- add plug-in confiugration here -->
 		<plugin>
@@ -103,3 +97,10 @@ compress
 	</configuration>						
 </plugin>		
 }}}
+
+
+= Version History =
+
+1.1.1 non-stable version and add sourcesuffix ,please prevent to use this.
+1.1.2 stable version for sourcesuffix
+1.1.3 add remove comment option
