@@ -60,10 +60,10 @@ compress
 
 *We Enhanced/Updated*
 || KEY || DEFAULT VAL||DESCRIPTION ||SINCE||
-|| maven.yuicompressor.sourcesuffix||.src||rename source to the specify suffix after compressed||1.1.2
-||maven.yuicompressor.linebreakpos||-1||we CHANGE the default to -1 ,because we offen use without any line-break  ||1.1.2
+|| maven.yuicompressor.sourcesuffix||.src||rename source to the specify suffix after compressed||1.1.2||
+||maven.yuicompressor.linebreakpos||-1||we CHANGE the default to -1 ,because we offen use without any line-break  ||1.1.2||
 ||
-|| maven.yuicompressor.removeSourceComment||true||it will remove all the js comment for the oringinal file. ||1.1.3
+|| maven.yuicompressor.removeSourceComment||true||it will remove all the js comment for the oringinal file. ||1.1.3||
 
 * Original *
 || KEY || DEFAULT VAL||DESCRIPTION ||
