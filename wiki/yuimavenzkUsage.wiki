@@ -98,6 +98,15 @@ compress
 </plugin>		
 }}}
 
+* Note that if you are not using default resources folder, you need to specify sresource , for example .
+{{{
+<resources>
+	<resource>
+		<directory>src/archive/</directory>
+	</resource>
+</resources>
+}}}
+
 
 = Version History =
 
