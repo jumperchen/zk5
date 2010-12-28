@@ -195,7 +195,8 @@ public class Selectbox extends HtmlBasedComponent {
 					e.printStackTrace();
 				}
 			}
-	        sb.delete(sb.length() - 1, sb.length());
+			if (sb.length() > 1)
+				sb.delete(sb.length() - 1, sb.length());
 	        sb.append(']');
 			render(renderer, "items", sb.toString());
 		}
