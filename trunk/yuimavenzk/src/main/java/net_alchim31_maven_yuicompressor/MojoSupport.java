@@ -105,14 +105,22 @@ public abstract class MojoSupport extends AbstractMojo {
             }
             jsErrorReporter_ = new ErrorReporter4Mojo(getLog(), jswarn);
             beforeProcess();
-            processDir(sourceDirectory, outputDirectory, null, null, true);
+            
+            boolean isSkippedSrc = false;
             for (Resource resource : resources){
+            	isSkippedSrc = true;
                 File destRoot = outputDirectory;
                 if (resource.getTargetPath() != null) {
                     destRoot = new File(outputDirectory, resource.getTargetPath());
                 }
+
                 processDir(new File( resource.getDirectory() ), destRoot, resource.getIncludes(), resource.getExcludes(), true);
             }
+            
+            // Fixed ZK bugs
+            if (!isSkippedSrc)
+            	processDir(sourceDirectory, outputDirectory, null, null, true);
+            
             processDir(warSourceDirectory, webappDirectory, null, null, false);
             afterProcess();
             getLog().info(String.format("nb warnings: %d, nb errors: %d", jsErrorReporter_.getWarningCnt(), jsErrorReporter_.getErrorCnt()));
