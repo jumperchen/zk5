@@ -118,7 +118,7 @@
 			<version>0.8.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.zkoss.selector</groupId>
+			<groupId>org.zkoss.zk5.selector</groupId>
 			<artifactId>selector</artifactId>
 			<version>0.8.0</version>
 		</dependency>
