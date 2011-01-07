@@ -62,8 +62,17 @@ public class YuiCompressorMojo extends MojoSupport {
 	 * @parameter expression="${maven.yuicompressor.sourcesuffix}"
 	 *            default-value=".src"
 	 */
-	private String sourcesuffix = "";
+	private String sourcesuffix;
 
+	/**
+	 * when you set it , it will not generate the source code.
+	 *
+	 * @parameter expression="${maven.yuicompressor.nosource}"
+	 *            default-value="false"
+	 */
+	
+	private boolean nosource;
+	
 	/**
 	 * If no "suffix" must be add to output filename (maven's configuration
 	 * manage empty suffix like default).
@@ -211,7 +220,11 @@ public class YuiCompressorMojo extends MojoSupport {
 		}
 
 		//zk modified here
-		if (!"".equals(sourcesuffix)) {
+		//2011/1/7 TonyQ: 
+		//Because user can't set sourcesuffix as empty string because we give it default string,
+		//so we add a nosource flag here.  
+		if (!"".equals(sourcesuffix) && !nosource) {
+			getLog().info("compress source :["+sourcesuffix+"]");
 			if (!(".css".equalsIgnoreCase(src.getExtension()) || src.toFile().getName().endsWith(".css.dsp"))){
 				copyToFile = src.toDestFile(sourcesuffix);
 				if(copyToFile.exists() && copyToFile.lastModified() > inFile.lastModified()) {
