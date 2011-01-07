@@ -7,7 +7,7 @@ It extends from http://alchim.sourceforge.net/yuicompressor-maven-plugin/index.h
 
 = Last Version =
 
-1.1.4
+1.1.5
 
 = Details =
 
@@ -96,7 +96,10 @@ compress
 		</execution>
 	</executions>
 	<configuration>
+                 <!-- maven.yuicompressor.suffix -->
 		<nosuffix>false</nosuffix>
+                 <!-- maven.yuicompressor.nosource -->
+                <nosource>true</nosource>   
 	</configuration>						
 </plugin>		
 }}}
