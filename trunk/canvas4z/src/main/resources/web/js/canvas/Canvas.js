@@ -129,6 +129,7 @@ canvas.Canvas = zk.$extends(zul.Widget, {
 			this._paint(this._drwbls[i]);
 	},
 	_paint: function(drw){
+		// TODO: preload image issue
 		this._applyLocalState(drw.state);
 		
 		// the type value must match the return value of Drawable#getType()
