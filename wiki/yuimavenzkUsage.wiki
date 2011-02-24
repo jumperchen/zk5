@@ -7,7 +7,7 @@ It extends from http://alchim.sourceforge.net/yuicompressor-maven-plugin/index.h
 
 = Last Version =
 
-1.1.5
+1.1.6
 
 = Details =
 
@@ -125,3 +125,5 @@ compress
 1.1.4 fix bug ,when resource folder in nest in source folder , it will cause error.
 
 1.1.5 fix bug #2 r167
+
+1.1.5 fix bug #3,bug #4,bug #5 r174
