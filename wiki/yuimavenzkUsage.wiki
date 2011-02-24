@@ -3,6 +3,7 @@
 = Introduction =
 
 Use maven plug-in to compress javascript and css files . (Support zk dsp extension!)
+
 It extends from http://alchim.sourceforge.net/yuicompressor-maven-plugin/index.html .
 
 = Last Version =
