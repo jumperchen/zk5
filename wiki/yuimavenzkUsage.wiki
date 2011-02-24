@@ -126,4 +126,4 @@ compress
 
 1.1.5 fix bug #2 r167
 
-1.1.5 fix bug #3,bug #4,bug #5 r174
+2011/2/24 1.1.6 fix bug #3,bug #4,bug #5 r174
