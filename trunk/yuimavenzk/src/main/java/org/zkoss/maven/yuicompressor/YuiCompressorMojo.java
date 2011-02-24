@@ -15,6 +15,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.zkoss.maven.yuicompressor.util.Comments;
+import org.zkoss.maven.yuicompressor.util.UnicodeReader;
 
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 
@@ -243,7 +244,13 @@ public class YuiCompressorMojo extends MojoSupport {
 					getLog().info("remove js comment: "+copyToFile.getName());
 					//TonyQ 2010/12/14 remvoe js file comment
 					String fileContent = FileUtils.fileRead(inFile, encoding);
-					FileUtils.fileWrite(copyToFile.getAbsolutePath(), encoding, Comments.removeComment(fileContent));
+					
+					try{
+						fileContent = Comments.removeComment(fileContent);
+					}catch(IllegalStateException ex){
+						getLog().error("clear comment failed:"+copyToFile.getName()+":"+ex.getMessage()+":skip clear comment step");
+					}
+					FileUtils.fileWrite(copyToFile.getAbsolutePath(), encoding, fileContent);
 				}else
 					FileUtils.copyFile(inFile, copyToFile);
 			}
@@ -254,7 +261,8 @@ public class YuiCompressorMojo extends MojoSupport {
 		File outFileTmp = new File(outFile.getAbsolutePath() + ".tmp");
 		FileUtils.forceDelete(outFileTmp);
 		try {
-			in = new InputStreamReader(new FileInputStream(inFile), encoding);
+			//bug fix for UTF8 BOM issue by TonyQ
+			in = new UnicodeReader(new FileInputStream(inFile), encoding);
 			if (!outFile.getParentFile().exists() && !outFile.getParentFile().mkdirs()) {
 				throw new MojoExecutionException("Cannot create resource output directory: " + outFile.getParentFile());
 			}
