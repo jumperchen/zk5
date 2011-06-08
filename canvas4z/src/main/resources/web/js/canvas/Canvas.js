@@ -143,6 +143,9 @@ canvas.Canvas = zk.$extends(zul.Widget, {
 		case "text":
 			this._paintText(drw.obj);
 			break;
+		case "comp":
+			this._paintComposite(drw.obj);
+			break;
 		case "img":
 			this._paintImage(drw.obj);
 			break;
@@ -244,6 +247,12 @@ canvas.Canvas = zk.$extends(zul.Widget, {
 			this._ctx.fillText(text.t, text.x, text.y);
 		else
 			this._ctx.fillText(text.t, text.x, text.y, this._txtMxW);
+	},
+	_paintComposite: function (comp) {
+		// TODO: test
+		if (comp)
+			for (var i = 0, len = comp.length; i < len; i++)
+				this._paint(comp[i]);
 	},
 	// TODO: also add image snapshot class
 	_paintImage: function(img){
