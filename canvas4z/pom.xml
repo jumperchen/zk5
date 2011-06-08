@@ -3,15 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.zkoss.canvas</groupId>
 	<artifactId>canvas</artifactId>
-	<version>0.8.2</version>
+	<version>0.8.3</version>
 	<name>Canvas4Z</name>
 	<description>HTML5 Canvas Component</description>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.zkoss.zk</groupId>
 			<artifactId>zul</artifactId>
-			<version>5.0.4</version>
-			<scope>compile</scope>
+			<version>5.0.7.1</version>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
+	
 </project>
