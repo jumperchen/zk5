@@ -16,7 +16,6 @@ Copyright (C) 2011 Potix Corporation. All Rights Reserved.
 */
 package org.zkoss.canvas;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.zkoss.json.JSONArray;
@@ -26,31 +25,15 @@ import org.zkoss.json.JSONAware;
  *
  * @author simonpai
  */
-public class CompositeDrawable extends Drawable {
+public abstract class CompositeDrawable extends Drawable {
 	
-	protected List<Drawable> _drawables;
-	
-	/**
-	 * 
-	 * @param drawables
-	 */
-	public CompositeDrawable(Drawable ... drawables) {
-		_drawables = Arrays.asList(drawables);
-	}
-	
-	/**
-	 * 
-	 * @param drawables
-	 */
-	public CompositeDrawable(List<Drawable> drawables) {
-		_drawables = drawables;
-	}
+	protected abstract List<Drawable> getDrawables();
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public JSONAware getShapeJSONObject() {
 		JSONArray result = new JSONArray();
-		for(Drawable d : _drawables)
+		for(Drawable d : getDrawables())
 			result.add(d);
 		return result;
 	}
@@ -59,5 +42,5 @@ public class CompositeDrawable extends Drawable {
 	public String getType() {
 		return "comp";
 	}
-
+	
 }
