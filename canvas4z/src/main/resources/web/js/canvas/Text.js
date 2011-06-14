@@ -16,7 +16,7 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
  */
 canvas.Text = zk.$extends(canvas.Drawable, {
 	
-	$init: function(txt, x, y) {
+	$init: function (txt, x, y) {
 		this.$super('$init');
 		this.objtp = "text";
 		this.obj = new zk.Object();
@@ -24,20 +24,18 @@ canvas.Text = zk.$extends(canvas.Drawable, {
 		this.obj.x = x;
 		this.obj.y = y;
 	},
-	
 	/**
 	 * 
 	 */
-	setPos: function(x,y){
+	setPos: function (x, y) {
 		this.obj.x = x;
 		this.obj.y = y;
 		return this;
 	},
-	
 	/**
 	 * 
 	 */
-	setText: function(txt){
+	setText: function (txt) {
 		this.obj.t = txt;
 		return this;
 	}

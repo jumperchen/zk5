@@ -19,297 +19,264 @@ canvas.Drawable = zk.$extends(zk.Object, {
 	obj: null,
 	state: null,
 	
-	$init: function(){
+	$init: function () {
 		this.state = new Object();
 	},
-	
 	/**
 	 * Returns drawing type. 
 	 */
-	getDrawingType: function(){
+	getDrawingType: function () {
 		return this.state.dwtp;
 	},
-	
 	/**
 	 * Sets drawing type.
 	 */
-	setDrawingType: function(v){
+	setDrawingType: function (v) {
 		this.state.dwtp = v;
 		return this;
 	},
-	
 	/**
 	 * Returns transformation.
 	 */
-	getTransformation: function(){
+	getTransformation: function () {
 		return this.state.trns;
 	},
-	
 	/**
 	 * Sets transformation
 	 */
-	setTransformation: function(v){
+	setTransformation: function (v) {
 		this.state.trns = v;
 		return this;
 	},
-	
 	/**
 	 * Returns transformation.
 	 */
-	getClipping: function(){
+	getClipping: function () {
 		return this.state.clp; // TODO
 	},
-	
 	/**
 	 * Sets transformation
 	 */
-	setClipping: function(v){
+	setClipping: function (v) {
 		this.state.clp = v;
 		return this;
 	},
-	
 	/**
 	 * Returns transformation.
 	 */
-	getStrokeStyle: function(){
+	getStrokeStyle: function () {
 		return this.state.strk;
 	},
-	
 	/**
 	 * Sets transformation
 	 */
-	setStrokeStyle: function(v){
+	setStrokeStyle: function (v) {
 		this.state.strk = v;
 		return this;
 	},
-	
 	/**
 	 * Returns fill style.
 	 */
-	getFillStyle: function(){
+	getFillStyle: function () {
 		return this.state.fil;
 	},
-	
 	/**
 	 * Sets fill style.
 	 */
-	setFillStyle: function(v){
+	setFillStyle: function (v) {
 		this.state.fil = v;
 		return this;
 	},
-	
 	/**
 	 * Returns alpha.
 	 */
-	getAlpha: function(){
+	getAlpha: function () {
 		return this.state.alfa;
 	},
-	
 	/**
 	 * Sets alpha.
 	 */
-	setAlpha: function(v){
+	setAlpha: function (v) {
 		this.state.alfa = v;
 		return this;
 	},
-	
 	/**
 	 * Returns line width.
 	 */
-	getLineWidth: function(){
+	getLineWidth: function () {
 		return this.state.lnw;
 	},
-	
 	/**
 	 * Sets line width.
 	 */
-	setLineWidth: function(v){
+	setLineWidth: function (v) {
 		this.state.lnw = v;
 		return this;
 	},
-	
 	/**
 	 * Returns line cap.
 	 */
-	getLineCap: function(){
+	getLineCap: function () {
 		return this.state.lncp;
 	},
-	
 	/**
 	 * Sets line cap.
 	 */
-	setLineCap: function(v){
+	setLineCap: function (v) {
 		this.state.lncp = v;
 		return this;
 	},
-	
 	/**
 	 * Returns line join.
 	 */
-	getLineJoin: function(){
+	getLineJoin: function () {
 		return this.state.lnj;
 	},
-	
 	/**
 	 * Sets line join.
 	 */
-	setLineJoin: function(v){
+	setLineJoin: function (v) {
 		this.state.lnj = v;
 		return this;
 	},
-	
 	/**
 	 * Returns miter limit.
 	 */
-	getMiterLimit: function(){
+	getMiterLimit: function () {
 		return this.state.mtr;
 	},
-	
 	/**
 	 * Sets miter limit.
 	 */
-	setMiterLimit: function(v){
+	setMiterLimit: function (v) {
 		this.state.mtr = v;
 		return this;
 	},
-	
 	/**
 	 * Returns shadow offset X.
 	 */
-	getShadowOffsetX: function(){
+	getShadowOffsetX: function () {
 		return this.state.shx;
 	},
-	
 	/**
 	 * Sets shadow offset X;
 	 */
-	setShadowOffsetX: function(v){
+	setShadowOffsetX: function (v) {
 		this.state.shx = v;
 		return this;
 	},
-	
 	/**
 	 * Returns shadow offset Y.
 	 */
-	getShadowOffsetY: function(){
+	getShadowOffsetY: function () {
 		return this.state.shy;
 	},
-	
 	/**
 	 * Sets shadow offset Y.
 	 */
-	setShadowOffsetY: function(v){
+	setShadowOffsetY: function (v) {
 		this.state.shy = v;
 		return this;
 	},
-	
 	/**
 	 * Returns shadow blur.
 	 */
-	getShadowBlur: function(){
+	getShadowBlur: function () {
 		return this.state.shb;
 	},
-	
 	/**
 	 * Sets shadow blur.
 	 */
-	setShadowBlur: function(v){
+	setShadowBlur: function (v) {
 		this.state.shb = v;
 		return this;
 	},
-	
 	/**
 	 * Returns shadow color.
 	 */
-	getShadowColor: function(){
+	getShadowColor: function () {
 		return this.state.shc;
 	},
-	
 	/**
 	 * Sets shadow color.
 	 */
-	setShadowColor: function(v){
+	setShadowColor: function (v) {
 		this.state.shc = v;
 		return this;
 	},
-	
 	/**
 	 * Returns composite.
 	 */
-	getComposite: function(){
+	getComposite: function () {
 		return this.state.cmp;
 	},
-	
 	/**
 	 * Sets composite.
 	 */
-	setComposite: function(v){
+	setComposite: function (v) {
 		this.state.cmp = v;
 		return this;
 	},
-	
 	/**
 	 * Returns font.
 	 */
-	getFont: function(){
+	getFont: function () {
 		return this.state.fnt;
 	},
-	
 	/**
 	 * Sets font.
 	 */
-	setFont: function(v){
+	setFont: function (v) {
 		this.state.fnt = v;
 		return this;
 	},
-	
 	/**
 	 * Returns text align.
 	 */
-	getTextAlign: function(){
+	getTextAlign: function () {
 		return this.state.txal;
 	},
-	
 	/**
 	 * Sets text align.
 	 */
-	setTextAlign: function(v){
+	setTextAlign: function (v) {
 		this.state.txal = v;
 		return this;
 	},
-	
 	/**
 	 * Returns text baseline.
 	 */
-	getTextBaseline: function(){
+	getTextBaseline: function () {
 		return this.state.txbl;
 	},
-	
 	/**
 	 * Sets text baseline.
 	 */
-	setTextBaseline: function(v){
+	setTextBaseline: function (v) {
 		this.state.txbl = v;
 		return this;
 	},
-	
 	/**
 	 * Returns text max width.
 	 */
-	getTextMaxWidth: function(){
+	getTextMaxWidth: function () {
 		return this.state.txmw;
 	},
-	
 	/**
 	 * Sets text max width.
 	 */
-	setTextMaxWidth: function(v){
+	setTextMaxWidth: function (v) {
 		this.state.txmw = v;
 		return this;
 	},
-	
+	/**
+	 * Returns true if the point is contains in this Drawable
+	 */
+	contains: function (x, y) {
+		return false;
+	},
 	// copy state data from drw
-	_copyState: function(drw){
+	_copyState: function (drw) {
 		this.state.dwtp = drw.state.dwtp;
 		this.state.strk = drw.state.strk;
 		this.state.fil  = drw.state.fil;
@@ -330,19 +297,16 @@ canvas.Drawable = zk.$extends(zk.Object, {
 		
 		if(drw.state.trns != null) {
 			this.state.trns = [];
-			for(i=6;i--;){
+			for(i=6;i--;)
 				this.state.trns[i] = drw.state.trns[i];
-			}
-		} else {
+		} else
 			this.state.trns = null;
-		}
 		
 		if(drw.state.clp != null) {
 			this.state.clp = new Path();
 			this.state.clp._copyObj(drw.state.clp);
-		} else {
+		} else
 			this.state.clp = null;
-		}
 	}
 	
 });
