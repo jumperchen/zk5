@@ -10,7 +10,41 @@
 Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 
 */
-
+(function () {
+	
+	function _createDrawables(drws) {
+		//var arr = [];
+		for (var arr = [], i = 0, len = drws.length; i < len; i++)
+			arr.push(_createDrawable(drws[i]));
+		return arr;
+	}
+	
+	function _createDrawable(drw) {
+		switch(drw.objtp){
+		case "rect":
+			return zk.copy(new canvas.Rectangle(), drw);
+		case "path":
+			return zk.copy(new canvas.Path(), drw);
+		case "text":
+			return zk.copy(new canvas.Text(), drw);
+			break;
+		case "comp":
+			// TODO: introduce composite drawable
+			//this._paintComposite(drw.obj);
+			break;
+		case "img":
+			//this._paintImage(drw.obj);
+			break;
+		case "cvs":
+			//this._paintCanvas(drw.obj);
+			break;
+		case "vid":
+		default:
+			// unsupported types
+		}
+		return zk.copy(new canvas.Drawable(), drw); // unhandled cases
+	}
+	
 /**
  * The ZK component corresponding to HTML 5 Canvas.
  * While HTML 5 Canvas is a command-based DOM object that allows user to draw
@@ -33,6 +67,8 @@ canvas.Canvas = zk.$extends(zul.Widget, {
 	_txtMxW: -1,
 	_txtMxWBak: -1,
 	
+	// TODO: rerender upon resize
+	
 	bind_: function(){
 		this.$supers("bind_", arguments);
 		
@@ -52,10 +88,10 @@ canvas.Canvas = zk.$extends(zul.Widget, {
 		this._repaint();
 	},
 	setDrwngs: function(v) {
-		this._drwbls = jq.evalJSON(v);
+		this._drwbls = _createDrawables(jq.evalJSON(v));
 	},
 	setAdd: function(drwJSON) {
-		this.add(jq.evalJSON(drwJSON));
+		this.add(_createDrawable(jq.evalJSON(drwJSON)));
 	},
 	/**
 	 * Adds a Drawable to canvas.
@@ -76,7 +112,7 @@ canvas.Canvas = zk.$extends(zul.Widget, {
 		return drw;
 	},
 	setInsert: function(idrwJSON) {
-		var idrw = jq.evalJSON(idrwJSON);
+		var idrw = _createDrawable(jq.evalJSON(idrwJSON));
 		this.insert(idrw.i, idrw.drw);
 	},
 	/**
@@ -87,7 +123,7 @@ canvas.Canvas = zk.$extends(zul.Widget, {
 		this._repaint();
 	},
 	setReplace: function(idrwJSON) {
-		var idrw = jq.evalJSON(idrwJSON);
+		var idrw = _createDrawable(jq.evalJSON(idrwJSON));
 		this.replace(idrw.i, idrw.drw);
 	},
 	/**
@@ -344,3 +380,5 @@ canvas.Canvas = zk.$extends(zul.Widget, {
 		return zcs != null ? zcs: "z-canvas";
 	}
 });
+
+})();
