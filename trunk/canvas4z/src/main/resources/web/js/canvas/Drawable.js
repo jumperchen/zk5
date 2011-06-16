@@ -277,6 +277,7 @@ canvas.Drawable = zk.$extends(zk.Object, {
 	},
 	// copy state data from drw
 	_copyState: function (drw) {
+		// TODO: may use zk.copy
 		this.state.dwtp = drw.state.dwtp;
 		this.state.strk = drw.state.strk;
 		this.state.fil  = drw.state.fil;
