@@ -160,8 +160,9 @@ public class Path extends Shape {
 		((Path2D.Double) _internalShape).curveTo(x1, y1, x2, y2, x3, y3);
 		return this;
 	}
-	public final void reset() {
+	public final Path reset() {
 		((Path2D.Double) _internalShape).reset();
+		return this;
 	}
 	public final Path append(PathIterator pi, boolean connect) {
 		((Path2D.Double) _internalShape).append(pi, connect);
@@ -175,8 +176,9 @@ public class Path extends Shape {
 		((Path2D.Double) _internalShape).closePath();
 		return this;
 	}
-	public final void transform(AffineTransform at) {
+	public final Path transform(AffineTransform at) {
 		((Path2D.Double) _internalShape).transform(at);
+		return this;
 	}
 	
 	
