@@ -47,7 +47,6 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 				sum += _getLineCrossing(x, y, crx, cry, mvx, mvy);
 				crx = mvx; cry = mvy;
 				break;
-			// TODO: other: ignore
 			}
 		}
 		// if not closed, close at the end
