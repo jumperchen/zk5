@@ -12,14 +12,15 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 */
 (function () {
 	
-	function _createDrawables(drws) {
+	// TODO: move to static methods
+	function _createDrawables(drws) { // TODO: take JSON directly
 		//var arr = [];
 		for (var arr = [], i = 0, len = drws.length; i < len; i++)
 			arr.push(_createDrawable(drws[i]));
 		return arr;
 	}
 	
-	function _createDrawable(drw) {
+	function _createDrawable(drw) { // TODO: take JSON directly
 		switch(drw.objtp){
 		case "rect":
 			return zk.copy(new canvas.Rectangle(), drw);
@@ -42,6 +43,7 @@ Copyright (C) 2010 Potix Corporation. All Rights Reserved.
 		default:
 			// unsupported types
 		}
+		// TODO: how to cover custom type
 		return zk.copy(new canvas.Drawable(), drw); // unhandled cases
 	}
 	
@@ -273,12 +275,14 @@ canvas.Canvas = zk.$extends(zul.Widget, {
 		}
 	},
 	_strkTxt: function(text) {
+		// TODO: simplify
 		if(this._txtMxW < 0)
 			this._ctx.strokeText(text.t, text.x, text.y);
 		else
 			this._ctx.strokeText(text.t, text.x, text.y, this._txtMxW);
 	},
 	_filTxt: function(text) {
+		// TODO: simplify
 		if(this._txtMxW < 0)
 			this._ctx.fillText(text.t, text.x, text.y);
 		else
