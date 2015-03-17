@@ -1,0 +1,140 @@
+# Introduction #
+
+Use maven plug-in to compress javascript and css files . (Support zk dsp extension!)
+
+It extends from http://alchim.sourceforge.net/yuicompressor-maven-plugin/index.html .
+
+# Last Version #
+
+1.2.0 (with YUICompressor 2.4.7 for @queryMedia issue)
+
+# Details #
+
+Write the definition in your project POM file.
+
+```
+<project xmlns="http://maven.apache.org/POM/4.0.0"  
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+.
+.
+.
+.  
+<!-- add ZK repositories here -->
+    <pluginRepositories>
+      <pluginRepository>
+        <id>zkrepo</id>
+        <name>zk maven repository</name>
+        <url>http://mavensync.zkoss.org/maven2/</url>
+      </pluginRepository>
+    </pluginRepositories>
+.
+.
+    <build>
+	<plugins>
+                 <!-- add plug-in confiugration here -->
+		<plugin>
+			<groupId>org.zkoss.maven</groupId>
+			<artifactId>yuicompressor-maven-plugin-zk</artifactId>
+			<version>1.1.6</version>
+			<executions>
+				<execution>
+					<goals>
+						<goal>compress</goal>
+					</goals>
+				</execution>
+			</executions>	
+		</plugin>
+
+       </plugins>
+    </build>
+.
+.
+</project>
+```
+
+# Default Phase #
+
+process-resources
+
+# Default goal #
+
+compress
+
+# Options #
+
+**We Enhanced/Updated**
+| KEY | DEFAULT VAL|DESCRIPTION |SINCE|
+|:----|:-----------|:-----------|:----|
+| maven.yuicompressor.sourcesuffix|.src|rename source to the specify suffix after compressed|1.1.2|
+|maven.yuicompressor.linebreakpos|-1|we CHANGE the default to -1 ,because we offen use without any line-break  |1.1.2|
+
+| maven.yuicompressor.removeSourceComment|true|it will remove all the js comment for the oringinal file. |1.1.3|
+| maven.yuicompressor.nosource|false|config that not to keep source code|1.1.5|
+
+
+
+**Original**
+| KEY | DEFAULT VAL|DESCRIPTION |
+|:----|:-----------|:-----------|
+| file.encoding|UTF-8|  |
+| preserveAllSemiColons|  |
+| maven.yuicompressor.suffix|.src|
+| maven.yuicompressor.nosuffix|true|
+| maven.yuicompressor.nomunge|false|(js only) Minify only, do not obfuscate.|
+| maven.yuicompressor.preserveAllSemiColons|false|(js only) Preserve unnecessary semicolons.|
+| maven.yuicompressor.disableOptimizations|false|(js only) disable all micro optimizations.|
+| maven.yuicompressor.force|false|force the compression of every files, else if compressed file already exists and is younger than source file, nothing is done.|
+| maven.yuicompressor.gzip|false|request to create a gzipped version of the yuicompressed/aggregation files.|
+| maven.yuicompressor.statistics|true|show statistics (compression ratio).|
+| maven.yuicompressor.jswarn|true|(js only) Display possible errors in the code|
+| maven.yuicompressor.skip|false|Whether to skip execution|
+| maven.yuicompressor.failOnWarning|false|define if plugin must stop/fail on warnings.|
+
+**Example for using maven.yuicompressor option**
+```
+<plugin>
+	<groupId>org.zkoss.maven</groupId>
+	<artifactId>yuicompressor-maven-plugin-zk</artifactId>
+	<version>1.1.6</version>
+	<executions>
+		<execution>
+			<goals>
+				<goal>compress</goal>
+			</goals>
+		</execution>
+	</executions>
+	<configuration>
+                 <!-- maven.yuicompressor.suffix -->
+		<nosuffix>false</nosuffix>
+                 <!-- maven.yuicompressor.nosource -->
+                <nosource>true</nosource>   
+	</configuration>						
+</plugin>		
+```
+
+**Note that if you are not using default resources folder, you need to specify sresource , for example .
+```
+<resources>
+	<resource>
+		<directory>src/archive/</directory>
+	</resource>
+</resources>
+```**
+
+
+# Version History #
+
+1.1.1 non-stable version and add sourcesuffix ,please prevent to use this.
+
+1.1.2 stable version for sourcesuffix
+
+1.1.3 add remove comment option
+
+1.1.4 fix bug ,when resource folder in nest in source folder , it will cause error.
+
+1.1.5 fix [bug #2](https://code.google.com/p/zk5/issues/detail?id=2) [r167](https://code.google.com/p/zk5/source/detail?r=167)
+
+2011/2/24 1.1.6 fix [bug #3](https://code.google.com/p/zk5/issues/detail?id=3),[bug #4](https://code.google.com/p/zk5/issues/detail?id=4),[bug #5](https://code.google.com/p/zk5/issues/detail?id=5) [r174](https://code.google.com/p/zk5/source/detail?r=174)
+
+1.2.0 upgrade YUICompressor version to 2.4.7

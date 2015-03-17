@@ -1,0 +1,90 @@
+# Introduction #
+
+A couple weeks ago, I was working on a customer’s support about how to reduce memory footprint of a ZUL page. At the time, I found it odd that the ZUL page was pretty simple but it retains plenty of ZK components on the server. After some research, we found the issue was caused by a form that requires user to fill out his/her contact information, such as address, phone, age, account, and so on. The page contains a lot of dropdown lists for the form and the dropdown lists are implemented using ZK’s powerful Listbox, which includes Listitem and Listcell for each row. Thus, an idea came up that we should implement a lightweight dropdown list to fulfill such business requirement and make it support Databinding and Renderer features.
+
+**Video Demo** [link](http://www.screencast.com/users/TonyQ/folders/Jing/media/656eda9a-e8d0-4819-8177-2ad658229ed0)
+
+
+# Details #
+
+A lightweight dropdown list and it can support ListModel?, Renderer, and Databinding as well.
+
+
+
+# Usage #
+
+**For generic use .
+```
+	<zscript>
+		<![CDATA[
+	String[] userName = { "Tony", "Ryan", "Jumper", "Wing", "Sam" };
+	ListModelList model = new ListModelList(userName);
+
+	org.zkoss.zul.OptionRenderer render = new org.zkoss.zul.OptionRenderer() {
+
+		public String render(Object data) throws Exception {
+			return data.toString();
+		}
+	};
+]]></zscript>
+	<selectbox id="box" model="${model}" itemRenderer="${render}"
+		onSelect='alert(model.get(event.getData()));' />
+```**
+
+
+**For using with databinding**
+
+```
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk>
+	<zscript>
+		<![CDATA[
+
+     	public class MyUserBean{
+     		private String[] userList = { "Tony", "Ryan", "Jumper", "Wing", "Sam" };
+     		private int index = 0;
+     		public List getUserList(){
+     			System.out.println("hi");
+     			return Arrays.asList(userList);
+     		}
+     		public void setUserList(){
+     		}
+     		public void setIndex(int ind){
+     			index=ind;
+     		}
+     		public int getIndex(){
+     			return index;
+     		}
+     		public String getCurrentName(){
+     			return userList[index];
+     		}
+     	}
+     	
+   	MyUserBean mybean = new MyUserBean();
+
+	org.zkoss.zul.OptionRenderer render = new org.zkoss.zul.OptionRenderer() {
+
+		public String render(Object data) throws Exception {
+			return data.toString();
+		}
+	};
+]]></zscript>
+
+	<div>
+	Select User:
+	<selectbox id="box" model="@{mybean.userList}" itemRenderer="${render}"
+		selectedIndex="@{mybean.index}" />
+
+	</div>
+	Selected:
+	<label id="val" value="@{mybean.currentName }" />
+</zk>
+
+```
+
+
+**Different with original listbox list
+  * use native html select
+  * No any child component so it use less memory. (In Listbox , it needs ListItem , ListCell .
+  * Restriction for only present a string .**
+
